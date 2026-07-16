@@ -1,13 +1,14 @@
 {
   "marca": {
     "nome": "MisArte Digital",
-    "slogan": "Catálogos digitais inteligentes para negócios locais"
+    "slogan": "Sua marca merece ser vivida.",
+    "conceito": "Movimento"
   },
-  "clientes": [
+  "projetos": [
     {
       "id": "cervejaria-inconfidentes",
       "nome": "Cervejaria Inconfidentes",
-      "categoria": "Cervejaria",
+      "categoria": "Catálogo interativo",
       "status": "publicado",
       "url": "./cervejaria-inconfidentes/"
     }
