@@ -31,7 +31,7 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     splash?.classList.add('hide');
     document.body.classList.remove('splash-active');
-  }, 1300);
+  }, 2050);
 });
 
 // Compact navbar on scroll

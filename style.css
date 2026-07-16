@@ -238,3 +238,199 @@ h1{font-size:clamp(46px,7vw,82px)}
   .splash-mark.logo-img{width:100px}
   .section-heading h2{font-size:clamp(32px,10vw,46px)}
 }
+
+
+/* =========================================================
+   MISARTE DIGITAL v2.0 OFICIAL
+   Splash em pincelada + hierarquia tipográfica refinada
+   ========================================================= */
+
+body.splash-active {
+  overflow: hidden;
+}
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(31, 139, 93, .16), transparent 34%),
+    #06100b;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .72s ease, visibility .72s ease;
+}
+
+.splash.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash-inner {
+  text-align: center;
+}
+
+.splash-logo-wrap {
+  position: relative;
+  width: 152px;
+  margin: 0 auto;
+  aspect-ratio: 1.55 / 1;
+}
+
+.splash-logo-guide,
+.splash-logo-reveal img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.splash-logo-guide {
+  opacity: .075;
+  filter: grayscale(1) brightness(.7);
+}
+
+.splash-logo-reveal {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: inset(0 100% 0 0);
+  animation: misarteBrushReveal 1.08s cubic-bezier(.72, 0, .2, 1) .12s forwards;
+}
+
+.splash-logo-reveal img {
+  filter:
+    drop-shadow(0 0 8px rgba(79, 197, 140, .22))
+    drop-shadow(0 0 20px rgba(79, 197, 140, .12));
+}
+
+.splash-brush-glow {
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  left: -10%;
+  width: 28%;
+  opacity: 0;
+  transform: skewX(-10deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(155, 255, 204, .06),
+    rgba(155, 255, 204, .58),
+    rgba(79, 197, 140, .14),
+    transparent
+  );
+  filter: blur(5px);
+  animation: misarteBrushGlow 1.08s cubic-bezier(.72, 0, .2, 1) .12s forwards;
+}
+
+.splash-inner strong {
+  display: block;
+  margin-top: 20px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 27px;
+  font-weight: 500;
+  letter-spacing: .01em;
+  opacity: 0;
+  transform: translateY(7px);
+  animation: misarteNameIn .48s ease 1.24s forwards;
+}
+
+@keyframes misarteBrushReveal {
+  0%   { clip-path: inset(0 100% 0 0); }
+  55%  { clip-path: inset(0 42% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes misarteBrushGlow {
+  0%   { left: -10%; opacity: 0; }
+  12%  { opacity: .8; }
+  88%  { opacity: .65; }
+  100% { left: 86%; opacity: 0; }
+}
+
+@keyframes misarteNameIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Nossa forma de pensar: hierarquia mais elegante */
+.principles-section .section-heading {
+  max-width: 620px;
+  margin-bottom: 34px;
+}
+
+.principles-section .section-heading h2 {
+  font-size: clamp(30px, 3.7vw, 46px);
+  line-height: 1.08;
+}
+
+.principle {
+  grid-template-columns: 58px 1fr;
+  padding: 26px 0;
+}
+
+.principle h3 {
+  font-size: clamp(24px, 2.7vw, 34px);
+  line-height: 1.14;
+}
+
+.principle > span {
+  padding-top: 5px;
+}
+
+/* Ajustes globais finais de proporção */
+.section-heading h2 {
+  max-width: 18ch;
+}
+
+.feature-card h3 {
+  font-size: clamp(26px, 3vw, 32px);
+}
+
+@media (max-width: 760px) {
+  .splash-logo-wrap {
+    width: 124px;
+  }
+
+  .splash-inner strong {
+    font-size: 24px;
+    margin-top: 16px;
+  }
+
+  .principles-section .section-heading h2 {
+    font-size: clamp(28px, 8.5vw, 38px);
+  }
+
+  .principle {
+    grid-template-columns: 42px 1fr;
+    padding: 22px 0;
+  }
+
+  .principle h3 {
+    font-size: clamp(22px, 6.5vw, 29px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-logo-reveal {
+    clip-path: inset(0 0 0 0);
+    animation: none;
+  }
+
+  .splash-brush-glow {
+    display: none;
+  }
+
+  .splash-inner strong {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
