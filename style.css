@@ -164,3 +164,11 @@ button{font:inherit}
 .reader-view:not([hidden]) {
   display: block;
 }
+
+
+/* V2.2 - garantia absoluta de que apenas uma tela apareça por vez */
+#homeView[hidden],
+#readerView[hidden],
+#bottomNav[hidden] {
+  display: none !important;
+}
