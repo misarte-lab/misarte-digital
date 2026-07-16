@@ -153,3 +153,22 @@ button{font:inherit}
   .home-view{padding:4px}
   .cover-wrap{border-radius:8px;max-height:calc(100dvh - 76px)}
 }
+
+
+/* CORREÇÃO V2.1: impede capa e rótulo de aparecerem juntos */
+[hidden] {
+  display: none !important;
+}
+
+/* Ao abrir um fabricante ou avançar, o rótulo começa no topo */
+.reader-view:not([hidden]) {
+  display: block;
+}
+
+
+/* V2.2 - garantia absoluta de que apenas uma tela apareça por vez */
+#homeView[hidden],
+#readerView[hidden],
+#bottomNav[hidden] {
+  display: none !important;
+}

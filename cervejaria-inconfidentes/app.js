@@ -34,19 +34,25 @@ function openHome(push=true){
   state.page = 1;
   state.currentBrand = null;
   homeView.hidden = false;
+  homeView.style.display = "flex";
   readerView.hidden = true;
+  readerView.style.display = "none";
   bottomNav.hidden = true;
+  bottomNav.style.display = "none";
   closeDrawer();
   if(push) history.pushState({view:"home"},"","#inicio");
-  window.scrollTo({top:0,behavior:"instant"});
+  window.scrollTo(0, 0);
 }
 function openPage(page,push=true){
   page = Math.max(2, Math.min(41, Number(page)));
   state.page = page;
   state.currentBrand = brandForPage(page);
   homeView.hidden = true;
+  homeView.style.display = "none";
   readerView.hidden = false;
+  readerView.style.display = "block";
   bottomNav.hidden = false;
+  bottomNav.style.display = "grid";
   pageImage.src = `pages/pagina-${String(page).padStart(2,"0")}.webp`;
   pageImage.alt = `${state.currentBrand?.nome || "Catálogo"} - página ${page}`;
   const pageHome = $("pageHomeHotspot");
@@ -54,7 +60,7 @@ function openPage(page,push=true){
   pageHome.hidden = !hasHomeButton;
   pageHome.classList.toggle("final", page === 41);
   if(push) history.pushState({view:"page",page},"",`#pagina-${page}`);
-  window.scrollTo({top:0,behavior:"instant"});
+  window.scrollTo(0, 0);
   updateNav();
 }
 function updateNav(){
