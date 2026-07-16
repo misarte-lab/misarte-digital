@@ -204,3 +204,37 @@ body.splash-active{overflow:hidden}
   .site-footer{gap:18px}
   .footer-copy{order:3}
 }
+
+/* v1.2.1 — correção de logo e proporções */
+.logo-img{
+  display:block;
+  object-fit:contain;
+  filter:drop-shadow(0 0 14px rgba(0,196,108,.14));
+}
+.mini-mark.logo-img{width:30px;height:30px}
+.brand-mark.logo-img{width:118px;height:auto;margin:0 auto 18px}
+.cta-mark.logo-img{width:76px;height:auto;margin:0 auto 20px}
+.splash-mark.logo-img{
+  width:120px;height:auto;margin:0 auto;
+  animation:logoEntrance .95s cubic-bezier(.7,0,.2,1) forwards
+}
+.splash-inner span{display:none!important}
+@keyframes logoEntrance{
+  from{opacity:0;transform:scale(.92) translateY(5px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+
+/* Tipografia mais equilibrada no desktop */
+h1{font-size:clamp(46px,7vw,82px)}
+.slogan{font-size:clamp(22px,3vw,32px)}
+.section-heading h2{font-size:clamp(34px,4.8vw,58px)}
+.project-copy h3{font-size:clamp(34px,4.4vw,54px)}
+.principle h3{font-size:clamp(28px,3.5vw,44px)}
+.cta-card h2{font-size:clamp(34px,4.8vw,58px)}
+
+@media(max-width:760px){
+  h1{font-size:clamp(42px,13vw,62px)}
+  .brand-mark.logo-img{width:96px}
+  .splash-mark.logo-img{width:100px}
+  .section-heading h2{font-size:clamp(32px,10vw,46px)}
+}
