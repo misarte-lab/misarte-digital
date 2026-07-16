@@ -147,3 +147,60 @@ h1{font-size:clamp(54px,10vw,108px);line-height:.94;margin:14px 0 12px;font-weig
   *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
   .reveal{opacity:1;transform:none}
 }
+
+/* ===== MisArte Digital v1.1 ===== */
+body.splash-active{overflow:hidden}
+.splash{
+  position:fixed;inset:0;z-index:1000;
+  display:grid;place-items:center;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(31,139,93,.18),transparent 32%),
+    #06100b;
+  transition:opacity .8s ease,visibility .8s ease;
+}
+.splash.hide{opacity:0;visibility:hidden}
+.splash-inner{text-align:center}
+.splash-mark{
+  width:132px;height:132px;fill:none;stroke:var(--green-light);
+  stroke-width:5.4;stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 0 18px rgba(79,197,140,.22))
+}
+.splash-line{stroke-dasharray:360;stroke-dashoffset:360}
+.splash-one{animation:splashDraw 1.15s cubic-bezier(.7,0,.2,1) forwards}
+.splash-two{animation:splashDraw 1.15s .2s cubic-bezier(.7,0,.2,1) forwards}
+.splash-inner strong{
+  display:block;margin-top:18px;font-family:Georgia,serif;
+  font-size:28px;font-weight:500;opacity:0;
+  animation:splashFade .7s .65s ease forwards
+}
+.splash-inner span{
+  display:block;margin-top:8px;color:#c7d7ce;font-family:Georgia,serif;
+  font-size:16px;opacity:0;animation:splashFade .7s .85s ease forwards
+}
+@keyframes splashDraw{to{stroke-dashoffset:0}}
+@keyframes splashFade{to{opacity:1}}
+.particles{
+  position:fixed;inset:0;z-index:-1;width:100%;height:100%;
+  pointer-events:none;opacity:.55
+}
+.site-header.compact{
+  height:60px;background:rgba(7,16,12,.9);
+  box-shadow:0 8px 30px rgba(0,0,0,.22)
+}
+.site-header,.header-brand,.mini-mark{transition:.25s ease}
+.site-header.compact .mini-mark{width:28px;height:28px}
+.site-header.compact .header-brand{font-size:18px}
+.feature-card,.project-card,.cta-card{
+  transform-style:preserve-3d;
+  will-change:transform
+}
+.feature-card.touch-active,.project-card.touch-active,.cta-card.touch-active{
+  transform:translateY(-3px) scale(.995)
+}
+.footer-copy{max-width:360px;color:var(--muted);font-size:13px;line-height:1.55}
+.footer-copy p{margin:0}
+@media(max-width:760px){
+  .splash-mark{width:110px;height:110px}
+  .site-footer{gap:18px}
+  .footer-copy{order:3}
+}
