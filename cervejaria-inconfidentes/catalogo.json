@@ -1,0 +1,196 @@
+{
+  "cliente": "Cervejaria Inconfidentes",
+  "titulo": "Escolha a sua experiência cervejeira",
+  "homePage": 1,
+  "closingPage": 41,
+  "fabricantes": [
+    {
+      "id": "ouropretana",
+      "nome": "Ouropretana",
+      "inicio": 2,
+      "fim": 12,
+      "produtos": [
+        {
+          "pagina": 2,
+          "nome": "Amburana Brown Porter"
+        },
+        {
+          "pagina": 3,
+          "nome": "American IPA"
+        },
+        {
+          "pagina": 4,
+          "nome": "IPA Maracujá"
+        },
+        {
+          "pagina": 5,
+          "nome": "Ginger IPA"
+        },
+        {
+          "pagina": 6,
+          "nome": "Witbier"
+        },
+        {
+          "pagina": 7,
+          "nome": "Weissbier"
+        },
+        {
+          "pagina": 8,
+          "nome": "English Pale Ale"
+        },
+        {
+          "pagina": 9,
+          "nome": "Mascavo Belgian Blonde"
+        },
+        {
+          "pagina": 10,
+          "nome": "Amber Lager"
+        },
+        {
+          "pagina": 11,
+          "nome": "Café Lager"
+        },
+        {
+          "pagina": 12,
+          "nome": "Golden Lager"
+        }
+      ]
+    },
+    {
+      "id": "baden-baden",
+      "nome": "Baden Baden",
+      "inicio": 13,
+      "fim": 17,
+      "produtos": [
+        {
+          "pagina": 13,
+          "nome": "Peach"
+        },
+        {
+          "pagina": 14,
+          "nome": "IPA"
+        },
+        {
+          "pagina": 15,
+          "nome": "Witbier"
+        },
+        {
+          "pagina": 16,
+          "nome": "Golden"
+        },
+        {
+          "pagina": 17,
+          "nome": "Cristal"
+        }
+      ]
+    },
+    {
+      "id": "verace",
+      "nome": "Verace",
+      "inicio": 18,
+      "fim": 29,
+      "produtos": [
+        {
+          "pagina": 18,
+          "nome": "Pilsen"
+        },
+        {
+          "pagina": 19,
+          "nome": "Low Carb"
+        },
+        {
+          "pagina": 20,
+          "nome": "German Pils"
+        },
+        {
+          "pagina": 21,
+          "nome": "Nice Hop"
+        },
+        {
+          "pagina": 22,
+          "nome": "Kings Cross"
+        },
+        {
+          "pagina": 23,
+          "nome": "Laranja Mecânica"
+        },
+        {
+          "pagina": 24,
+          "nome": "Session IPA"
+        },
+        {
+          "pagina": 25,
+          "nome": "IPA sem álcool"
+        },
+        {
+          "pagina": 26,
+          "nome": "Syrena"
+        },
+        {
+          "pagina": 27,
+          "nome": "Disturbed"
+        },
+        {
+          "pagina": 28,
+          "nome": "Rapsódia"
+        },
+        {
+          "pagina": 29,
+          "nome": "Maracutaia"
+        }
+      ]
+    },
+    {
+      "id": "backer",
+      "nome": "Backer",
+      "inicio": 30,
+      "fim": 40,
+      "produtos": [
+        {
+          "pagina": 30,
+          "nome": "Backer Pilsen"
+        },
+        {
+          "pagina": 31,
+          "nome": "Backer Trigo"
+        },
+        {
+          "pagina": 32,
+          "nome": "Backer Pale Ale"
+        },
+        {
+          "pagina": 33,
+          "nome": "Backer Light"
+        },
+        {
+          "pagina": 34,
+          "nome": "Pele Vermelha"
+        },
+        {
+          "pagina": 35,
+          "nome": "Bravo"
+        },
+        {
+          "pagina": 36,
+          "nome": "Capitão Pilsen"
+        },
+        {
+          "pagina": 37,
+          "nome": "Capitão Amber"
+        },
+        {
+          "pagina": 38,
+          "nome": "Capitão Session"
+        },
+        {
+          "pagina": 39,
+          "nome": "Tommy Gun"
+        },
+        {
+          "pagina": 40,
+          "nome": "Medieval"
+        }
+      ]
+    }
+  ]
+}
