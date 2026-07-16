@@ -1,16 +1,11 @@
-# MisArte Digital - Cervejaria Inconfidentes
+# MisArte Digital v2 — navegação intuitiva
 
-Projeto oficial da MisArte Digital com o catálogo da Cervejaria Inconfidentes.
+A capa original do Canva agora é o próprio menu:
 
-## Estrutura
+- botão Ouropretana abre a página 2;
+- Baden Baden abre a página 13;
+- Verace abre a página 18;
+- Backer abre a página 30.
 
-- `index.html`: redireciona para o catálogo.
-- `cervejaria-inconfidentes/`: aplicação do cliente.
-- `pages/`: 41 páginas renderizadas do PDF em WebP.
-- `catalogo.json`: fabricantes, rótulos e páginas.
-- `style.css`: identidade visual e responsividade.
-- `app.js`: navegação, menus e gestos no celular.
-
-## Publicação no GitHub Pages
-
-Envie o conteúdo desta pasta para a raiz do repositório `misarte-digital`.
+Os botões visuais “Voltar ao início” das páginas 12, 17, 29 e 41 também são clicáveis.
+A lista duplicada de fabricantes abaixo da capa foi removida.

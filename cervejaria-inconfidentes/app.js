@@ -22,14 +22,8 @@ fetch("catalogo.json")
   });
 
 function renderHome(){
-  const grid = $("brandGrid");
-  grid.innerHTML = "";
-  state.data.fabricantes.forEach(brand => {
-    const b = document.createElement("button");
-    b.className = "brand-card";
-    b.innerHTML = `<strong>${brand.nome}</strong><span>${brand.produtos.length} rótulos</span>`;
-    b.addEventListener("click", () => openPage(brand.inicio));
-    grid.appendChild(b);
+  document.querySelectorAll(".cover-hotspot").forEach(btn => {
+    btn.addEventListener("click", () => openPage(Number(btn.dataset.page)));
   });
 }
 
@@ -47,7 +41,7 @@ function openHome(push=true){
   window.scrollTo({top:0,behavior:"instant"});
 }
 function openPage(page,push=true){
-  page = Math.max(2, Math.min(40, Number(page)));
+  page = Math.max(2, Math.min(41, Number(page)));
   state.page = page;
   state.currentBrand = brandForPage(page);
   homeView.hidden = true;
@@ -55,6 +49,10 @@ function openPage(page,push=true){
   bottomNav.hidden = false;
   pageImage.src = `pages/pagina-${String(page).padStart(2,"0")}.webp`;
   pageImage.alt = `${state.currentBrand?.nome || "Catálogo"} - página ${page}`;
+  const pageHome = $("pageHomeHotspot");
+  const hasHomeButton = [12,17,29,41].includes(page);
+  pageHome.hidden = !hasHomeButton;
+  pageHome.classList.toggle("final", page === 41);
   if(push) history.pushState({view:"page",page},"",`#pagina-${page}`);
   window.scrollTo({top:0,behavior:"instant"});
   updateNav();
@@ -129,3 +127,4 @@ readerView.addEventListener("touchend", e => {
   if(Math.abs(dx) > 55) step(dx < 0 ? 1 : -1);
   x0 = null;
 }, {passive:true});
+$("pageHomeHotspot").addEventListener("click",()=>openHome());

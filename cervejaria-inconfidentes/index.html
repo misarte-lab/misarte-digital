@@ -18,15 +18,21 @@
 
   <main id="app">
     <section id="homeView" class="home-view">
-      <div class="hero-card">
+      <div class="cover-wrap">
         <img src="pages/pagina-01.webp" alt="Capa do catálogo da Cervejaria Inconfidentes">
+        <button class="cover-hotspot ouropretana" data-page="2" aria-label="Abrir cervejas Ouropretana"></button>
+        <button class="cover-hotspot baden" data-page="13" aria-label="Abrir cervejas Baden Baden"></button>
+        <button class="cover-hotspot verace" data-page="18" aria-label="Abrir cervejas Verace"></button>
+        <button class="cover-hotspot backer" data-page="30" aria-label="Abrir cervejas Backer"></button>
       </div>
-      <div class="brand-grid" id="brandGrid"></div>
     </section>
 
     <section id="readerView" class="reader-view" hidden>
       <div class="reader-stage">
-        <img id="pageImage" alt="">
+        <div class="page-wrap">
+          <img id="pageImage" alt="">
+          <button id="pageHomeHotspot" class="page-home-hotspot" aria-label="Voltar ao início" hidden></button>
+        </div>
       </div>
     </section>
   </main>
