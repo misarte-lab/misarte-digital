@@ -1,0 +1,15 @@
+{
+  "marca": {
+    "nome": "MisArte Digital",
+    "slogan": "Catálogos digitais inteligentes para negócios locais"
+  },
+  "clientes": [
+    {
+      "id": "cervejaria-inconfidentes",
+      "nome": "Cervejaria Inconfidentes",
+      "categoria": "Cervejaria",
+      "status": "publicado",
+      "url": "./cervejaria-inconfidentes/"
+    }
+  ]
+}

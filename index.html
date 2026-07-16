@@ -3,59 +3,56 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#17100a">
-  <title>Cervejaria Inconfidentes | MisArte Digital</title>
-  <link rel="stylesheet" href="style.css?v=2.2">
+  <meta name="theme-color" content="#111111">
+  <title>MisArte Digital</title>
+  <link rel="stylesheet" href="style.css?v=1">
 </head>
 <body>
-  <header class="topbar">
-    <button id="homeBtn" class="brand" aria-label="Voltar ao início">
-      <span class="brand-small">Cervejaria</span>
-      <span class="brand-large">Inconfidentes</span>
-    </button>
-    <button id="menuBtn" class="icon-btn" aria-label="Abrir menu">☰</button>
+  <header class="hero">
+    <div class="brand-mark">M</div>
+    <p class="eyebrow">PLATAFORMA DE CATÁLOGOS DIGITAIS</p>
+    <h1>MisArte Digital</h1>
+    <p class="lead">Experiências rápidas, intuitivas e preparadas para QR Code.</p>
   </header>
 
-  <main id="app">
-    <section id="homeView" class="home-view">
-      <div class="cover-wrap">
-        <img src="pages/pagina-01.webp" alt="Capa do catálogo da Cervejaria Inconfidentes">
-        <button class="cover-hotspot ouropretana" data-page="2" aria-label="Abrir cervejas Ouropretana"></button>
-        <button class="cover-hotspot baden" data-page="13" aria-label="Abrir cervejas Baden Baden"></button>
-        <button class="cover-hotspot verace" data-page="18" aria-label="Abrir cervejas Verace"></button>
-        <button class="cover-hotspot backer" data-page="30" aria-label="Abrir cervejas Backer"></button>
+  <main>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="mini">PROJETOS</span>
+          <h2>Catálogos publicados</h2>
+        </div>
+        <span id="counter" class="counter">0</span>
+      </div>
+      <div id="clients" class="grid">
+        <div class="loading">Carregando projetos…</div>
       </div>
     </section>
 
-    <section id="readerView" class="reader-view" hidden>
-      <div class="reader-stage">
-        <div class="page-wrap">
-          <img id="pageImage" alt="">
-          <button id="pageHomeHotspot" class="page-home-hotspot" aria-label="Voltar ao início" hidden></button>
-        </div>
+    <section class="section plans">
+      <span class="mini">SOLUÇÕES MISARTE</span>
+      <h2>Uma estrutura que cresce com cada cliente</h2>
+      <div class="plan-grid">
+        <article>
+          <strong>Básico</strong>
+          <p>Catálogo digital, navegação mobile e QR Code permanente.</p>
+        </article>
+        <article>
+          <strong>Profissional</strong>
+          <p>Identidade personalizada, domínio próprio e atualizações mensais.</p>
+        </article>
+        <article>
+          <strong>Premium</strong>
+          <p>Busca, filtros, analytics, reservas e recursos comerciais.</p>
+        </article>
       </div>
     </section>
   </main>
 
-  <nav id="bottomNav" class="bottom-nav" hidden>
-    <button id="brandsBtn">⌂<span>Marcas</span></button>
-    <button id="prevBtn">‹<span>Anterior</span></button>
-    <button id="labelsBtn">☰<span>Rótulos</span></button>
-    <button id="nextBtn">›<span>Próxima</span></button>
-  </nav>
+  <footer>
+    <span>Desenvolvido por <strong>MisArte Digital</strong></span>
+  </footer>
 
-  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
-  <aside id="drawer" class="drawer" aria-hidden="true">
-    <div class="drawer-head">
-      <div>
-        <strong id="drawerTitle">Rótulos</strong>
-        <small>Toque para abrir</small>
-      </div>
-      <button id="closeDrawer" class="icon-btn" aria-label="Fechar menu">×</button>
-    </div>
-    <div id="drawerContent" class="drawer-content"></div>
-  </aside>
-
-  <script src="app.js?v=2.2"></script>
+  <script src="app.js?v=1"></script>
 </body>
 </html>
