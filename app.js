@@ -24,14 +24,23 @@ const observer = new IntersectionObserver(entries => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// Splash screen
-document.body.classList.add('splash-active');
+// Splash screen v3.0.3
+const splash = document.getElementById('splash');
+
 window.addEventListener('load', () => {
-  const splash = document.getElementById('splash');
-  setTimeout(() => {
+  // O monograma termina, o nome aparece e então começa o crossfade.
+  window.setTimeout(() => {
     splash?.classList.add('hide');
+
+    // A Home começa a entrar enquanto a Splash desaparece.
     document.body.classList.remove('splash-active');
-  }, 2150);
+    document.body.classList.add('page-enter');
+  }, 2180);
+
+  // Remove a Splash do fluxo após a transição.
+  window.setTimeout(() => {
+    splash?.setAttribute('hidden', '');
+  }, 3050);
 });
 
 // Compact navbar on scroll

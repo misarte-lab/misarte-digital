@@ -596,3 +596,120 @@ h1{font-size:clamp(42px,6.1vw,72px);line-height:.98;letter-spacing:-.045em}
     animation:none !important;
   }
 }
+
+
+/* =========================================================
+   v3.0.3 — PINCELADA E ENTRADA SUAVE DA HOME
+   ========================================================= */
+
+/* A Home fica invisível desde o primeiro frame, sem “piscar” atrás da Splash. */
+body.splash-active .site-header,
+body.splash-active main,
+body.splash-active .site-footer{
+  opacity:0 !important;
+  transform:translateY(14px) !important;
+}
+
+.site-header,
+main,
+.site-footer{
+  transition:
+    opacity .85s cubic-bezier(.22,.8,.25,1),
+    transform .85s cubic-bezier(.22,.8,.25,1) !important;
+}
+
+body.page-enter .site-header,
+body.page-enter main,
+body.page-enter .site-footer{
+  opacity:1 !important;
+  transform:translateY(0) !important;
+}
+
+/* Splash mais fluida e menos “seca”. */
+.splash{
+  transition:
+    opacity .82s cubic-bezier(.22,.8,.25,1),
+    visibility .82s ease !important;
+}
+
+.splash-logo-wrap{
+  filter:drop-shadow(0 0 18px rgba(79,197,140,.12));
+  transform:scale(.96);
+  animation:splashLogoSettle .35s ease .08s forwards;
+}
+
+.splash-logo-guide{
+  opacity:.025 !important;
+}
+
+/* Revelação em pincelada com borda suave, sem parecer um corte reto. */
+.splash-logo-reveal{
+  -webkit-mask-image:linear-gradient(
+    90deg,
+    #000 0%,
+    #000 72%,
+    rgba(0,0,0,.68) 86%,
+    transparent 100%
+  ) !important;
+  mask-image:linear-gradient(
+    90deg,
+    #000 0%,
+    #000 72%,
+    rgba(0,0,0,.68) 86%,
+    transparent 100%
+  ) !important;
+  -webkit-mask-size:155% 100% !important;
+  mask-size:155% 100% !important;
+  -webkit-mask-position:155% 0 !important;
+  mask-position:155% 0 !important;
+  clip-path:none !important;
+  animation:misarteSoftBrush 1.34s cubic-bezier(.68,0,.18,1) .12s forwards !important;
+}
+
+.splash-brush-glow{
+  width:22% !important;
+  filter:blur(7px) !important;
+  animation:misarteSoftGlow 1.34s cubic-bezier(.68,0,.18,1) .12s forwards !important;
+}
+
+.splash-inner strong{
+  animation:misarteNameInSoft .5s ease 1.52s forwards !important;
+}
+
+@keyframes splashLogoSettle{
+  to{transform:scale(1)}
+}
+
+@keyframes misarteSoftBrush{
+  0%{
+    -webkit-mask-position:155% 0;
+    mask-position:155% 0;
+    opacity:.55;
+  }
+  18%{opacity:1}
+  100%{
+    -webkit-mask-position:0 0;
+    mask-position:0 0;
+    opacity:1;
+  }
+}
+
+@keyframes misarteSoftGlow{
+  0%{left:-15%;opacity:0}
+  10%{opacity:.72}
+  88%{opacity:.5}
+  100%{left:92%;opacity:0}
+}
+
+@keyframes misarteNameInSoft{
+  from{opacity:0;transform:translateY(5px);filter:blur(2px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body.splash-active .site-header,
+  body.splash-active main,
+  body.splash-active .site-footer{
+    transform:none !important;
+  }
+}
