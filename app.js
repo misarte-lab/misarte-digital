@@ -1,136 +1,97 @@
-const state = { data:null, page:1, currentBrand:null };
-const $ = (id) => document.getElementById(id);
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('siteNav');
 
-const homeView = $("homeView");
-const readerView = $("readerView");
-const pageImage = $("pageImage");
-const bottomNav = $("bottomNav");
-const drawer = $("drawer");
-const drawerBackdrop = $("drawerBackdrop");
-const drawerTitle = $("drawerTitle");
-const drawerContent = $("drawerContent");
+toggle?.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', String(open));
+});
 
-fetch("catalogo.json")
-  .then(r => r.json())
-  .then(data => {
-    state.data = data;
-    renderHome();
-    handleInitialRoute();
-  })
-  .catch(() => {
-    document.body.innerHTML = '<div class="loading">Não foi possível carregar o catálogo.</div>';
+nav?.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
   });
+});
 
-function renderHome(){
-  document.querySelectorAll(".cover-hotspot").forEach(btn => {
-    btn.addEventListener("click", () => openPage(Number(btn.dataset.page)));
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
   });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Splash screen
+document.body.classList.add('splash-active');
+window.addEventListener('load', () => {
+  const splash = document.getElementById('splash');
+  setTimeout(() => {
+    splash?.classList.add('hide');
+    document.body.classList.remove('splash-active');
+  }, 2050);
+});
+
+// Compact navbar on scroll
+const header = document.querySelector('.site-header');
+const updateHeader = () => {
+  header?.classList.toggle('compact', window.scrollY > 24);
+};
+updateHeader();
+window.addEventListener('scroll', updateHeader, { passive: true });
+
+// Subtle green particles
+const canvas = document.getElementById('particles');
+const ctx = canvas?.getContext('2d');
+let dots = [];
+let rafId;
+
+function resizeParticles(){
+  if(!canvas || !ctx) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = innerWidth * dpr;
+  canvas.height = innerHeight * dpr;
+  canvas.style.width = innerWidth + 'px';
+  canvas.style.height = innerHeight + 'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  const amount = Math.min(34, Math.max(14, Math.round(innerWidth / 55)));
+  dots = Array.from({length:amount}, () => ({
+    x:Math.random()*innerWidth,
+    y:Math.random()*innerHeight,
+    r:Math.random()*1.4+.35,
+    vx:(Math.random()-.5)*.12,
+    vy:(Math.random()-.5)*.12,
+    a:Math.random()*.22+.04
+  }));
 }
 
-function brandForPage(page){
-  return state.data.fabricantes.find(b => page >= b.inicio && page <= b.fim) || null;
-}
-function openHome(push=true){
-  state.page = 1;
-  state.currentBrand = null;
-  homeView.hidden = false;
-  homeView.style.display = "flex";
-  readerView.hidden = true;
-  readerView.style.display = "none";
-  bottomNav.hidden = true;
-  bottomNav.style.display = "none";
-  closeDrawer();
-  if(push) history.pushState({view:"home"},"","#inicio");
-  window.scrollTo(0, 0);
-}
-function openPage(page,push=true){
-  page = Math.max(2, Math.min(41, Number(page)));
-  state.page = page;
-  state.currentBrand = brandForPage(page);
-  homeView.hidden = true;
-  homeView.style.display = "none";
-  readerView.hidden = false;
-  readerView.style.display = "block";
-  bottomNav.hidden = false;
-  bottomNav.style.display = "grid";
-  pageImage.src = `pages/pagina-${String(page).padStart(2,"0")}.webp`;
-  pageImage.alt = `${state.currentBrand?.nome || "Catálogo"} - página ${page}`;
-  const pageHome = $("pageHomeHotspot");
-  const hasHomeButton = [12,17,29,41].includes(page);
-  pageHome.hidden = !hasHomeButton;
-  pageHome.classList.toggle("final", page === 41);
-  if(push) history.pushState({view:"page",page},"",`#pagina-${page}`);
-  window.scrollTo(0, 0);
-  updateNav();
-}
-function updateNav(){
-  const b = state.currentBrand;
-  $("prevBtn").disabled = state.page <= b.inicio;
-  $("nextBtn").disabled = state.page >= b.fim;
-}
-function step(delta){
-  const b = state.currentBrand;
-  const target = state.page + delta;
-  if(target >= b.inicio && target <= b.fim) openPage(target);
-}
-function renderDrawer(mode="all"){
-  drawerContent.innerHTML = "";
-  if(mode === "brand" && state.currentBrand){
-    drawerTitle.textContent = state.currentBrand.nome;
-    addBrandGroup(state.currentBrand);
-  } else {
-    drawerTitle.textContent = "Marcas e rótulos";
-    state.data.fabricantes.forEach(addBrandGroup);
+function drawParticles(){
+  if(!canvas || !ctx) return;
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  for(const d of dots){
+    d.x += d.vx; d.y += d.vy;
+    if(d.x < -10) d.x = innerWidth+10;
+    if(d.x > innerWidth+10) d.x = -10;
+    if(d.y < -10) d.y = innerHeight+10;
+    if(d.y > innerHeight+10) d.y = -10;
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(79,197,140,${d.a})`;
+    ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+    ctx.fill();
   }
+  rafId = requestAnimationFrame(drawParticles);
 }
-function addBrandGroup(brand){
-  const group = document.createElement("section");
-  group.className = "drawer-group";
-  const title = document.createElement("h3");
-  title.textContent = brand.nome;
-  group.appendChild(title);
-  brand.produtos.forEach(p => {
-    const btn = document.createElement("button");
-    btn.className = "drawer-item" + (p.pagina === state.page ? " active" : "");
-    btn.textContent = p.nome;
-    btn.addEventListener("click", () => { openPage(p.pagina); closeDrawer(); });
-    group.appendChild(btn);
-  });
-  drawerContent.appendChild(group);
-}
-function openDrawer(mode="all"){
-  renderDrawer(mode);
-  drawer.hidden = false;
-  drawerBackdrop.hidden = false;
-  requestAnimationFrame(() => drawer.classList.add("open"));
-  drawer.setAttribute("aria-hidden","false");
-}
-function closeDrawer(){
-  drawer.classList.remove("open");
-  drawer.setAttribute("aria-hidden","true");
-  drawerBackdrop.hidden = true;
-  setTimeout(()=>{ if(!drawer.classList.contains("open")) drawer.hidden = true; },230);
-}
-function handleInitialRoute(){
-  const m = location.hash.match(/pagina-(\d+)/);
-  if(m) openPage(Number(m[1]),false); else openHome(false);
-}
-$("homeBtn").addEventListener("click",()=>openHome());
-$("brandsBtn").addEventListener("click",()=>openHome());
-$("prevBtn").addEventListener("click",()=>step(-1));
-$("nextBtn").addEventListener("click",()=>step(1));
-$("labelsBtn").addEventListener("click",()=>openDrawer("brand"));
-$("menuBtn").addEventListener("click",()=>openDrawer("all"));
-$("closeDrawer").addEventListener("click",closeDrawer);
-drawerBackdrop.addEventListener("click",closeDrawer);
-window.addEventListener("popstate",handleInitialRoute);
 
-let x0 = null;
-readerView.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive:true});
-readerView.addEventListener("touchend", e => {
-  if(x0 === null) return;
-  const dx = e.changedTouches[0].clientX - x0;
-  if(Math.abs(dx) > 55) step(dx < 0 ? 1 : -1);
-  x0 = null;
-}, {passive:true});
-$("pageHomeHotspot").addEventListener("click",()=>openHome());
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  resizeParticles();
+  drawParticles();
+  window.addEventListener('resize', resizeParticles);
+}
+
+// Better touch feedback on mobile
+document.querySelectorAll('.feature-card,.project-card,.cta-card').forEach(el => {
+  el.addEventListener('touchstart', () => el.classList.add('touch-active'), {passive:true});
+  el.addEventListener('touchend', () => el.classList.remove('touch-active'), {passive:true});
+});
