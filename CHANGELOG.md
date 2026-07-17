@@ -1,14 +1,14 @@
 # MisArte Digital — Changelog
 
-## v3.0.3
-- Home oculta desde o primeiro frame para eliminar o aparecimento repentino.
-- Crossfade sincronizado entre Splash e Hero.
-- Pincelada com borda suave, brilho menos artificial e tempo refinado.
-- “MisArte Digital” surge depois da conclusão do desenho.
-- Mantidas todas as correções tipográficas da v3.0.1.
-
-## v3.0.2
-- Restauração da animação de abertura.
-
-## v3.0.1
-- Correção tipográfica definitiva.
+## v3.0.4
+- Base restaurada a partir da v2.0 oficial.
+- Splash e pincelada preservadas integralmente.
+- Apenas tipografia, hierarquia visual e espaçamentos foram reduzidos.
+- Hero: 48px no desktop.
+- Títulos de seção: 32px.
+- Cards: 21px.
+- Projeto em destaque: 36px.
+- “Como pensamos”: 30px.
+- CTA final: 36px.
+- Ajustes equivalentes para celular.
+- Cache atualizado para v3.0.4.

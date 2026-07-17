@@ -3,184 +3,59 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#07140f">
-  <meta name="description" content="MisArte Digital — experiências digitais elegantes, intuitivas e interativas para marcas que desejam ser vividas.">
-  <title>MisArte Digital</title>
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="stylesheet" href="style.css?v=3.0.3">
+  <meta name="theme-color" content="#17100a">
+  <title>Cervejaria Inconfidentes | MisArte Digital</title>
+  <link rel="stylesheet" href="style.css?v=3.0.4">
 </head>
-<body class="splash-active">
-  <div id="splash" class="splash" aria-hidden="true">
-    <div class="splash-inner">
-      <div class="splash-logo-wrap" aria-hidden="true">
-        <img class="splash-logo-guide" src="assets/misarte-monograma-oficial.png" alt="">
-        <div class="splash-logo-reveal">
-          <img src="assets/misarte-monograma-oficial.png" alt="">
-        </div>
-        <span class="splash-brush-glow"></span>
-      </div>
-      <strong>MisArte Digital</strong>
-    </div>
-  </div>
-  <canvas id="particles" class="particles" aria-hidden="true"></canvas>
-  <div class="grain" aria-hidden="true"></div>
-
-  <header class="site-header">
-    <a class="header-brand" href="#inicio" aria-label="MisArte Digital — início">
-      <img class="mini-mark logo-img" src="assets/misarte-monograma-oficial.png" alt="">
-      <span>MisArte Digital</span>
-    </a>
-
-    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="siteNav">Menu</button>
-
-    <nav id="siteNav" class="site-nav">
-      <a href="#plataforma">Plataforma</a>
-      <a href="#projeto">Projeto</a>
-      <a href="#principios">Princípios</a>
-      <a href="#contato">Contato</a>
-    </nav>
+<body>
+  <header class="topbar">
+    <button id="homeBtn" class="brand" aria-label="Voltar ao início">
+      <span class="brand-small">Cervejaria</span>
+      <span class="brand-large">Inconfidentes</span>
+    </button>
+    <button id="menuBtn" class="icon-btn" aria-label="Abrir menu">☰</button>
   </header>
 
-  <main>
-    <section class="hero" id="inicio">
-      <div class="hero-glow glow-one"></div>
-      <div class="hero-glow glow-two"></div>
+  <main id="app">
+    <section id="homeView" class="home-view">
+      <div class="cover-wrap">
+        <img src="pages/pagina-01.webp" alt="Capa do catálogo da Cervejaria Inconfidentes">
+        <button class="cover-hotspot ouropretana" data-page="2" aria-label="Abrir cervejas Ouropretana"></button>
+        <button class="cover-hotspot baden" data-page="13" aria-label="Abrir cervejas Baden Baden"></button>
+        <button class="cover-hotspot verace" data-page="18" aria-label="Abrir cervejas Verace"></button>
+        <button class="cover-hotspot backer" data-page="30" aria-label="Abrir cervejas Backer"></button>
+      </div>
+    </section>
 
-      <div class="hero-content reveal">
-        <img class="brand-mark logo-img" src="assets/misarte-monograma-oficial.png" alt="MisArte Digital">
-
-        <p class="eyebrow">PLATAFORMA DE EXPERIÊNCIAS DIGITAIS</p>
-        <h1>MisArte Digital</h1>
-        <p class="slogan">Sua marca merece ser vivida.</p>
-        <p class="hero-copy">Criamos experiências digitais que aproximam pessoas, produtos e marcas.</p>
-
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#plataforma">Conheça a plataforma</a>
-          <a class="btn btn-secondary" href="./cervejaria-inconfidentes/">Ver projeto publicado</a>
+    <section id="readerView" class="reader-view" hidden>
+      <div class="reader-stage">
+        <div class="page-wrap">
+          <img id="pageImage" alt="">
+          <button id="pageHomeHotspot" class="page-home-hotspot" aria-label="Voltar ao início" hidden></button>
         </div>
-      </div>
-
-      <a class="scroll-indicator" href="#plataforma" aria-label="Continuar para a próxima seção">
-        <span></span>
-      </a>
-    </section>
-
-    <section class="section" id="plataforma">
-      <div class="section-heading reveal">
-        <p class="eyebrow">POSSIBILIDADES</p>
-        <h2>O que sua marca pode se tornar.</h2>
-      </div>
-
-      <div class="feature-grid">
-        <article class="feature-card reveal">
-          <span class="feature-number">01</span>
-          <h3>Experiências digitais</h3>
-          <p>Muito além de um catálogo. Criamos experiências que despertam curiosidade, facilitam a navegação e valorizam cada detalhe.</p>
-        </article>
-
-        <article class="feature-card reveal">
-          <span class="feature-number">02</span>
-          <h3>Identidade</h3>
-          <p>Cada projeto possui personalidade própria. Sua empresa nunca será apenas mais uma dentro de um modelo genérico.</p>
-        </article>
-
-        <article class="feature-card reveal">
-          <span class="feature-number">03</span>
-          <h3>Atualização contínua</h3>
-          <p>Seu conteúdo evolui sem exigir um novo QR Code. O endereço permanece; a experiência fica sempre atualizada.</p>
-        </article>
-
-        <article class="feature-card reveal">
-          <span class="feature-number">04</span>
-          <h3>Design estratégico</h3>
-          <p>Cada botão, cor, movimento e espaço tem uma função. Design bonito, mas sempre pensado para gerar resultado.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section project-section" id="projeto">
-      <div class="section-heading reveal">
-        <p class="eyebrow">PROJETO EM DESTAQUE</p>
-        <h2>Primeiro projeto publicado.</h2>
-      </div>
-
-      <article class="project-card reveal">
-        <div class="project-visual">
-          <img src="./cervejaria-inconfidentes/pages/pagina-01.webp" alt="Capa do catálogo digital da Cervejaria Inconfidentes">
-        </div>
-
-        <div class="project-copy">
-          <p class="project-tag">CERVEJARIA · CATÁLOGO INTERATIVO</p>
-          <h3>Cervejaria Inconfidentes</h3>
-          <p>Uma experiência digital criada para simplificar a navegação por dezenas de rótulos, preservar a identidade visual e permitir atualizações sem trocar o QR Code.</p>
-
-          <div class="project-highlights">
-            <span>Navegação mobile</span>
-            <span>QR Code permanente</span>
-            <span>Atualização contínua</span>
-          </div>
-
-          <a class="text-link" href="./cervejaria-inconfidentes/">Explorar projeto <span>→</span></a>
-        </div>
-      </article>
-    </section>
-
-    <section class="section principles-section" id="principios">
-      <div class="section-heading reveal">
-        <p class="eyebrow">NOSSA FORMA DE PENSAR</p>
-        <h2>Como pensamos.</h2>
-      </div>
-
-      <div class="principles">
-        <article class="principle reveal">
-          <span>01</span>
-          <h3>Menos interface.<br>Mais experiência.</h3>
-        </article>
-        <article class="principle reveal">
-          <span>02</span>
-          <h3>Cada detalhe<br>comunica.</h3>
-        </article>
-        <article class="principle reveal">
-          <span>03</span>
-          <h3>Tecnologia deve facilitar.<br>Nunca complicar.</h3>
-        </article>
-        <article class="principle reveal">
-          <span>04</span>
-          <h3>Sua marca é única.<br>Sua experiência também.</h3>
-        </article>
-      </div>
-    </section>
-
-    <section class="cta-section" id="contato">
-      <div class="cta-card reveal">
-        <img class="cta-mark logo-img" src="assets/misarte-monograma-oficial.png" alt="">
-        <p class="eyebrow">VAMOS CONVERSAR</p>
-        <h2>Vamos construir algo que represente sua marca?</h2>
-        <p>Projetos digitais exclusivos, pensados para a forma como seus clientes descobrem, exploram e vivem a sua empresa.</p>
-        <a class="btn btn-primary" href="mailto:contato@misarte.link">Solicitar um projeto</a>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-brand">
-      <img class="mini-mark logo-img" src="assets/misarte-monograma-oficial.png" alt="">
+  <nav id="bottomNav" class="bottom-nav" hidden>
+    <button id="brandsBtn">⌂<span>Marcas</span></button>
+    <button id="prevBtn">‹<span>Anterior</span></button>
+    <button id="labelsBtn">☰<span>Rótulos</span></button>
+    <button id="nextBtn">›<span>Próxima</span></button>
+  </nav>
+
+  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-head">
       <div>
-        <strong>MisArte Digital</strong>
-        <span>Sua marca merece ser vivida.</span>
+        <strong id="drawerTitle">Rótulos</strong>
+        <small>Toque para abrir</small>
       </div>
+      <button id="closeDrawer" class="icon-btn" aria-label="Fechar menu">×</button>
     </div>
+    <div id="drawerContent" class="drawer-content"></div>
+  </aside>
 
-    <div class="footer-copy">
-      <p>Experiências digitais para empresas que desejam ser lembradas.</p>
-    </div>
-    <div class="footer-links">
-      <a href="#inicio">Início</a>
-      <a href="#projeto">Projetos</a>
-      <a href="mailto:contato@misarte.link">E-mail</a>
-    </div>
-  </footer>
-
-  <script src="app.js?v=3.0.3"></script>
+  <script src="app.js?v=3.0.4"></script>
 </body>
 </html>

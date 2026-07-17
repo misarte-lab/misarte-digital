@@ -1,0 +1,28 @@
+{
+  "brands": [
+    {
+      "id": "ouropretana",
+      "name": "Ouropretana",
+      "start": 2,
+      "end": 12
+    },
+    {
+      "id": "baden-baden",
+      "name": "Baden Baden",
+      "start": 13,
+      "end": 17
+    },
+    {
+      "id": "verace",
+      "name": "Verace",
+      "start": 18,
+      "end": 29
+    },
+    {
+      "id": "backer",
+      "name": "Backer",
+      "start": 30,
+      "end": 40
+    }
+  ]
+}
