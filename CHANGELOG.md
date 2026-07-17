@@ -1,9 +1,9 @@
 # MisArte Digital — Changelog
 
-## v3.0.5
-- Corrigido o empacotamento que havia colocado o catálogo na raiz.
-- Home da MisArte restaurada na raiz.
-- Catálogo mantido em `cervejaria-inconfidentes/`.
-- Splash com pincelada preservada integralmente da v2.0.
-- Apenas tipografia e espaçamentos foram ajustados.
-- Cache atualizado para v3.0.5.
+## v3.0.6 — Navegação contextual
+- Acesso pelo QR Code continua 100% Cervejaria Inconfidentes.
+- Removida a referência à MisArte do título da aba do catálogo.
+- Acesso pelo portfólio da MisArte recebe `?origem=misarte`.
+- Somente nesse contexto aparece o botão “Voltar à MisArte”.
+- O retorno leva diretamente à seção “Projeto em destaque”.
+- Um único catálogo atende aos dois contextos, sem duplicação.

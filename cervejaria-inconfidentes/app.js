@@ -134,3 +134,16 @@ readerView.addEventListener("touchend", e => {
   x0 = null;
 }, {passive:true});
 $("pageHomeHotspot").addEventListener("click",()=>openHome());
+
+
+// Retorno condicional ao portfólio da MisArte.
+// O botão só aparece quando a visita chega por "?origem=misarte".
+(() => {
+  const params = new URLSearchParams(window.location.search);
+  const veioDaMisarte = params.get('origem') === 'misarte';
+  const returnButton = document.getElementById('misarteReturn');
+
+  if (returnButton && veioDaMisarte) {
+    returnButton.hidden = false;
+  }
+})();
