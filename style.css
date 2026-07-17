@@ -241,196 +241,82 @@ h1{font-size:clamp(46px,7vw,82px)}
 
 
 /* =========================================================
-   MISARTE DIGITAL v2.0 OFICIAL
-   Splash em pincelada + hierarquia tipográfica refinada
+   MISARTE DIGITAL v3.0 — PREMIUM EDITION
+   Lapidação visual final
    ========================================================= */
 
-body.splash-active {
-  overflow: hidden;
+:root{
+  --space-1:8px;--space-2:16px;--space-3:24px;--space-4:32px;
+  --space-5:48px;--space-6:64px;--space-7:96px;
 }
 
-.splash {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(31, 139, 93, .16), transparent 34%),
-    #06100b;
-  opacity: 1;
-  visibility: visible;
-  transition: opacity .72s ease, visibility .72s ease;
-}
+/* Navegação mais compacta e refinada */
+.nav{min-height:68px}
+.nav-inner{min-height:68px}
+.mini-mark.logo-img{width:27px;height:27px}
+.nav-links a{font-size:13px;letter-spacing:.02em;transition:opacity .25s ease,color .25s ease}
+.nav-links a:hover{opacity:.72}
 
-.splash.hide {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
+/* Hero: menos escala, mais respiro */
+.hero{padding-top:clamp(110px,15vh,150px);padding-bottom:clamp(82px,11vh,120px)}
+.hero h1,
+.hero-title,
+h1{font-size:clamp(42px,6.1vw,72px);line-height:.98;letter-spacing:-.045em}
+.hero .brand-mark.logo-img,.brand-mark.logo-img{width:104px;margin-bottom:24px}
+.hero .slogan,.slogan{font-size:clamp(20px,2.4vw,29px);line-height:1.2}
+.hero p,.hero-copy{max-width:690px;font-size:clamp(16px,1.45vw,19px);line-height:1.7}
+.hero-actions{margin-top:34px;gap:14px}
 
-.splash-inner {
-  text-align: center;
-}
+/* Títulos de seção: escala editorial */
+.section-heading{margin-bottom:42px}
+.section-heading h2{font-size:clamp(34px,4.2vw,52px);line-height:1.04;letter-spacing:-.035em;max-width:16ch}
+.section-heading p{font-size:clamp(16px,1.4vw,19px);line-height:1.65;max-width:650px}
 
-.splash-logo-wrap {
-  position: relative;
-  width: 152px;
-  margin: 0 auto;
-  aspect-ratio: 1.55 / 1;
-}
+/* Cards de possibilidades */
+.feature-grid{gap:22px}
+.feature-card{padding:34px 30px;min-height:300px;transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.feature-card:hover{transform:translateY(-5px);box-shadow:0 18px 55px rgba(0,0,0,.18)}
+.feature-card h3{font-size:clamp(23px,2.3vw,29px);line-height:1.15}
+.feature-card p{font-size:15px;line-height:1.65}
+.feature-card .number,.feature-card>span{opacity:.62}
 
-.splash-logo-guide,
-.splash-logo-reveal img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+/* Projeto em destaque: vitrine */
+.project-card{gap:clamp(30px,5vw,66px);align-items:center}
+.project-copy h3{font-size:clamp(32px,3.8vw,48px);line-height:1.05}
+.project-copy p{font-size:clamp(16px,1.4vw,18px);line-height:1.7}
+.project-media,.project-image{transition:transform .5s ease,box-shadow .5s ease}
+.project-media:hover,.project-image:hover{transform:translateY(-4px) scale(1.008);box-shadow:0 28px 80px rgba(0,0,0,.22)}
 
-.splash-logo-guide {
-  opacity: .075;
-  filter: grayscale(1) brightness(.7);
-}
+/* Como pensamos: manifesto, não lista */
+.principles-section{padding-top:clamp(80px,10vw,130px);padding-bottom:clamp(80px,10vw,130px)}
+.principles-section .section-heading{max-width:560px;margin-bottom:50px}
+.principles-section .section-heading h2{font-size:clamp(30px,3.4vw,43px);line-height:1.08}
+.principles{max-width:900px}
+.principle{grid-template-columns:48px 1fr;padding:30px 0;gap:22px}
+.principle>span{font-size:13px;opacity:.55;padding-top:7px}
+.principle h3{font-size:clamp(23px,2.5vw,31px);line-height:1.16;letter-spacing:-.025em;margin-bottom:8px}
+.principle p{font-size:clamp(15px,1.3vw,17px);line-height:1.65;max-width:660px}
 
-.splash-logo-reveal {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  clip-path: inset(0 100% 0 0);
-  animation: misarteBrushReveal 1.08s cubic-bezier(.72, 0, .2, 1) .12s forwards;
-}
+/* Botões e links */
+.btn,.button,a.button{transition:transform .25s ease,box-shadow .25s ease,background-color .25s ease}
+.btn:hover,.button:hover,a.button:hover{transform:translateY(-2px)}
 
-.splash-logo-reveal img {
-  filter:
-    drop-shadow(0 0 8px rgba(79, 197, 140, .22))
-    drop-shadow(0 0 20px rgba(79, 197, 140, .12));
-}
+/* Splash v3: sincronização mais suave */
+.splash-logo-reveal{animation-duration:1.18s!important}
+.splash-brush-glow{animation-duration:1.18s!important}
+.splash-inner strong{animation-delay:1.34s!important;animation-duration:.52s!important}
 
-.splash-brush-glow {
-  position: absolute;
-  top: 8%;
-  bottom: 8%;
-  left: -10%;
-  width: 28%;
-  opacity: 0;
-  transform: skewX(-10deg);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(155, 255, 204, .06),
-    rgba(155, 255, 204, .58),
-    rgba(79, 197, 140, .14),
-    transparent
-  );
-  filter: blur(5px);
-  animation: misarteBrushGlow 1.08s cubic-bezier(.72, 0, .2, 1) .12s forwards;
-}
-
-.splash-inner strong {
-  display: block;
-  margin-top: 20px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 27px;
-  font-weight: 500;
-  letter-spacing: .01em;
-  opacity: 0;
-  transform: translateY(7px);
-  animation: misarteNameIn .48s ease 1.24s forwards;
-}
-
-@keyframes misarteBrushReveal {
-  0%   { clip-path: inset(0 100% 0 0); }
-  55%  { clip-path: inset(0 42% 0 0); }
-  100% { clip-path: inset(0 0 0 0); }
-}
-
-@keyframes misarteBrushGlow {
-  0%   { left: -10%; opacity: 0; }
-  12%  { opacity: .8; }
-  88%  { opacity: .65; }
-  100% { left: 86%; opacity: 0; }
-}
-
-@keyframes misarteNameIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Nossa forma de pensar: hierarquia mais elegante */
-.principles-section .section-heading {
-  max-width: 620px;
-  margin-bottom: 34px;
-}
-
-.principles-section .section-heading h2 {
-  font-size: clamp(30px, 3.7vw, 46px);
-  line-height: 1.08;
-}
-
-.principle {
-  grid-template-columns: 58px 1fr;
-  padding: 26px 0;
-}
-
-.principle h3 {
-  font-size: clamp(24px, 2.7vw, 34px);
-  line-height: 1.14;
-}
-
-.principle > span {
-  padding-top: 5px;
-}
-
-/* Ajustes globais finais de proporção */
-.section-heading h2 {
-  max-width: 18ch;
-}
-
-.feature-card h3 {
-  font-size: clamp(26px, 3vw, 32px);
-}
-
-@media (max-width: 760px) {
-  .splash-logo-wrap {
-    width: 124px;
-  }
-
-  .splash-inner strong {
-    font-size: 24px;
-    margin-top: 16px;
-  }
-
-  .principles-section .section-heading h2 {
-    font-size: clamp(28px, 8.5vw, 38px);
-  }
-
-  .principle {
-    grid-template-columns: 42px 1fr;
-    padding: 22px 0;
-  }
-
-  .principle h3 {
-    font-size: clamp(22px, 6.5vw, 29px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .splash-logo-reveal {
-    clip-path: inset(0 0 0 0);
-    animation: none;
-  }
-
-  .splash-brush-glow {
-    display: none;
-  }
-
-  .splash-inner strong {
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
+/* Mobile */
+@media(max-width:760px){
+  .nav,.nav-inner{min-height:62px}
+  .hero{padding-top:100px;padding-bottom:72px}
+  .hero h1,.hero-title,h1{font-size:clamp(39px,12vw,55px)}
+  .hero .brand-mark.logo-img,.brand-mark.logo-img{width:90px}
+  .hero .slogan,.slogan{font-size:clamp(19px,6vw,25px)}
+  .section-heading{margin-bottom:32px}
+  .section-heading h2{font-size:clamp(29px,9vw,40px)}
+  .feature-card{padding:28px 24px;min-height:auto}
+  .principles-section .section-heading h2{font-size:clamp(27px,8vw,36px)}
+  .principle{grid-template-columns:36px 1fr;padding:24px 0;gap:14px}
+  .principle h3{font-size:clamp(21px,6.2vw,27px)}
 }

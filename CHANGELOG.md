@@ -1,11 +1,12 @@
 # MisArte Digital — Changelog
 
-## v2.0 Oficial
-
-- Splash com revelação em pincelada do monograma oficial.
-- Nome “MisArte Digital” aparece somente após o desenho.
-- Fade suave para a Home.
-- Redução do título “Como pensamos”.
-- Redução e refinamento dos textos da seção “Nossa forma de pensar”.
-- Ajustes de hierarquia tipográfica no desktop e no celular.
-- Cache busting atualizado para v2.0.
+## v3.0 Premium Edition
+- Escala tipográfica reduzida e harmonizada.
+- Hero refinado com mais respiro.
+- Navbar mais compacta.
+- Cards de possibilidades mais elegantes.
+- Projeto em destaque valorizado como vitrine.
+- “Como pensamos” redesenhado com linguagem de manifesto.
+- Microinterações e hovers refinados.
+- Splash com timing mais suave.
+- Ajustes responsivos para desktop e celular.
