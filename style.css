@@ -496,3 +496,103 @@ h1{font-size:clamp(42px,6.1vw,72px);line-height:.98;letter-spacing:-.045em}
     font-size:29px !important;
   }
 }
+
+
+/* =========================================================
+   v3.0.2 — RESTAURAÇÃO DEFINITIVA DA PINCELADA
+   ========================================================= */
+
+.splash-logo-wrap{
+  position:relative !important;
+  width:132px !important;
+  aspect-ratio:1.55 / 1 !important;
+  margin:0 auto !important;
+}
+
+.splash-logo-guide,
+.splash-logo-reveal img{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+}
+
+.splash-logo-guide{
+  opacity:.07 !important;
+  filter:grayscale(1) brightness(.65) !important;
+}
+
+.splash-logo-reveal{
+  position:absolute !important;
+  inset:0 !important;
+  overflow:hidden !important;
+  clip-path:inset(0 100% 0 0) !important;
+  animation:misarteBrushReveal 1.22s cubic-bezier(.72,0,.2,1) .12s forwards !important;
+}
+
+.splash-logo-reveal img{
+  filter:
+    drop-shadow(0 0 8px rgba(79,197,140,.24))
+    drop-shadow(0 0 22px rgba(79,197,140,.14)) !important;
+}
+
+.splash-brush-glow{
+  position:absolute !important;
+  top:8% !important;
+  bottom:8% !important;
+  left:-12% !important;
+  width:30% !important;
+  opacity:0 !important;
+  transform:skewX(-10deg) !important;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(155,255,204,.05),
+    rgba(155,255,204,.62),
+    rgba(79,197,140,.16),
+    transparent
+  ) !important;
+  filter:blur(5px) !important;
+  animation:misarteBrushGlow 1.22s cubic-bezier(.72,0,.2,1) .12s forwards !important;
+}
+
+.splash-inner strong{
+  opacity:0 !important;
+  transform:translateY(6px) !important;
+  animation:misarteNameIn .48s ease 1.42s forwards !important;
+}
+
+@keyframes misarteBrushReveal{
+  0%{clip-path:inset(0 100% 0 0)}
+  55%{clip-path:inset(0 42% 0 0)}
+  100%{clip-path:inset(0 0 0 0)}
+}
+
+@keyframes misarteBrushGlow{
+  0%{left:-12%;opacity:0}
+  12%{opacity:.82}
+  88%{opacity:.68}
+  100%{left:86%;opacity:0}
+}
+
+@keyframes misarteNameIn{
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:760px){
+  .splash-logo-wrap{width:112px !important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .splash-logo-reveal{
+    clip-path:inset(0 0 0 0) !important;
+    animation:none !important;
+  }
+  .splash-brush-glow{display:none !important}
+  .splash-inner strong{
+    opacity:1 !important;
+    transform:none !important;
+    animation:none !important;
+  }
+}

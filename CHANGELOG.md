@@ -1,14 +1,11 @@
 # MisArte Digital — Changelog
 
-## v3.0.1 — Correção tipográfica definitiva
-- Hero reduzido para 48px no desktop.
-- Títulos de seção reduzidos para 32px.
-- Títulos de cards reduzidos para 21px.
-- Projeto em destaque reduzido para 36px.
-- “Como pensamos” reduzido para 30px.
-- CTA final reduzido para 36px.
-- Ajustes equivalentes para mobile.
-- Cache busting atualizado para v3.0.1.
+## v3.0.2
+- Restauração da abertura com o monograma revelado em pincelada.
+- Brilho verde acompanha o desenho.
+- “MisArte Digital” aparece somente depois da conclusão do traço.
+- Mantida integralmente a correção tipográfica da v3.0.1.
+- Cache atualizado para v3.0.2.
 
-## v3.0 Premium Edition
-- Refinamentos visuais gerais.
+## v3.0.1
+- Correção tipográfica definitiva.
