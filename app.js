@@ -128,7 +128,7 @@ function projectCover(client) {
   const slug = String(client.slug || '').trim();
 
   if (slug === 'cervejaria-inconfidentes') {
-    return './assets/projeto-inconfidentes-capa.jpg';
+    return './cervejaria-inconfidentes/pages/pagina-01.webp';
   }
 
   return client.logo || './assets/misarte-monograma-oficial.png';
@@ -151,7 +151,7 @@ function renderProjects(clients) {
             src="${escapeHtml(cover)}"
             alt="Capa do projeto ${name}"
             loading="${index === 0 ? 'eager' : 'lazy'}"
-            onerror="this.onerror=null;this.src='${escapeHtml(client.logo || 'assets/misarte-monograma-oficial.png')}';"
+            onerror="this.onerror=null;this.src='./cervejaria-inconfidentes/pages/pagina-01.webp';"
           >
         </div>
 
