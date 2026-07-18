@@ -1,11 +1,10 @@
 # MisArte Digital — Changelog
 
-## v3.1.0 — Integração Supabase
-- Conexão pública segura com a tabela `clientes`.
-- Carregamento automático de clientes com `status = ativo`.
-- Ordenação pela coluna `ordem`.
-- Cards de projetos gerados automaticamente.
-- Acesso ao catálogo mantém `?origem=misarte`.
-- Card estático permanece como fallback caso a API fique indisponível.
-- Nenhuma chave secreta foi incluída.
-- Catálogo e QR Code da Cervejaria permanecem independentes.
+## v3.1.1 — Correção da capa do projeto
+- Corrigido o caminho da imagem do card dinâmico.
+- A capa agora usa `cervejaria-inconfidentes/pages/page-01.jpg`.
+- Adicionado fallback seguro para evitar imagem quebrada.
+- Cache atualizado para v3.1.1.
+
+## v3.1.0
+- Integração com Supabase.

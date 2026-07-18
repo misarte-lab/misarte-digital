@@ -125,8 +125,12 @@ function projectUrlWithOrigin(url) {
 }
 
 function projectCover(client) {
-  const slug = client.slug || '';
-  if (slug) return `./${encodeURIComponent(slug)}/pages/pagina-01.webp`;
+  const slug = String(client.slug || '').trim();
+
+  if (slug) {
+    return `${window.location.origin}/misarte-digital/${encodeURIComponent(slug)}/pages/page-01.jpg`;
+  }
+
   return client.logo || 'assets/misarte-monograma-oficial.png';
 }
 
