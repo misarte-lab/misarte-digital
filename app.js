@@ -127,11 +127,11 @@ function projectUrlWithOrigin(url) {
 function projectCover(client) {
   const slug = String(client.slug || '').trim();
 
-  if (slug) {
-    return `${window.location.origin}/misarte-digital/${encodeURIComponent(slug)}/pages/page-01.jpg`;
+  if (slug === 'cervejaria-inconfidentes') {
+    return './assets/projeto-inconfidentes-capa.jpg';
   }
 
-  return client.logo || 'assets/misarte-monograma-oficial.png';
+  return client.logo || './assets/misarte-monograma-oficial.png';
 }
 
 function renderProjects(clients) {
