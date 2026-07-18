@@ -7,7 +7,7 @@
   <meta name="description" content="MisArte Digital — experiências digitais elegantes, intuitivas e interativas para marcas que desejam ser vividas.">
   <title>MisArte Digital</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="stylesheet" href="style.css?v=3.0.6">
+  <link rel="stylesheet" href="style.css?v=3.1.0">
 </head>
 <body>
   <div id="splash" class="splash" aria-hidden="true">
@@ -104,7 +104,8 @@
         <h2>Primeiro projeto publicado.</h2>
       </div>
 
-      <article class="project-card reveal">
+      <div id="projectsDynamic" class="projects-dynamic" aria-live="polite">
+      <article class="project-card reveal" data-static-fallback>
         <div class="project-visual">
           <img src="./cervejaria-inconfidentes/pages/pagina-01.webp" alt="Capa do catálogo digital da Cervejaria Inconfidentes">
         </div>
@@ -123,6 +124,7 @@
           <a class="text-link" href="./cervejaria-inconfidentes/?origem=misarte">Explorar projeto <span>→</span></a>
         </div>
       </article>
+      </div>
     </section>
 
     <section class="section principles-section" id="principios">
@@ -181,6 +183,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=3.0.6"></script>
+  <script src="app.js?v=3.1.0"></script>
 </body>
 </html>

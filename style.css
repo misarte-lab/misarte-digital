@@ -558,3 +558,33 @@ body.splash-active {
   .principle h3{font-size:21px !important;}
   .cta-card h2{font-size:29px !important;}
 }
+
+
+/* =========================================================
+   v3.1.0 — Projetos dinâmicos
+   ========================================================= */
+
+.projects-dynamic{
+  display:grid;
+  gap:32px;
+}
+
+.projects-dynamic .project-card + .project-card{
+  margin-top:8px;
+}
+
+.projects-dynamic .project-card.is-featured{
+  border-color:rgba(79,197,140,.30);
+}
+
+.projects-dynamic .project-visual img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+@media(max-width:760px){
+  .projects-dynamic{
+    gap:24px;
+  }
+}
