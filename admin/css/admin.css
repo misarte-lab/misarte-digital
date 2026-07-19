@@ -872,3 +872,36 @@ select:focus,
   .drawer-actions { flex-direction: column-reverse; }
   .drawer-actions .button { width: 100%; }
 }
+
+
+/* ===== MisArte Digital v1.2.1 — Storage ===== */
+.back-link { display:inline-block; margin-bottom:18px; color:var(--green-bright); text-decoration:none; font-weight:700; }
+.client-tabs { display:flex; gap:8px; overflow-x:auto; margin:34px 0 22px; padding-bottom:5px; }
+.client-tabs button { white-space:nowrap; min-height:44px; padding:0 16px; border:1px solid var(--line); border-radius:12px; background:transparent; color:var(--muted); }
+.client-tabs button.active { background:var(--green); color:var(--ink); border-color:var(--green); font-weight:800; }
+.client-tabs small { margin-left:5px; opacity:.65; }
+.setup-warning { margin-bottom:20px; padding:17px 19px; border:1px solid rgba(244,202,111,.35); border-radius:15px; background:rgba(244,202,111,.08); color:#f4ca6f; }
+.setup-warning p { margin:6px 0 0; color:var(--muted); }
+.setup-warning code { color:#fff; }
+.media-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.media-card { padding:21px; border:1px solid var(--line); border-radius:22px; background:linear-gradient(145deg,rgba(17,39,30,.88),rgba(7,20,15,.82)); }
+.media-card-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:15px; margin-bottom:17px; }
+.media-card-heading h2 { font-size:30px; }
+.media-card-heading > span { color:var(--muted); font-size:11px; text-align:right; }
+.media-preview { display:grid; place-items:center; overflow:hidden; min-height:280px; border:1px dashed var(--line-strong); border-radius:17px; background:rgba(0,0,0,.18); }
+.logo-preview { aspect-ratio:1.35/1; }
+.cover-preview { aspect-ratio:16/9; }
+.media-preview img { width:100%; height:100%; object-fit:contain; }
+.cover-preview img { object-fit:cover; }
+.empty-media { display:grid; gap:7px; padding:25px; text-align:center; color:var(--muted); }
+.empty-media strong { color:var(--text); font-size:18px; }
+.upload-actions { display:flex; gap:10px; margin-top:16px; }
+.upload-actions .button { margin:0; }
+.file-button { cursor:pointer; }
+.upload-status { min-height:20px; margin:11px 0 0; color:var(--green-bright); font-size:13px; }
+.storage-info { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px; }
+.storage-info div { display:grid; gap:7px; padding:16px; border:1px solid var(--line); border-radius:15px; background:rgba(255,255,255,.02); }
+.storage-info span { color:var(--muted); font-size:12px; }
+.storage-info strong { overflow-wrap:anywhere; }
+.client-actions .button { text-decoration:none; }
+@media(max-width:900px){ .media-grid{grid-template-columns:1fr}.storage-info{grid-template-columns:1fr} }

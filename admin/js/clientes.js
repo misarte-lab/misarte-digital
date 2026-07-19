@@ -149,6 +149,7 @@
             <div><dt>Destaque</dt><dd>${item.destaque === true ? "Sim" : "Não"}</dd></div>
           </dl>
           <div class="client-actions">
+            <a class="button button-primary" href="./cliente.html?id=${escapeHtml(item.id)}">Abrir</a>
             <button class="button button-secondary" type="button" data-action="edit" data-id="${escapeHtml(item.id)}">Editar</button>
             <button class="button button-text-danger" type="button" data-action="delete" data-id="${escapeHtml(item.id)}">Excluir</button>
           </div>
@@ -170,7 +171,7 @@
 
     const { data, error } = await client
       .from("clientes")
-      .select("id,nome,empresa,categoria,cidade,estado,status,destaque,ordem")
+      .select("id,nome,empresa,categoria,cidade,estado,status,destaque,ordem,logo_url,capa_url")
       .order("ordem", { ascending: true });
 
     if (error) {

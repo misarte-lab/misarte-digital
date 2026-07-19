@@ -1,0 +1,23 @@
+MISARTE DIGITAL v1.2.1 — LOGO E CAPA
+
+ANTES DE ENVIAR O PROJETO AO GITHUB:
+
+1. Abra o Supabase.
+2. Entre em SQL Editor.
+3. Clique em New query.
+4. Abra o arquivo supabase/v1.2.1-storage.sql deste pacote.
+5. Copie todo o conteúdo, cole no SQL Editor e clique em Run.
+6. O resultado esperado é: Success. No rows returned.
+
+DEPOIS:
+
+1. Envie os arquivos deste pacote ao GitHub, substituindo os anteriores.
+2. Commit:
+   feat(v1.2.1): adiciona upload de logo e capa por cliente
+3. Aguarde o GitHub Pages atualizar.
+4. Abra Clientes.
+5. Clique em Abrir no card do cliente.
+6. Teste uma logo e uma capa com até 5 MB.
+
+ENDEREÇO:
+https://misarte-lab.github.io/misarte-digital/admin/clientes.html

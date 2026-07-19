@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07140f">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Cliente | MisArte Digital</title>
+  <link rel="stylesheet" href="./css/admin.css?v=1.2.1">
+</head>
+<body class="dashboard-page">
+  <div id="pageLoader" class="page-loader" aria-live="polite">
+    <div class="loader-mark"></div><span>Validando acesso...</span>
+  </div>
+
+  <div id="dashboardApp" class="dashboard-app" hidden>
+    <aside class="sidebar">
+      <a class="sidebar-brand" href="./dashboard.html">
+        <img src="./assets/misarte-monograma.png" alt="">
+        <div><strong>MisArte Digital</strong><span>Painel Administrativo</span></div>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="./dashboard.html"><span class="nav-icon">⌂</span>Visão geral</a>
+        <a class="active" href="./clientes.html"><span class="nav-icon">◉</span>Clientes</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="user-chip"><span class="user-avatar">M</span><div><strong>Mis</strong><small id="userEmail">Carregando...</small></div></div>
+        <button id="logoutButton" class="button button-ghost" type="button">Sair</button>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-header client-detail-header">
+        <button id="menuButton" class="mobile-menu-button" type="button">☰</button>
+        <div>
+          <a class="back-link" href="./clientes.html">← Voltar para clientes</a>
+          <p class="eyebrow">ÁREA DO CLIENTE</p>
+          <h1 id="clientName">Carregando...</h1>
+          <p id="clientMeta">Dados e identidade visual.</p>
+        </div>
+      </header>
+
+      <nav class="client-tabs" aria-label="Seções do cliente">
+        <button class="active" type="button">Identidade visual</button>
+        <button type="button" disabled>Catálogos <small>em breve</small></button>
+        <button type="button" disabled>QR Codes <small>em breve</small></button>
+        <button type="button" disabled>Estatísticas <small>em breve</small></button>
+      </nav>
+
+      <section id="setupWarning" class="setup-warning" hidden>
+        <strong>Configuração necessária no Supabase</strong>
+        <p>Execute o arquivo <code>supabase/v1.2.1-storage.sql</code> no SQL Editor antes de enviar imagens.</p>
+      </section>
+
+      <section class="media-grid">
+        <article class="media-card">
+          <div class="media-card-heading">
+            <div><p class="eyebrow">MARCA</p><h2>Logo</h2></div>
+            <span>PNG, JPG ou WEBP</span>
+          </div>
+          <div id="logoPreview" class="media-preview logo-preview">
+            <div class="empty-media"><strong>Sem logo</strong><span>Envie a identidade principal do cliente.</span></div>
+          </div>
+          <div class="upload-actions">
+            <label class="button button-primary file-button">
+              Selecionar logo
+              <input id="logoInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+            </label>
+            <button id="removeLogo" class="button button-text-danger" type="button" hidden>Remover</button>
+          </div>
+          <p id="logoStatus" class="upload-status"></p>
+        </article>
+
+        <article class="media-card">
+          <div class="media-card-heading">
+            <div><p class="eyebrow">APRESENTAÇÃO</p><h2>Capa</h2></div>
+            <span>Recomendado: 1600 × 900 px</span>
+          </div>
+          <div id="coverPreview" class="media-preview cover-preview">
+            <div class="empty-media"><strong>Sem capa</strong><span>Envie uma imagem horizontal de alta qualidade.</span></div>
+          </div>
+          <div class="upload-actions">
+            <label class="button button-primary file-button">
+              Selecionar capa
+              <input id="coverInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+            </label>
+            <button id="removeCover" class="button button-text-danger" type="button" hidden>Remover</button>
+          </div>
+          <p id="coverStatus" class="upload-status"></p>
+        </article>
+      </section>
+
+      <section class="storage-info">
+        <div><span>Organização automática</span><strong id="storagePath">clientes/{id}/</strong></div>
+        <div><span>Limite por imagem</span><strong>5 MB</strong></div>
+        <div><span>Formatos aceitos</span><strong>PNG · JPG · WEBP</strong></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" hidden role="status"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./js/supabase.js?v=1.2.1"></script>
+  <script src="./js/cliente.js?v=1.2.1"></script>
+</body>
+</html>
