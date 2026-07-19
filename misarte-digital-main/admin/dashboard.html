@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07140f">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Painel | MisArte Digital</title>
+  <link rel="stylesheet" href="./css/admin.css?v=1.2.0">
+</head>
+<body class="dashboard-page">
+  <div id="pageLoader" class="page-loader" aria-live="polite">
+    <div class="loader-mark"></div>
+    <span>Validando acesso...</span>
+  </div>
+
+  <div id="dashboardApp" class="dashboard-app" hidden>
+    <aside class="sidebar">
+      <a class="sidebar-brand" href="./dashboard.html" aria-label="Painel MisArte Digital">
+        <img src="./assets/misarte-monograma.png" alt="">
+        <div>
+          <strong>MisArte Digital</strong>
+          <span>Painel Administrativo</span>
+        </div>
+      </a>
+
+      <nav class="sidebar-nav" aria-label="Navegação do painel">
+        <a class="active" href="./dashboard.html">
+          <span class="nav-icon">⌂</span>
+          Visão geral
+        </a>
+        <a href="#projetos">
+          <span class="nav-icon">◇</span>
+          Projetos
+        </a>
+        <a href="./clientes.html">
+          <span class="nav-icon">◉</span>
+          Clientes
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="user-chip">
+          <span class="user-avatar">M</span>
+          <div>
+            <strong>Mis</strong>
+            <small id="userEmail">Carregando...</small>
+          </div>
+        </div>
+        <button id="logoutButton" class="button button-ghost" type="button">Sair</button>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <button id="menuButton" class="mobile-menu-button" type="button" aria-label="Abrir menu">☰</button>
+        <div>
+          <p class="eyebrow">CENTRAL DE COMANDO</p>
+          <h1>Olá, Mis <span aria-hidden="true">👋</span></h1>
+          <p>Bem-vinda de volta. Seus projetos estão organizados aqui.</p>
+        </div>
+        <a class="button button-secondary" href="../" target="_blank" rel="noopener">Ver site</a>
+      </header>
+
+      <section class="stats-grid" aria-label="Resumo">
+        <article class="stat-card">
+          <span>Projetos cadastrados</span>
+          <strong id="totalProjects">—</strong>
+          <small>Todos os registros</small>
+        </article>
+        <article class="stat-card">
+          <span>Projetos ativos</span>
+          <strong id="activeProjects">—</strong>
+          <small>Visíveis na plataforma</small>
+        </article>
+        <article class="stat-card">
+          <span>Em destaque</span>
+          <strong id="featuredProjects">—</strong>
+          <small>Projetos selecionados</small>
+        </article>
+      </section>
+
+      <section id="projetos" class="panel-section">
+        <div class="section-title-row">
+          <div>
+            <p class="eyebrow">PROJETOS</p>
+            <h2>Clientes cadastrados</h2>
+          </div>
+          <a class="button button-primary" href="./clientes.html">Gerenciar clientes</a>
+        </div>
+
+        <div class="table-card">
+          <div id="projectsState" class="projects-state">Carregando projetos...</div>
+          <div class="table-wrap">
+            <table id="projectsTable" hidden>
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Categoria</th>
+                  <th>Status</th>
+                  <th>Destaque</th>
+                  <th>Ordem</th>
+                </tr>
+              </thead>
+              <tbody id="projectsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./js/supabase.js?v=1.2.0"></script>
+  <script src="./js/dashboard.js?v=1.2.0"></script>
+</body>
+</html>

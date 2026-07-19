@@ -1,0 +1,16 @@
+{
+  "marca": {
+    "nome": "MisArte Digital",
+    "slogan": "Sua marca merece ser vivida.",
+    "conceito": "Movimento"
+  },
+  "projetos": [
+    {
+      "id": "cervejaria-inconfidentes",
+      "nome": "Cervejaria Inconfidentes",
+      "categoria": "Catálogo interativo",
+      "status": "publicado",
+      "url": "./cervejaria-inconfidentes/"
+    }
+  ]
+}
