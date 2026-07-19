@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07140f">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Clientes | MisArte Digital</title>
+  <link rel="stylesheet" href="./css/admin.css?v=1.2.0">
+</head>
+<body class="dashboard-page">
+  <div id="pageLoader" class="page-loader" aria-live="polite">
+    <div class="loader-mark"></div>
+    <span>Validando acesso...</span>
+  </div>
+
+  <div id="dashboardApp" class="dashboard-app" hidden>
+    <aside class="sidebar">
+      <a class="sidebar-brand" href="./dashboard.html" aria-label="Painel MisArte Digital">
+        <img src="./assets/misarte-monograma.png" alt="">
+        <div>
+          <strong>MisArte Digital</strong>
+          <span>Painel Administrativo</span>
+        </div>
+      </a>
+
+      <nav class="sidebar-nav" aria-label="Navegação do painel">
+        <a href="./dashboard.html"><span class="nav-icon">⌂</span>Visão geral</a>
+        <a href="./dashboard.html#projetos"><span class="nav-icon">◇</span>Projetos</a>
+        <a class="active" href="./clientes.html"><span class="nav-icon">◉</span>Clientes</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="user-chip">
+          <span class="user-avatar">M</span>
+          <div>
+            <strong>Mis</strong>
+            <small id="userEmail">Carregando...</small>
+          </div>
+        </div>
+        <button id="logoutButton" class="button button-ghost" type="button">Sair</button>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-header clients-header">
+        <button id="menuButton" class="mobile-menu-button" type="button" aria-label="Abrir menu">☰</button>
+        <div>
+          <p class="eyebrow">GESTÃO DE CLIENTES</p>
+          <h1>Clientes</h1>
+          <p>Cadastre, edite e organize os clientes da MisArte Digital.</p>
+        </div>
+        <button id="newClientButton" class="button button-primary header-action" type="button">+ Novo cliente</button>
+      </header>
+
+      <section class="client-summary" aria-label="Resumo dos clientes">
+        <article><span>Total</span><strong id="clientTotal">—</strong></article>
+        <article><span>Ativos</span><strong id="clientActive">—</strong></article>
+        <article><span>Em destaque</span><strong id="clientFeatured">—</strong></article>
+      </section>
+
+      <section class="clients-toolbar" aria-label="Filtros">
+        <label class="search-field">
+          <span>Buscar</span>
+          <input id="searchInput" type="search" placeholder="Nome, empresa, cidade ou categoria">
+        </label>
+        <label>
+          <span>Status</span>
+          <select id="statusFilter">
+            <option value="">Todos</option>
+            <option value="ativo">Ativos</option>
+            <option value="inativo">Inativos</option>
+          </select>
+        </label>
+        <label>
+          <span>Categoria</span>
+          <select id="categoryFilter">
+            <option value="">Todas</option>
+          </select>
+        </label>
+        <label>
+          <span>Ordenar</span>
+          <select id="sortFilter">
+            <option value="ordem">Ordem</option>
+            <option value="nome">Nome</option>
+            <option value="cidade">Cidade</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="panel-section">
+        <div id="clientsState" class="projects-state table-card">Carregando clientes...</div>
+        <div id="clientsGrid" class="clients-grid" hidden></div>
+        <div id="pagination" class="pagination" hidden>
+          <button id="prevPage" class="button button-secondary" type="button">Anterior</button>
+          <span id="pageInfo"></span>
+          <button id="nextPage" class="button button-secondary" type="button">Próxima</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+  <aside id="clientDrawer" class="client-drawer" aria-hidden="true" aria-labelledby="drawerTitle">
+    <div class="drawer-header">
+      <div>
+        <p class="eyebrow">CLIENTE</p>
+        <h2 id="drawerTitle">Novo cliente</h2>
+      </div>
+      <button id="closeDrawerButton" class="icon-button" type="button" aria-label="Fechar">×</button>
+    </div>
+
+    <form id="clientForm" class="client-form">
+      <input id="clientId" type="hidden">
+
+      <div class="form-grid">
+        <label class="full-field">
+          <span>Nome do cliente *</span>
+          <input id="nome" name="nome" required maxlength="120" placeholder="Ex.: Cervejaria Inconfidentes">
+        </label>
+        <label class="full-field">
+          <span>Empresa</span>
+          <input id="empresa" name="empresa" maxlength="120" placeholder="Razão ou nome comercial">
+        </label>
+        <label>
+          <span>Categoria</span>
+          <input id="categoria" name="categoria" maxlength="80" placeholder="Ex.: Cervejaria">
+        </label>
+        <label>
+          <span>Status</span>
+          <select id="status" name="status">
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
+        </label>
+        <label>
+          <span>Cidade</span>
+          <input id="cidade" name="cidade" maxlength="80" placeholder="Ex.: Mariana">
+        </label>
+        <label>
+          <span>Estado</span>
+          <input id="estado" name="estado" maxlength="2" placeholder="MG" style="text-transform:uppercase">
+        </label>
+        <label>
+          <span>Ordem</span>
+          <input id="ordem" name="ordem" type="number" min="0" step="1" value="0">
+        </label>
+        <label class="checkbox-field">
+          <input id="destaque" name="destaque" type="checkbox">
+          <span>Cliente em destaque</span>
+        </label>
+      </div>
+
+      <p id="formMessage" class="form-message" role="status"></p>
+
+      <div class="drawer-actions">
+        <button id="cancelButton" class="button button-secondary" type="button">Cancelar</button>
+        <button id="saveButton" class="button button-primary" type="submit">Salvar cliente</button>
+      </div>
+    </form>
+  </aside>
+
+  <div id="confirmModal" class="confirm-modal" hidden>
+    <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <p class="eyebrow">CONFIRMAÇÃO</p>
+      <h2 id="confirmTitle">Excluir cliente?</h2>
+      <p id="confirmText">Esta ação não poderá ser desfeita.</p>
+      <div class="drawer-actions">
+        <button id="cancelDeleteButton" class="button button-secondary" type="button">Cancelar</button>
+        <button id="confirmDeleteButton" class="button button-danger" type="button">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden role="status"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./js/supabase.js?v=1.2.0"></script>
+  <script src="./js/clientes.js?v=1.2.0"></script>
+</body>
+</html>

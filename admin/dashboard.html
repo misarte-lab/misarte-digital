@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#07140f">
   <meta name="robots" content="noindex,nofollow">
   <title>Painel | MisArte Digital</title>
-  <link rel="stylesheet" href="./css/admin.css?v=1.0.0">
+  <link rel="stylesheet" href="./css/admin.css?v=1.2.0">
 </head>
 <body class="dashboard-page">
   <div id="pageLoader" class="page-loader" aria-live="polite">
@@ -29,11 +29,11 @@
           <span class="nav-icon">⌂</span>
           Visão geral
         </a>
-        <a href="#projetos">
+        <a href="./dashboard.html#projetos">
           <span class="nav-icon">◇</span>
           Projetos
         </a>
-        <a href="#clientes">
+        <a href="./clientes.html">
           <span class="nav-icon">◉</span>
           Clientes
         </a>
@@ -86,9 +86,7 @@
             <p class="eyebrow">PROJETOS</p>
             <h2>Clientes cadastrados</h2>
           </div>
-          <button class="button button-primary" type="button" disabled title="Disponível no próximo módulo">
-            + Novo projeto
-          </button>
+          <a class="button button-primary" href="./clientes.html?novo=1">+ Novo cliente</a>
         </div>
 
         <div class="table-card">
@@ -114,6 +112,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./js/supabase.js?v=1.0.0"></script>
-  <script src="./js/dashboard.js?v=1.0.0"></script>
+  <script src="./js/dashboard.js?v=1.2.0"></script>
 </body>
 </html>

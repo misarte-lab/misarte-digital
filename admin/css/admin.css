@@ -632,3 +632,243 @@ tbody tr:last-child td {
   text-align: center;
 }
 .recovery-box p { margin: 0; color: var(--muted); }
+
+
+/* ===== MisArte Digital v1.2.0 — Gestão de Clientes ===== */
+select,
+.client-form input,
+.client-form select,
+.clients-toolbar input,
+.clients-toolbar select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  outline: none;
+  background: rgba(3, 12, 8, 0.62);
+  color: var(--text);
+}
+select:focus,
+.client-form input:focus,
+.client-form select:focus,
+.clients-toolbar input:focus,
+.clients-toolbar select:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(142, 191, 159, 0.1);
+}
+.header-action { margin-top: 0; }
+.client-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 38px 0 18px;
+}
+.client-summary article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 82px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: linear-gradient(145deg, rgba(17,39,30,.82), rgba(7,20,15,.78));
+}
+.client-summary span { color: var(--muted); }
+.client-summary strong {
+  font-family: "Playfair Display", serif;
+  font-size: 30px;
+  color: var(--green-bright);
+}
+.clients-toolbar {
+  display: grid;
+  grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 22px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(9, 24, 18, .72);
+}
+.clients-toolbar label,
+.client-form label {
+  display: grid;
+  gap: 7px;
+  color: var(--green-bright);
+  font-size: 12px;
+  font-weight: 700;
+}
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.client-card {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(17,39,30,.88), rgba(7,20,15,.82));
+  box-shadow: 0 18px 50px rgba(0,0,0,.14);
+}
+.client-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.client-card-title { min-width: 0; flex: 1; }
+.client-card-title h3 {
+  margin: 1px 0 5px;
+  font-family: "Playfair Display", serif;
+  font-size: 21px;
+}
+.client-card-title p { margin: 0; color: var(--muted); font-size: 13px; }
+.client-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+.client-meta div {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+}
+.client-meta dt { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.client-meta dd { margin: 6px 0 0; overflow: hidden; text-overflow: ellipsis; }
+.client-actions { display: flex; gap: 9px; }
+.client-actions .button { min-height: 40px; margin: 0; }
+.button-text-danger {
+  border-color: rgba(239,154,154,.24);
+  background: transparent;
+  color: var(--danger);
+}
+.button-danger {
+  background: #b95e5e;
+  color: white;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 24px;
+  color: var(--muted);
+}
+.drawer-backdrop {
+  position: fixed;
+  z-index: 40;
+  inset: 0;
+  background: rgba(0,0,0,.58);
+  backdrop-filter: blur(3px);
+}
+.client-drawer {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  width: min(92vw, 540px);
+  height: 100vh;
+  overflow-y: auto;
+  padding: 28px;
+  border-left: 1px solid var(--line-strong);
+  background: #091813;
+  box-shadow: -25px 0 80px rgba(0,0,0,.4);
+  transform: translateX(105%);
+  transition: transform .25s ease;
+}
+.client-drawer.is-open { transform: translateX(0); }
+.drawer-open { overflow: hidden; }
+.drawer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+.drawer-header h2 { font-size: 32px; }
+.icon-button {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 28px;
+}
+.client-form { padding-top: 23px; }
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+.full-field { grid-column: 1 / -1; }
+.checkbox-field {
+  align-content: center;
+  grid-template-columns: auto 1fr !important;
+  align-items: center;
+  padding-top: 22px;
+}
+.checkbox-field input { width: 19px; min-height: 19px; }
+.drawer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+.drawer-actions .button { margin: 0; }
+.confirm-modal {
+  position: fixed;
+  z-index: 70;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,.7);
+}
+.confirm-card {
+  width: min(100%, 440px);
+  padding: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: 22px;
+  background: #0b1d16;
+  box-shadow: var(--shadow);
+}
+.confirm-card h2 { font-size: 30px; }
+.confirm-card > p:not(.eyebrow) { color: var(--muted); line-height: 1.6; }
+.toast {
+  position: fixed;
+  z-index: 100;
+  right: 22px;
+  bottom: 22px;
+  max-width: min(90vw, 430px);
+  padding: 14px 18px;
+  border: 1px solid rgba(167,213,181,.3);
+  border-radius: 13px;
+  background: #153326;
+  color: var(--success);
+  box-shadow: var(--shadow);
+}
+.toast.error {
+  border-color: rgba(239,154,154,.32);
+  background: #351b1b;
+  color: var(--danger);
+}
+@media (max-width: 1100px) {
+  .clients-toolbar { grid-template-columns: repeat(2, 1fr); }
+  .clients-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .client-summary { grid-template-columns: 1fr; }
+  .clients-toolbar { grid-template-columns: 1fr; }
+  .clients-header .header-action { width: 100%; }
+  .form-grid { grid-template-columns: 1fr; }
+  .full-field { grid-column: auto; }
+  .client-drawer { width: 100%; padding: 22px 17px; }
+  .client-meta { grid-template-columns: 1fr; }
+  .drawer-actions { flex-direction: column-reverse; }
+  .drawer-actions .button { width: 100%; }
+}

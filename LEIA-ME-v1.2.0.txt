@@ -1,0 +1,14 @@
+MISARTE DIGITAL v1.2.0 — CORRIGIDA
+
+ALTERAÇÕES:
+- Menu Clientes agora abre admin/clientes.html
+- Botão Novo cliente funcional
+- Cadastro, edição e exclusão integrados à tabela clientes do Supabase
+- Busca, filtros, ordenação e paginação
+- Interface responsiva
+
+TESTE ONLINE:
+https://misarte-lab.github.io/misarte-digital/admin/clientes.html
+
+COMMIT:
+feat(v1.2.0): adiciona gestão funcional de clientes
