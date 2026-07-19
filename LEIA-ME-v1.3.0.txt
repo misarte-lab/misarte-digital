@@ -1,0 +1,25 @@
+MISARTE DIGITAL v1.3.0 — GESTÃO DE CATÁLOGOS
+
+1. PRIMEIRO: CONFIGURE O SUPABASE
+- Abra a pasta supabase.
+- Abra o arquivo v1.3.0-catalogos.sql.
+- Copie todo o conteúdo.
+- Vá ao Supabase > SQL Editor > New query.
+- Cole e clique em Run.
+- Resultado esperado: Success. No rows returned.
+
+2. DEPOIS: PUBLIQUE NO GITHUB
+- Envie todos os arquivos deste pacote ao repositório, substituindo os anteriores.
+- Use o commit:
+  feat(v1.3.0): adiciona gestão de catálogos por cliente
+
+3. TESTE
+- Abra Clientes.
+- Clique em Abrir em um cliente.
+- Clique na aba Catálogos.
+- Crie um catálogo.
+- Edite o catálogo.
+- Exclua apenas um catálogo de teste.
+
+ENDEREÇO:
+https://misarte-lab.github.io/misarte-digital/admin/clientes.html

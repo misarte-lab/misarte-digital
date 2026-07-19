@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07140f">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Catálogos | MisArte Digital</title>
+  <link rel="stylesheet" href="./css/admin.css?v=1.3.0">
+</head>
+<body class="dashboard-page">
+  <div id="pageLoader" class="page-loader" aria-live="polite">
+    <div class="loader-mark"></div><span>Validando acesso...</span>
+  </div>
+
+  <div id="dashboardApp" class="dashboard-app" hidden>
+    <aside class="sidebar">
+      <a class="sidebar-brand" href="./dashboard.html">
+        <img src="./assets/misarte-monograma.png" alt="">
+        <div><strong>MisArte Digital</strong><span>Painel Administrativo</span></div>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="./dashboard.html"><span class="nav-icon">⌂</span>Visão geral</a>
+        <a class="active" href="./clientes.html"><span class="nav-icon">◉</span>Clientes</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="user-chip">
+          <span class="user-avatar">M</span>
+          <div><strong>Mis</strong><small id="userEmail">Carregando...</small></div>
+        </div>
+        <button id="logoutButton" class="button button-ghost" type="button">Sair</button>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <button id="menuButton" class="mobile-menu-button" type="button">☰</button>
+        <div>
+          <a id="backToClient" class="back-link" href="./clientes.html">← Voltar para o cliente</a>
+          <p class="eyebrow">GESTÃO DE CATÁLOGOS</p>
+          <h1 id="clientName">Carregando...</h1>
+          <p id="clientMeta">Crie e organize os catálogos deste cliente.</p>
+        </div>
+        <button id="newCatalogButton" class="button button-primary header-action" type="button">+ Novo catálogo</button>
+      </header>
+
+      <nav class="client-tabs" aria-label="Seções do cliente">
+        <a id="identityTab" class="client-tab-link" href="./cliente.html">Identidade visual</a>
+        <button class="active" type="button">Catálogos</button>
+        <button type="button" disabled>QR Codes <small>em breve</small></button>
+        <button type="button" disabled>Estatísticas <small>em breve</small></button>
+      </nav>
+
+      <section class="catalog-summary">
+        <article><span>Total</span><strong id="catalogTotal">—</strong></article>
+        <article><span>Publicados</span><strong id="catalogPublished">—</strong></article>
+        <article><span>Rascunhos</span><strong id="catalogDrafts">—</strong></article>
+      </section>
+
+      <section class="catalog-toolbar">
+        <label>
+          <span>Buscar</span>
+          <input id="searchInput" type="search" placeholder="Nome, tipo ou descrição">
+        </label>
+        <label>
+          <span>Status</span>
+          <select id="statusFilter">
+            <option value="">Todos</option>
+            <option value="rascunho">Rascunhos</option>
+            <option value="publicado">Publicados</option>
+            <option value="arquivado">Arquivados</option>
+          </select>
+        </label>
+        <label>
+          <span>Ordenar</span>
+          <select id="sortFilter">
+            <option value="ordem">Ordem</option>
+            <option value="nome">Nome</option>
+            <option value="recentes">Mais recentes</option>
+          </select>
+        </label>
+      </section>
+
+      <section>
+        <div id="catalogState" class="projects-state table-card">Carregando catálogos...</div>
+        <div id="catalogGrid" class="catalog-grid" hidden></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+  <aside id="catalogDrawer" class="client-drawer" aria-hidden="true" aria-labelledby="drawerTitle">
+    <div class="drawer-header">
+      <div><p class="eyebrow">CATÁLOGO</p><h2 id="drawerTitle">Novo catálogo</h2></div>
+      <button id="closeDrawerButton" class="icon-button" type="button" aria-label="Fechar">×</button>
+    </div>
+
+    <form id="catalogForm" class="client-form">
+      <input id="catalogId" type="hidden">
+      <div class="form-grid">
+        <label class="full-field">
+          <span>Nome do catálogo *</span>
+          <input id="catalogName" required maxlength="120" placeholder="Ex.: Carta de Cervejas">
+        </label>
+        <label>
+          <span>Tipo</span>
+          <select id="catalogType">
+            <option value="cardapio">Cardápio</option>
+            <option value="cervejas">Carta de cervejas</option>
+            <option value="drinks">Carta de drinks</option>
+            <option value="vinhos">Carta de vinhos</option>
+            <option value="menu_executivo">Menu executivo</option>
+            <option value="promocoes">Promoções</option>
+            <option value="outro">Outro</option>
+          </select>
+        </label>
+        <label>
+          <span>Status</span>
+          <select id="catalogStatus">
+            <option value="rascunho">Rascunho</option>
+            <option value="publicado">Publicado</option>
+            <option value="arquivado">Arquivado</option>
+          </select>
+        </label>
+        <label>
+          <span>Ordem</span>
+          <input id="catalogOrder" type="number" min="0" step="1" value="0">
+        </label>
+        <label class="checkbox-field">
+          <input id="catalogFeatured" type="checkbox">
+          <span>Catálogo em destaque</span>
+        </label>
+        <label class="full-field">
+          <span>Descrição</span>
+          <textarea id="catalogDescription" rows="5" maxlength="500" placeholder="Explique o conteúdo e a proposta deste catálogo."></textarea>
+        </label>
+      </div>
+
+      <p id="formMessage" class="form-message" role="status"></p>
+      <div class="drawer-actions">
+        <button id="cancelButton" class="button button-secondary" type="button">Cancelar</button>
+        <button id="saveButton" class="button button-primary" type="submit">Salvar catálogo</button>
+      </div>
+    </form>
+  </aside>
+
+  <div id="confirmModal" class="confirm-modal" hidden>
+    <div class="confirm-card" role="dialog" aria-modal="true">
+      <p class="eyebrow">CONFIRMAÇÃO</p>
+      <h2>Excluir catálogo?</h2>
+      <p id="confirmText">Esta ação não poderá ser desfeita.</p>
+      <div class="drawer-actions">
+        <button id="cancelDeleteButton" class="button button-secondary" type="button">Cancelar</button>
+        <button id="confirmDeleteButton" class="button button-danger" type="button">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden role="status"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./js/supabase.js?v=1.3.0"></script>
+  <script src="./js/catalogos.js?v=1.3.0"></script>
+</body>
+</html>

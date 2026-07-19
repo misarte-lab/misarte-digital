@@ -16,6 +16,7 @@
     name: document.querySelector("#clientName"),
     meta: document.querySelector("#clientMeta"),
     path: document.querySelector("#storagePath"),
+    catalogsTab: document.querySelector("#catalogsTab"),
     warning: document.querySelector("#setupWarning"),
     logoPreview: document.querySelector("#logoPreview"),
     coverPreview: document.querySelector("#coverPreview"),
@@ -148,6 +149,7 @@
     el.name.textContent = data.nome || data.empresa || "Cliente";
     el.meta.textContent = [data.categoria, data.cidade, data.estado].filter(Boolean).join(" · ");
     el.path.textContent = `clientes/${data.id}/`;
+    el.catalogsTab.href = `./catalogos.html?id=${encodeURIComponent(data.id)}`;
     preview(el.logoPreview, data.logo_url, "logo");
     preview(el.coverPreview, data.capa_url, "capa");
     el.removeLogo.hidden = !data.logo_url;
