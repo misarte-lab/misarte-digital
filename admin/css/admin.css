@@ -1044,3 +1044,7 @@ select:focus,
 .product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.product-card{padding:22px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,rgba(17,39,30,.88),rgba(7,20,15,.82))}.product-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.product-card h2{margin-top:4px;font-size:27px}.product-description{min-height:48px;margin:16px 0;color:var(--muted);line-height:1.55}.product-price{margin:8px 0 16px;font-family:"Playfair Display",serif;font-size:27px;color:var(--green-bright)}.product-flags{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:18px}.product-flags span{display:flex;justify-content:space-between;padding:11px 12px;border:1px solid var(--line);border-radius:12px;color:var(--muted)}.product-flags strong{color:var(--text)}
 @media(max-width:950px){.product-grid{grid-template-columns:1fr}.product-toolbar{grid-template-columns:1fr 1fr}.product-toolbar label:first-child{grid-column:1/-1}}
 @media(max-width:700px){.product-summary{grid-template-columns:1fr}.product-toolbar{grid-template-columns:1fr}.product-toolbar label:first-child{grid-column:auto}}
+
+/* ===== v1.4.0 Página pública ===== */
+.public-page-button{display:inline-flex;margin-top:18px;text-decoration:none}
+.client-actions{flex-wrap:wrap}

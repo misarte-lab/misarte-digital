@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07140f">
+  <meta name="description" content="Catálogo digital atualizado em tempo real.">
+  <title>Catálogo | MisArte Digital</title>
+  <link rel="stylesheet" href="./publico.css?v=1.4.0">
+</head>
+<body>
+  <div id="publicLoader" class="public-loader">
+    <div class="public-loader-mark">M</div>
+    <span>Carregando catálogo...</span>
+  </div>
+
+  <main id="publicApp" hidden>
+    <header id="hero" class="public-hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <img id="clientLogo" class="client-logo" alt="" hidden>
+        <p class="public-eyebrow">CATÁLOGO DIGITAL</p>
+        <h1 id="clientName">Cliente</h1>
+        <p id="clientMeta"></p>
+      </div>
+    </header>
+
+    <section class="public-shell">
+      <div id="catalogChooser" class="catalog-chooser" hidden>
+        <p class="section-kicker">ESCOLHA UM CATÁLOGO</p>
+        <div id="catalogButtons" class="catalog-buttons"></div>
+      </div>
+
+      <section id="catalogContent">
+        <div class="catalog-heading">
+          <div>
+            <p id="catalogType" class="section-kicker"></p>
+            <h2 id="catalogName"></h2>
+            <p id="catalogDescription"></p>
+          </div>
+        </div>
+
+        <div id="emptyState" class="public-empty" hidden></div>
+        <div id="categoriesContainer" class="categories-container"></div>
+      </section>
+    </section>
+
+    <footer class="public-footer">
+      <span>Atualizado digitalmente por</span>
+      <strong>MisArte Digital</strong>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./admin/js/supabase.js?v=1.4.0"></script>
+  <script src="./publico.js?v=1.4.0"></script>
+</body>
+</html>

@@ -150,6 +150,7 @@
           </dl>
           <div class="client-actions">
             <a class="button button-primary" href="./cliente.html?id=${escapeHtml(item.id)}">Abrir</a>
+            <a class="button button-secondary" href="../publico.html?cliente=${escapeHtml(item.id)}" target="_blank" rel="noopener">Ver página pública</a>
             <button class="button button-secondary" type="button" data-action="edit" data-id="${escapeHtml(item.id)}">Editar</button>
             <button class="button button-text-danger" type="button" data-action="delete" data-id="${escapeHtml(item.id)}">Excluir</button>
           </div>

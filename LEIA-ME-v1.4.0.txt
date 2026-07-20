@@ -1,0 +1,34 @@
+MISARTE DIGITAL v1.4.0 — PÁGINA PÚBLICA PERMANENTE
+
+O QUE MUDA
+- Cada cliente passa a ter uma única página pública fixa.
+- O futuro QR Code apontará para essa página.
+- Novos catálogos, categorias, produtos e preços aparecem sem trocar o QR Code.
+- Apenas clientes ativos, catálogos publicados, categorias ativas e produtos disponíveis aparecem ao público.
+
+1. SUPABASE
+Abra:
+supabase/v1.4.0-pagina-publica.sql
+
+Copie tudo para:
+Supabase > SQL Editor > New query
+
+Clique em Run.
+Resultado esperado:
+Success. No rows returned.
+
+2. GITHUB
+Envie todos os arquivos deste pacote, substituindo os anteriores.
+
+Commit:
+feat(v1.4.0): adiciona página pública permanente por cliente
+
+3. TESTE
+Abra o painel:
+Clientes > Ver página pública
+
+Ou use:
+https://misarte-lab.github.io/misarte-digital/publico.html?cliente=ID_DO_CLIENTE
+
+IMPORTANTE
+Esse endereço é permanente para o cliente. Os conteúdos podem mudar sem alterar o link.
