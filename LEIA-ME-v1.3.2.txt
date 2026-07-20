@@ -1,0 +1,24 @@
+MISARTE DIGITAL v1.3.2 — PRODUTOS E ORDEM AUTOMÁTICA
+
+NOVIDADES
+- Cadastro, edição e exclusão de produtos.
+- Nome, descrição, preço, status, destaque e ordem.
+- Ordem automática para novos catálogos, categorias e produtos.
+- O primeiro recebe ordem 1, o segundo 2 e assim por diante.
+
+1. SUPABASE
+Abra:
+supabase/v1.3.2-produtos.sql
+
+Copie tudo para Supabase > SQL Editor > New query e clique em Run.
+Resultado esperado:
+Success. No rows returned.
+
+2. GITHUB
+Envie todos os arquivos, substituindo os anteriores.
+
+Commit:
+feat(v1.3.2): adiciona produtos e ordem automática
+
+3. TESTE
+Clientes > Cliente > Catálogos > Gerenciar categorias > Gerenciar produtos

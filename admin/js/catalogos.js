@@ -177,7 +177,7 @@
     el.catalogName.value = item?.nome || "";
     el.type.value = item?.tipo || "cardapio";
     el.status.value = item?.status || "rascunho";
-    el.order.value = item?.ordem ?? 0;
+    el.order.value = item?.ordem ?? (catalogs.length ? Math.max(...catalogs.map(c => Number(c.ordem || 0))) + 1 : 1);
     el.featured.checked = item?.destaque === true;
     el.description.value = item?.descricao || "";
     el.drawerTitle.textContent = item ? "Editar catálogo" : "Novo catálogo";
