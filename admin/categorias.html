@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Categorias | MisArte Digital</title>
+<link rel="stylesheet" href="./css/admin.css?v=1.3.1">
+</head>
+<body class="dashboard-page">
+<div id="pageLoader" class="page-loader"><div class="loader-mark"></div><span>Validando acesso...</span></div>
+<div id="dashboardApp" class="dashboard-app" hidden>
+<aside class="sidebar">
+<a class="sidebar-brand" href="./dashboard.html"><img src="./assets/misarte-monograma.png" alt=""><div><strong>MisArte Digital</strong><span>Painel Administrativo</span></div></a>
+<nav class="sidebar-nav"><a href="./dashboard.html"><span class="nav-icon">⌂</span>Visão geral</a><a class="active" href="./clientes.html"><span class="nav-icon">◉</span>Clientes</a></nav>
+<div class="sidebar-bottom"><div class="user-chip"><span class="user-avatar">M</span><div><strong>Mis</strong><small id="userEmail">Carregando...</small></div></div><button id="logoutButton" class="button button-ghost" type="button">Sair</button></div>
+</aside>
+<main class="dashboard-main">
+<header class="dashboard-header">
+<button id="menuButton" class="mobile-menu-button" type="button">☰</button>
+<div>
+<nav class="breadcrumbs"><a href="./clientes.html">Clientes</a><span>›</span><a id="clientBreadcrumb" href="./clientes.html">Cliente</a><span>›</span><a id="catalogBreadcrumb" href="./catalogos.html">Catálogos</a><span>›</span><strong>Categorias</strong></nav>
+<p class="eyebrow">ORGANIZAÇÃO DO CATÁLOGO</p><h1 id="catalogName">Carregando...</h1><p id="catalogMeta">Crie as categorias que organizarão os produtos.</p>
+</div>
+<button id="newCategoryButton" class="button button-primary header-action" type="button">+ Nova categoria</button>
+</header>
+
+<section class="category-summary">
+<article><span>Total de categorias</span><strong id="categoryTotal">—</strong></article>
+<article><span>Ativas</span><strong id="categoryActive">—</strong></article>
+<article><span>Ocultas</span><strong id="categoryHidden">—</strong></article>
+</section>
+
+<section class="category-toolbar">
+<label><span>Buscar</span><input id="searchInput" type="search" placeholder="Nome ou descrição"></label>
+<label><span>Status</span><select id="statusFilter"><option value="">Todas</option><option value="ativa">Ativas</option><option value="oculta">Ocultas</option></select></label>
+<label><span>Ordenar</span><select id="sortFilter"><option value="ordem">Ordem</option><option value="nome">Nome</option><option value="recentes">Mais recentes</option></select></label>
+</section>
+
+<section><div id="categoryState" class="projects-state table-card">Carregando categorias...</div><div id="categoryList" class="category-list" hidden></div></section>
+</main>
+</div>
+
+<div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+<aside id="categoryDrawer" class="client-drawer" aria-hidden="true">
+<div class="drawer-header"><div><p class="eyebrow">CATEGORIA</p><h2 id="drawerTitle">Nova categoria</h2></div><button id="closeDrawerButton" class="icon-button" type="button">×</button></div>
+<form id="categoryForm" class="client-form">
+<input id="categoryId" type="hidden">
+<div class="form-grid">
+<label class="full-field"><span>Nome da categoria *</span><input id="categoryName" required maxlength="100" placeholder="Ex.: Cervejas Pilsen"></label>
+<label><span>Status</span><select id="categoryStatus"><option value="ativa">Ativa</option><option value="oculta">Oculta</option></select></label>
+<label><span>Ordem</span><input id="categoryOrder" type="number" min="0" step="1" value="0"></label>
+<label class="full-field"><span>Descrição</span><textarea id="categoryDescription" rows="5" maxlength="400" placeholder="Ex.: Cervejas leves e refrescantes."></textarea></label>
+</div>
+<p id="formMessage" class="form-message"></p>
+<div class="drawer-actions"><button id="cancelButton" class="button button-secondary" type="button">Cancelar</button><button id="saveButton" class="button button-primary" type="submit">Salvar categoria</button></div>
+</form>
+</aside>
+
+<div id="confirmModal" class="confirm-modal" hidden><div class="confirm-card"><p class="eyebrow">CONFIRMAÇÃO</p><h2>Excluir categoria?</h2><p id="confirmText">Esta ação não poderá ser desfeita.</p><div class="drawer-actions"><button id="cancelDeleteButton" class="button button-secondary" type="button">Cancelar</button><button id="confirmDeleteButton" class="button button-danger" type="button">Excluir</button></div></div></div>
+<div id="toast" class="toast" hidden></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./js/supabase.js?v=1.3.1"></script>
+<script src="./js/categorias.js?v=1.3.1"></script>
+</body></html>

@@ -1,0 +1,15 @@
+MISARTE DIGITAL v1.3.1 — CATEGORIAS
+
+1. Execute no Supabase:
+supabase/v1.3.1-categorias.sql
+
+Resultado esperado:
+Success. No rows returned.
+
+2. Envie todos os arquivos ao GitHub substituindo os anteriores.
+
+Commit:
+feat(v1.3.1): adiciona categorias aos catálogos
+
+3. Teste:
+Clientes > Abrir cliente > Catálogos > Gerenciar categorias

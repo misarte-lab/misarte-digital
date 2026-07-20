@@ -126,6 +126,7 @@
           <span>Destaque <strong>${item.destaque ? "Sim" : "Não"}</strong></span>
         </div>
         <div class="client-actions">
+          <a class="button button-primary" href="./categorias.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}">Gerenciar categorias</a>
           <button class="button button-secondary" type="button" data-action="edit" data-id="${escapeHtml(item.id)}">Editar</button>
           <button class="button button-text-danger" type="button" data-action="delete" data-id="${escapeHtml(item.id)}">Excluir</button>
         </div>
