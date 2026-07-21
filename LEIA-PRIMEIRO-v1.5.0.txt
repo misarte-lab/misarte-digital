@@ -1,0 +1,38 @@
+MISARTE DIGITAL — v1.5.0 PERSONALIZAÇÃO
+
+ORDEM CORRETA:
+
+1. SUPABASE
+Abra Supabase > SQL Editor > New query.
+Cole e execute todo o conteúdo de:
+supabase/v1.5.0-personalizacao.sql
+
+2. GITHUB
+Envie/substitua TODOS os arquivos deste pacote no repositório.
+Confirme que estes arquivos existem no GitHub:
+- admin/aparencia.html
+- admin/js/aparencia.js
+- supabase/v1.5.0-personalizacao.sql
+
+3. COMMIT
+Mensagem:
+v1.5.0 - Personalização da página pública
+
+4. TESTE
+Abra o painel e faça uma atualização forçada:
+Windows: Ctrl + F5
+Mac: Command + Shift + R
+
+Agora a função aparece em DOIS lugares:
+- Painel inicial > tabela de clientes > botão “Aparência”
+- Clientes > cartão do cliente > botão “Aparência”
+
+Dentro da tela Aparência você pode alterar:
+- tema claro/escuro
+- cores
+- fonte
+- banner
+- favicon
+- catálogo em destaque
+
+Depois clique em “Salvar aparência” e “Abrir página pública”.

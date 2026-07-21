@@ -1075,3 +1075,27 @@ select:focus,
 .phone-frame iframe{width:100%;height:100%;border:0;border-radius:21px;background:#fff}
 @media(max-width:1050px){.appearance-layout{grid-template-columns:1fr}.preview-panel{position:static}.phone-frame{height:620px}}
 @media(max-width:650px){.appearance-fields,.appearance-media-grid{grid-template-columns:1fr}.full-field{grid-column:auto}.appearance-card,.preview-panel{padding:16px}.phone-frame{height:560px}}
+
+/* MisArte Digital v1.5.0 — visibilidade da personalização */
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: .4rem;
+  padding: .18rem .5rem;
+  border: 1px solid rgba(184,219,195,.35);
+  border-radius: 999px;
+  color: #b8dbc3;
+  font-size: .72rem;
+  letter-spacing: .04em;
+  vertical-align: middle;
+}
+.table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+}
+.button-small {
+  min-height: 34px;
+  padding: .45rem .7rem;
+  font-size: .78rem;
+}

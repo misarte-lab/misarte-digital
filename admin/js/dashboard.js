@@ -56,6 +56,12 @@
         <td>${statusBadge(project.status)}</td>
         <td>${project.destaque === true ? "Sim" : "Não"}</td>
         <td>${escapeHtml(project.ordem ?? "—")}</td>
+        <td>
+          <div class="table-actions">
+            <a class="button button-primary button-small" href="./cliente.html?id=${escapeHtml(project.id)}">Abrir</a>
+            <a class="button button-secondary button-small" href="./aparencia.html?id=${escapeHtml(project.id)}">Aparência</a>
+          </div>
+        </td>
       </tr>
     `).join("");
 
