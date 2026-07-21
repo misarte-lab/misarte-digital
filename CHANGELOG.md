@@ -1,3 +1,12 @@
+# Changelog
+
+## v1.5.0
+- Personalização da página pública
+- Tema claro/escuro
+- Cores, fontes, banner e favicon
+- Catálogo em destaque
+- Prévia mobile no painel
+
 # MisArte Digital — Changelog
 
 ## v3.1.3 — Capa definitiva

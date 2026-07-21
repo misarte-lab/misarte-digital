@@ -17,6 +17,7 @@
     meta: document.querySelector("#clientMeta"),
     path: document.querySelector("#storagePath"),
     catalogsTab: document.querySelector("#catalogsTab"),
+    appearanceTab: document.querySelector("#appearanceTab"),
     publicPageButton: document.querySelector("#publicPageButton"),
     warning: document.querySelector("#setupWarning"),
     logoPreview: document.querySelector("#logoPreview"),
@@ -151,6 +152,7 @@
     el.meta.textContent = [data.categoria, data.cidade, data.estado].filter(Boolean).join(" · ");
     el.path.textContent = `clientes/${data.id}/`;
     el.catalogsTab.href = `./catalogos.html?id=${encodeURIComponent(data.id)}`;
+    el.appearanceTab.href = `./aparencia.html?id=${encodeURIComponent(data.id)}`;
     el.publicPageButton.href = `../publico.html?cliente=${encodeURIComponent(data.id)}`;
     preview(el.logoPreview, data.logo_url, "logo");
     preview(el.coverPreview, data.capa_url, "capa");

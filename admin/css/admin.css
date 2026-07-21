@@ -1048,3 +1048,30 @@ select:focus,
 /* ===== v1.4.0 Página pública ===== */
 .public-page-button{display:inline-flex;margin-top:18px;text-decoration:none}
 .client-actions{flex-wrap:wrap}
+
+
+/* ===== MisArte Digital v1.5.0 — Aparência ===== */
+.client-tab-link.active{background:rgba(142,191,159,.12);color:var(--text);border-color:var(--green)}
+.appearance-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:22px;align-items:start;margin-top:24px}
+.appearance-form{display:grid;gap:18px}
+.appearance-card,.preview-panel{border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,rgba(17,39,30,.86),rgba(7,20,15,.82));padding:22px}
+.appearance-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.appearance-fields label,.field-label{display:grid;gap:8px;color:var(--muted);font-size:12px;font-weight:700}
+.full-field{grid-column:1/-1}
+.color-field{display:grid;grid-template-columns:52px 1fr;gap:8px}
+.color-field input[type=color]{width:52px;height:48px;padding:4px;border:1px solid var(--line-strong);border-radius:12px;background:transparent}
+.color-field input[type=text]{min-height:48px;padding:0 14px;border:1px solid var(--line-strong);border-radius:12px;background:rgba(3,12,8,.62);color:var(--text)}
+.appearance-media-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.appearance-image-preview{display:grid;place-items:center;overflow:hidden;min-height:150px;margin:9px 0 12px;border:1px dashed var(--line-strong);border-radius:16px;color:var(--muted);background:rgba(0,0,0,.14)}
+.appearance-image-preview img{width:100%;height:100%;object-fit:cover}
+.favicon-mini{max-width:170px;aspect-ratio:1;min-height:0}
+.favicon-mini img{object-fit:contain;padding:18px}
+.banner-mini{aspect-ratio:16/7}
+.appearance-actions{display:flex;gap:12px;flex-wrap:wrap}
+.preview-panel{position:sticky;top:20px}
+.preview-panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.preview-panel-header span{color:var(--muted);font-size:12px}
+.phone-frame{width:min(100%,390px);height:700px;margin:auto;padding:10px;border:1px solid var(--line-strong);border-radius:30px;background:#020805;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.phone-frame iframe{width:100%;height:100%;border:0;border-radius:21px;background:#fff}
+@media(max-width:1050px){.appearance-layout{grid-template-columns:1fr}.preview-panel{position:static}.phone-frame{height:620px}}
+@media(max-width:650px){.appearance-fields,.appearance-media-grid{grid-template-columns:1fr}.full-field{grid-column:auto}.appearance-card,.preview-panel{padding:16px}.phone-frame{height:560px}}

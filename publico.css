@@ -3,11 +3,13 @@
 
 :root{
   --bg:#07140f;--panel:#0d2118;--panel-2:#10271d;--line:rgba(174,220,190,.16);
-  --text:#f5f4ed;--muted:#9eb7aa;--green:#b8dbc3;--green-dark:#173c2c;--shadow:0 24px 70px rgba(0,0,0,.34)
+  --brand-text:#f5f4ed;--muted:#9eb7aa;--brand-primary:#b8dbc3;--brand-secondary:#173c2c;
+  --brand-button:#b8dbc3;--brand-font:"DM Sans",sans-serif;--shadow:0 24px 70px rgba(0,0,0,.34);
+  --text:var(--brand-text);--green:var(--brand-primary);--green-dark:var(--brand-secondary)
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--brand-font)}
 button{font:inherit}
 .public-loader{position:fixed;inset:0;display:grid;place-content:center;gap:14px;text-align:center;background:var(--bg);z-index:20;color:var(--muted)}
 .public-loader-mark{display:grid;place-items:center;width:58px;height:58px;margin:auto;border:1px solid var(--line);border-radius:18px;color:var(--green);font-family:"Playfair Display",serif;font-size:32px}
@@ -47,3 +49,6 @@ h1{max-width:850px;margin:0;font-size:clamp(48px,8vw,88px);line-height:.98}
   .public-hero{min-height:360px}.hero-content{padding-bottom:34px}.client-logo{width:90px;height:90px}
   .products-grid{grid-template-columns:1fr}.public-shell{padding-top:24px}.product-top{gap:10px}
 }
+
+.catalog-button.active{background:var(--brand-button);border-color:var(--brand-button)}
+.product-price,.product-tag,.public-footer strong,.public-eyebrow,.section-kicker{color:var(--brand-primary)}
