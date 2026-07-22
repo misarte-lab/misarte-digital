@@ -1174,3 +1174,77 @@ select:focus,
  .font-grid.is-list .font-option-meta{display:none}
  .font-grid.is-list .font-option-preview{font-size:18px}
 }
+
+
+/* ===== MisArte Digital v1.5.0 — Entrega 2.1: preview tipográfico profissional ===== */
+.font-grid{
+  grid-template-columns:repeat(2,minmax(280px,1fr));
+  gap:12px;
+}
+.font-option{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 24px;
+  grid-template-areas:
+    "preview check"
+    "meta check";
+  align-items:center;
+  gap:10px 12px;
+  min-height:128px;
+  padding:15px 46px 13px 15px;
+  overflow:hidden;
+}
+.font-option-preview.font-option-custom{
+  grid-area:preview;
+  display:block;
+  width:100%;
+  height:auto;
+  min-height:56px;
+  padding:10px 12px;
+  overflow:visible;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  text-overflow:clip;
+  border-radius:12px;
+  font-size:clamp(22px,2.25vw,34px);
+  line-height:1.12;
+  text-align:left;
+}
+.font-option-meta{
+  grid-area:meta;
+  display:grid;
+  gap:3px;
+  min-width:0;
+}
+.font-option-meta strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:15px;
+}
+.font-option-meta small{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.font-option-check{
+  grid-area:check;
+  align-self:center;
+  justify-self:end;
+}
+.font-option:hover .font-option-preview{
+  transform:scale(1.015);
+}
+.font-option-preview{
+  transition:transform .18s ease;
+}
+.font-grid.is-list{
+  grid-template-columns:1fr;
+}
+.font-grid.is-list .font-option{
+  min-height:112px;
+}
+@media(max-width:760px){
+  .font-grid{grid-template-columns:1fr}
+  .font-option{min-height:116px;padding-right:44px}
+  .font-option-preview.font-option-custom{font-size:clamp(21px,7vw,30px)}
+}
