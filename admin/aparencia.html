@@ -86,7 +86,13 @@
                     <input id="fontPreviewText" type="text" maxlength="60" placeholder="Digite o nome da marca" value="Cervejaria Inconfidentes">
                   </label>
                   <div id="fontCategories" class="font-categories" role="tablist" aria-label="Categorias de fontes"></div>
-                  <p id="fontResultCount" class="font-result-count"></p>
+                  <div class="font-results-toolbar">
+                    <p id="fontResultCount" class="font-result-count"></p>
+                    <div class="font-view-toggle" aria-label="Modo de visualização">
+                      <button id="fontViewGrid" type="button" class="is-active" title="Visualização em grade">▦</button>
+                      <button id="fontViewList" type="button" title="Visualização em lista">☰</button>
+                    </div>
+                  </div>
                   <div id="fontGrid" class="font-grid" role="listbox" aria-label="Biblioteca de fontes"></div>
                   <div id="fontEmpty" class="font-empty" hidden>Nenhuma fonte encontrada.</div>
                 </div>

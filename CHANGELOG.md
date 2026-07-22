@@ -1,18 +1,18 @@
-# Changelog — v1.5.0 Sprint 2
+# Changelog — MisArte Digital v1.5.0 Sprint 2 (Biblioteca Tipográfica Profissional)
 
-## Adicionado
-- Favoritar e desfavoritar fontes.
-- Categoria **Favoritas** no topo da biblioteca.
-- Persistência das favoritas por cliente.
-- Texto personalizado para pré-visualizar todas as fontes.
-- 10 Paletas MisArte organizadas por estilo.
-- Editor das cores principal, secundária, texto, botões, destaque e fundo.
-- Aplicação das paletas com um clique.
-- Prévia visual em tempo real no painel.
-- Suporte às novas cores na página pública.
+## Implementado
 
-## Corrigido
-- A biblioteca continua aberta durante a navegação entre categorias.
+- Biblioteca expandida para 350 Google Fonts.
+- Novas categorias: Cursivas, Retrô, Vintage, Anúncios, Grafite / Street, Luxo, Tecnológicas, Futuristas, Infantis, Manuscritas, Decorativas, Display, Serif, Sans Serif e outras.
+- Pesquisa por nome da fonte, categoria e estilo.
+- Categoria Favoritas.
+- Categoria Mais utilizadas, com contagem local por cliente.
+- Pré-visualização com texto personalizado.
+- Modos de exibição em grade e lista.
+- Aplicação instantânea sem fechar a biblioteca.
+- Carregamento das fontes em lotes para evitar URLs excessivamente longas.
+- Paletas MisArte e editor de cores mantidos.
 
 ## SQL
-Execute `supabase/v1.5.0-sprint2-aparencia.sql`.
+
+Nenhuma alteração adicional nesta expansão. O SQL original da Sprint 2 continua válido.

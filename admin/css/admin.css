@@ -1155,3 +1155,22 @@ select:focus,
 .palette-swatches i{display:block}
 .palette-card strong{font-size:13px}
 @media(max-width:650px){.palette-grid{grid-template-columns:1fr}.palette-heading{align-items:flex-start;flex-direction:column}}
+
+/* v1.5.0 Sprint 2 — biblioteca tipográfica profissional */
+.font-results-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.font-results-toolbar .font-result-count{margin:0}
+.font-view-toggle{display:flex;gap:4px;padding:3px;border:1px solid var(--border,#dfe3e8);border-radius:9px;background:#fff}
+.font-view-toggle button{width:34px;height:30px;border:0;border-radius:6px;background:transparent;cursor:pointer;font-size:16px}
+.font-view-toggle button.is-active{background:#eef3f0;font-weight:700}
+.font-grid.is-list{grid-template-columns:1fr!important}
+.font-grid.is-list .font-option{display:grid;grid-template-columns:42px minmax(180px,1fr) minmax(150px,220px) 28px;align-items:center;gap:12px;min-height:72px}
+.font-grid.is-list .font-option-preview{font-size:22px;min-height:auto}
+.font-option-meta{display:flex;flex-direction:column;gap:2px}
+.font-option-meta small{opacity:.68}
+.font-category{white-space:nowrap}
+.font-categories{overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}
+@media (max-width:700px){
+ .font-grid.is-list .font-option{grid-template-columns:34px 1fr 24px}
+ .font-grid.is-list .font-option-meta{display:none}
+ .font-grid.is-list .font-option-preview{font-size:18px}
+}
