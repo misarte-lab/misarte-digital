@@ -88,7 +88,10 @@
       button.textContent=category;
       button.setAttribute("role","tab");
       button.setAttribute("aria-selected",String(category===activeFontCategory));
-      button.addEventListener("click",()=>{
+      button.addEventListener("click",(event)=>{
+        // Evita que o clique chegue ao listener global e feche a biblioteca
+        // depois que os botões de categoria forem renderizados novamente.
+        event.stopPropagation();
         activeFontCategory=category;
         renderFontCategories();
         renderFonts();
