@@ -15,7 +15,8 @@
     fontCategories:$("#fontCategories"), fontGrid:$("#fontGrid"), fontEmpty:$("#fontEmpty"),
     fontResultCount:$("#fontResultCount"), selectedFontName:$("#selectedFontName"), closeFontLibrary:$("#closeFontLibrary"),
     fontViewGrid:$("#fontViewGrid"), fontViewList:$("#fontViewList"),
-    fontPreviewText:$("#fontPreviewText"), paletteGrid:$("#paletteGrid"), selectedPaletteName:$("#selectedPaletteName"),
+    fontPreviewText:$("#fontPreviewText"), fontLivePreviewName:$("#fontLivePreviewName"), fontLivePreviewSample:$("#fontLivePreviewSample"),
+    paletteGrid:$("#paletteGrid"), selectedPaletteName:$("#selectedPaletteName"),
     bannerInput:$("#bannerInput"), faviconInput:$("#faviconInput"),
     bannerPreview:$("#bannerPreview"), faviconPreview:$("#faviconPreview"),
     removeBanner:$("#removeBanner"), removeFavicon:$("#removeFavicon")
@@ -65,12 +66,24 @@
       document.head.append(link);
     }
   }
+  function updateFontSample(){
+    const name=el.fonte.value||"DM Sans";
+    const text=(el.fontPreviewText.value||"Cervejaria Inconfidentes").trim()||"Cervejaria Inconfidentes";
+    loadFonts([name]);
+    if(el.fontLivePreviewName) el.fontLivePreviewName.textContent=name;
+    if(el.fontLivePreviewSample){
+      el.fontLivePreviewSample.textContent=text;
+      el.fontLivePreviewSample.style.fontFamily=`"${name}", sans-serif`;
+    }
+  }
+
   function setSelectedFont(name){
     const font=FONT_LIBRARY.find(item=>item.name===name)||FONT_LIBRARY[0];
     el.fonte.value=font.name;
     el.selectedFontName.textContent=font.name;
     el.selectedFontName.style.fontFamily=`"${font.name}", sans-serif`;
     loadFonts([font.name]);
+    updateFontSample();
     fontUsage[font.name]=(fontUsage[font.name]||0)+1;
     localStorage.setItem(`misarte-font-usage-${clientId}`,JSON.stringify(fontUsage));
     updateLivePreview();
@@ -125,16 +138,17 @@
       button.dataset.font=font.name;
       button.setAttribute("role","option");
       button.setAttribute("aria-selected",String(el.fonte.value===font.name));
-      const previewText=(el.fontPreviewText.value||"Cervejaria Inconfidentes").trim();
-      const safeText=previewText.replace(/[<>&"']/g,"");
       const uses=fontUsage[font.name]||0;
-      button.innerHTML=`<button type="button" class="font-favorite${favoriteFonts.has(font.name)?" is-favorite":""}" aria-label="${favoriteFonts.has(font.name)?"Remover dos favoritos":"Adicionar aos favoritos"}" title="Favoritar">★</button><span class="font-option-preview font-option-custom" style="font-family:'${font.name}',sans-serif">${safeText}</span><span class="font-option-meta"><strong>${font.name}</strong><small>${font.category}${uses?` • usada ${uses}x`:""}</small></span><span class="font-option-check" aria-hidden="true">✓</span>`;
-      button.querySelector(".font-favorite").addEventListener("click",event=>{
+      button.innerHTML=`<span class="font-option-preview" style="font-family:'${font.name}',sans-serif">Aa</span><span class="font-option-meta"><strong style="font-family:'${font.name}',sans-serif">${font.name}</strong><small>${font.category}${uses?` • usada ${uses}x`:""}</small></span><span class="font-option-check" aria-hidden="true">✓</span><span class="font-favorite${favoriteFonts.has(font.name)?" is-favorite":""}" role="button" tabindex="0" aria-label="${favoriteFonts.has(font.name)?"Remover dos favoritos":"Adicionar aos favoritos"}" title="Favoritar">★</span>`;
+      const favoriteButton=button.querySelector(".font-favorite");
+      const toggleFavorite=(event)=>{
         event.stopPropagation();
         favoriteFonts.has(font.name)?favoriteFonts.delete(font.name):favoriteFonts.add(font.name);
         localStorage.setItem(`misarte-favorite-fonts-${clientId}`,JSON.stringify([...favoriteFonts]));
         renderFontCategories(); renderFonts();
-      });
+      };
+      favoriteButton.addEventListener("click",toggleFavorite);
+      favoriteButton.addEventListener("keydown",event=>{ if(event.key==="Enter"||event.key===" "){ event.preventDefault(); toggleFavorite(event); } });
       button.addEventListener("mouseenter",()=>loadFonts([font.name]),{once:true});
       button.addEventListener("click",()=>setSelectedFont(font.name));
       el.fontGrid.append(button);
@@ -167,7 +181,8 @@
     el.fontPickerButton.addEventListener("click",()=>el.fontLibrary.hidden?openFontLibrary():closeFontLibrary());
     el.closeFontLibrary.addEventListener("click",closeFontLibrary);
     el.fontSearch.addEventListener("input",renderFonts);
-    el.fontPreviewText.addEventListener("input",renderFonts);
+    el.fontPreviewText.addEventListener("input",updateFontSample);
+    updateFontSample();
     document.addEventListener("keydown",event=>{ if(event.key==="Escape"&&!el.fontLibrary.hidden) closeFontLibrary(); });
     document.addEventListener("click",event=>{
       if(!el.fontLibrary.hidden&&!el.fontLibrary.contains(event.target)&&!el.fontPickerButton.contains(event.target)) closeFontLibrary();

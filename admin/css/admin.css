@@ -1176,75 +1176,25 @@ select:focus,
 }
 
 
-/* ===== MisArte Digital v1.5.0 — Entrega 2.1: preview tipográfico profissional ===== */
-.font-grid{
-  grid-template-columns:repeat(2,minmax(280px,1fr));
-  gap:12px;
-}
-.font-option{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 24px;
-  grid-template-areas:
-    "preview check"
-    "meta check";
-  align-items:center;
-  gap:10px 12px;
-  min-height:128px;
-  padding:15px 46px 13px 15px;
-  overflow:hidden;
-}
-.font-option-preview.font-option-custom{
-  grid-area:preview;
-  display:block;
-  width:100%;
-  height:auto;
-  min-height:56px;
-  padding:10px 12px;
-  overflow:visible;
-  white-space:normal;
-  overflow-wrap:anywhere;
-  text-overflow:clip;
-  border-radius:12px;
-  font-size:clamp(22px,2.25vw,34px);
-  line-height:1.12;
-  text-align:left;
-}
-.font-option-meta{
-  grid-area:meta;
-  display:grid;
-  gap:3px;
-  min-width:0;
-}
-.font-option-meta strong{
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  font-size:15px;
-}
-.font-option-meta small{
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.font-option-check{
-  grid-area:check;
-  align-self:center;
-  justify-self:end;
-}
-.font-option:hover .font-option-preview{
-  transform:scale(1.015);
-}
-.font-option-preview{
-  transition:transform .18s ease;
-}
-.font-grid.is-list{
-  grid-template-columns:1fr;
-}
-.font-grid.is-list .font-option{
-  min-height:112px;
-}
+
+/* ===== MisArte Digital v1.5.0 — Entrega 2.1: preview único + cartões compactos ===== */
+.font-live-preview{margin:4px 0 14px;padding:14px;border:1px solid var(--line-strong);border-radius:14px;background:rgba(3,12,8,.48)}
+.font-live-preview-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.font-live-preview-head strong{color:var(--green-bright);text-transform:none;letter-spacing:0}
+.font-live-preview-sample{display:flex;align-items:center;width:100%;min-height:116px;padding:20px 22px;overflow-wrap:anywhere;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035);color:var(--text);font-size:clamp(32px,4.4vw,68px);line-height:1.08}
+.font-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;max-height:390px}
+.font-option{position:relative;display:grid;grid-template-columns:46px minmax(0,1fr) 18px;align-items:center;gap:10px;min-height:68px;padding:9px 38px 9px 10px;overflow:hidden}
+.font-option-preview{display:grid;place-items:center;width:46px;height:44px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.04);font-size:22px}
+.font-option-meta{display:grid;gap:3px;min-width:0}
+.font-option-meta strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:600}
+.font-option-meta small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.font-option-check{justify-self:end}
+.font-favorite{position:absolute;top:7px;right:7px;z-index:2;display:grid;place-items:center;width:27px;height:27px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer}
+.font-favorite:hover,.font-favorite.is-favorite{color:#F3C969;border-color:rgba(243,201,105,.48);background:rgba(243,201,105,.1)}
+.font-grid.is-list{grid-template-columns:1fr}
+.font-grid.is-list .font-option{grid-template-columns:46px minmax(0,1fr) 18px;min-height:64px}
+@media(max-width:980px){.font-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){
-  .font-grid{grid-template-columns:1fr}
-  .font-option{min-height:116px;padding-right:44px}
-  .font-option-preview.font-option-custom{font-size:clamp(21px,7vw,30px)}
+  .font-live-preview-sample{min-height:96px;padding:16px;font-size:clamp(28px,9vw,48px)}
+  .font-grid{grid-template-columns:1fr;max-height:48vh}
 }
