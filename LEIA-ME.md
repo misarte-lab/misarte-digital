@@ -1,19 +1,16 @@
-# MisArte Digital — v1.5.0 Sprint 1 (Correção 1)
-
-Esta entrega corrige o fechamento indevido da biblioteca de fontes ao trocar de categoria.
+# MisArte Digital — v1.5.0 Sprint 2
 
 ## Instalação
-
-1. Extraia o ZIP.
-2. Copie o conteúdo para a raiz do projeto.
+1. Execute `supabase/v1.5.0-sprint2-aparencia.sql` no SQL Editor do Supabase.
+2. Copie o conteúdo deste ZIP para a raiz do projeto.
 3. Confirme a substituição dos arquivos.
-4. Faça o commit e o push pelo GitHub Desktop.
-5. Atualize a página usando `Ctrl + F5`.
+4. Faça commit e push pelo GitHub Desktop.
+5. Atualize a página com `Ctrl + F5`.
 
-## Resultado esperado
-
-Ao clicar em outra categoria, a biblioteca continua aberta e exibe imediatamente as fontes da categoria escolhida.
-
-## SQL
-
-Não há SQL nesta correção.
+## Teste
+- Abra Aparência.
+- Digite o nome de uma marca no campo de pré-visualização.
+- Favorite algumas fontes e abra a categoria Favoritas.
+- Aplique uma paleta.
+- Ajuste cores manualmente.
+- Salve e abra a página pública.

@@ -1134,3 +1134,24 @@ select:focus,
 .font-option.is-selected .font-option-check{opacity:1}
 .font-empty{padding:30px 10px;text-align:center;color:var(--muted)}
 @media(max-width:760px){.font-library{position:fixed;top:auto;left:12px;right:12px;bottom:12px;max-height:80vh;overflow:hidden}.font-grid{grid-template-columns:1fr;max-height:52vh}}
+
+
+/* ===== MisArte Digital v1.5.0 — Sprint 2 ===== */
+.font-preview-text{display:grid;gap:7px;margin:12px 0;color:var(--green-bright);font-size:12px;font-weight:700}
+.font-preview-text input{width:100%;min-height:44px;padding:0 13px;border:1px solid var(--line-strong);border-radius:11px;background:rgba(3,12,8,.62);color:var(--text);outline:none}
+.font-preview-text input:focus{border-color:var(--green);box-shadow:0 0 0 4px rgba(142,191,159,.1)}
+.font-option{position:relative}
+.font-option-custom{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:23px}
+.font-favorite{position:absolute;top:9px;right:9px;z-index:2;width:31px;height:31px;border:1px solid var(--line);border-radius:9px;background:rgba(3,12,8,.72);color:var(--muted);cursor:pointer}
+.font-favorite:hover,.font-favorite.is-favorite{color:#F3C969;border-color:rgba(243,201,105,.48);background:rgba(243,201,105,.1)}
+.palette-library{padding-top:4px}
+.palette-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin-bottom:12px}
+.palette-heading div{display:grid;gap:5px}.palette-heading small{color:var(--muted)}
+.palette-heading>strong{color:var(--green-bright);font-size:12px}
+.palette-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.palette-card{display:grid;gap:10px;padding:12px;border:1px solid var(--line);border-radius:13px;background:rgba(3,12,8,.36);color:var(--text);text-align:left;cursor:pointer}
+.palette-card:hover{border-color:var(--green);transform:translateY(-1px)}
+.palette-swatches{display:grid;grid-template-columns:repeat(5,1fr);height:34px;overflow:hidden;border-radius:8px}
+.palette-swatches i{display:block}
+.palette-card strong{font-size:13px}
+@media(max-width:650px){.palette-grid{grid-template-columns:1fr}.palette-heading{align-items:flex-start;flex-direction:column}}

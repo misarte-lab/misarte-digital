@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#07140f">
   <meta name="robots" content="noindex,nofollow">
   <title>Aparência | MisArte Digital</title>
-  <link rel="stylesheet" href="./css/admin.css?v=1.5.0-s1">
+  <link rel="stylesheet" href="./css/admin.css?v=1.5.0-s2">
 </head>
 <body class="dashboard-page">
   <div id="pageLoader" class="page-loader"><div class="loader-mark"></div><span>Carregando aparência...</span></div>
@@ -81,11 +81,22 @@
                     </label>
                     <button id="closeFontLibrary" class="font-library-close" type="button" aria-label="Fechar biblioteca">×</button>
                   </div>
+                  <label class="font-preview-text">
+                    <span>Texto de pré-visualização</span>
+                    <input id="fontPreviewText" type="text" maxlength="60" placeholder="Digite o nome da marca" value="Cervejaria Inconfidentes">
+                  </label>
                   <div id="fontCategories" class="font-categories" role="tablist" aria-label="Categorias de fontes"></div>
                   <p id="fontResultCount" class="font-result-count"></p>
                   <div id="fontGrid" class="font-grid" role="listbox" aria-label="Biblioteca de fontes"></div>
                   <div id="fontEmpty" class="font-empty" hidden>Nenhuma fonte encontrada.</div>
                 </div>
+              </div>
+              <div class="palette-library full-field">
+                <div class="palette-heading">
+                  <div><span class="field-label">Paletas MisArte</span><small>Aplique uma combinação profissional com um clique.</small></div>
+                  <strong id="selectedPaletteName">Personalizada</strong>
+                </div>
+                <div id="paletteGrid" class="palette-grid" aria-label="Paletas de cores"></div>
               </div>
               <label>Cor principal
                 <span class="color-field"><input id="corPrimaria" type="color"><input id="corPrimariaText" type="text" maxlength="7"></span>
@@ -98,6 +109,12 @@
               </label>
               <label>Cor dos botões
                 <span class="color-field"><input id="corBotao" type="color"><input id="corBotaoText" type="text" maxlength="7"></span>
+              </label>
+              <label>Cor de destaque
+                <span class="color-field"><input id="corDestaque" type="color"><input id="corDestaqueText" type="text" maxlength="7"></span>
+              </label>
+              <label>Cor de fundo
+                <span class="color-field"><input id="corFundo" type="color"><input id="corFundoText" type="text" maxlength="7"></span>
               </label>
               <label class="full-field">Catálogo em destaque
                 <select id="catalogoDestaque"><option value="">Automático: primeiro publicado</option></select>
@@ -143,7 +160,7 @@
 
   <div id="toast" class="toast" hidden role="status"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./js/supabase.js?v=1.5.0-s1"></script>
-  <script src="./js/aparencia.js?v=1.5.0-s1"></script>
+  <script src="./js/supabase.js?v=1.5.0-s2"></script>
+  <script src="./js/aparencia.js?v=1.5.0-s2"></script>
 </body>
 </html>

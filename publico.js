@@ -19,12 +19,15 @@
     const secondary=safeColor(data.cor_secundaria,dark?"#173C2C":"#E8F1EB");
     const text=safeColor(data.cor_texto,dark?"#F5F4ED":"#18221D");
     const button=safeColor(data.cor_botao,primary);
+    const accent=safeColor(data.cor_destaque,"#D6A85F");
+    const background=safeColor(data.cor_fundo,dark?"#07140F":"#F7F7F3");
     const root=document.documentElement;
     root.style.setProperty("--brand-primary",primary);
     root.style.setProperty("--brand-secondary",secondary);
     root.style.setProperty("--brand-text",text);
     root.style.setProperty("--brand-button",button);
-    root.style.setProperty("--bg",dark?"#07140F":"#F7F7F3");
+    root.style.setProperty("--brand-accent",accent);
+    root.style.setProperty("--bg",background);
     root.style.setProperty("--panel",dark?"#0D2118":"#FFFFFF");
     root.style.setProperty("--panel-2",dark?"#10271D":"#F1F4F1");
     root.style.setProperty("--muted",dark?"#9EB7AA":"#617067");
@@ -49,7 +52,7 @@
   }
   async function loadClient(){
     const {data,error}=await db.from("clientes")
-      .select("id,nome,empresa,categoria,cidade,estado,status,logo_url,capa_url,cor_primaria,cor_secundaria,cor_texto,cor_botao,tema,fonte,banner_url,favicon_url,catalogo_destaque")
+      .select("id,nome,empresa,categoria,cidade,estado,status,logo_url,capa_url,cor_primaria,cor_secundaria,cor_texto,cor_botao,cor_destaque,cor_fundo,tema,fonte,banner_url,favicon_url,catalogo_destaque")
       .eq("id",clientId).eq("status","ativo").single();
     if(error||!data) throw new Error("Cliente não encontrado ou página ainda não publicada.");
     client=data; applyTheme(data);

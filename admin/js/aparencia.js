@@ -14,6 +14,7 @@
     fontPickerButton:$("#fontPickerButton"), fontLibrary:$("#fontLibrary"), fontSearch:$("#fontSearch"),
     fontCategories:$("#fontCategories"), fontGrid:$("#fontGrid"), fontEmpty:$("#fontEmpty"),
     fontResultCount:$("#fontResultCount"), selectedFontName:$("#selectedFontName"), closeFontLibrary:$("#closeFontLibrary"),
+    fontPreviewText:$("#fontPreviewText"), paletteGrid:$("#paletteGrid"), selectedPaletteName:$("#selectedPaletteName"),
     bannerInput:$("#bannerInput"), faviconInput:$("#faviconInput"),
     bannerPreview:$("#bannerPreview"), faviconPreview:$("#faviconPreview"),
     removeBanner:$("#removeBanner"), removeFavicon:$("#removeFavicon")
@@ -22,7 +23,9 @@
     ["corPrimaria","corPrimariaText","cor_primaria"],
     ["corSecundaria","corSecundariaText","cor_secundaria"],
     ["corTexto","corTextoText","cor_texto"],
-    ["corBotao","corBotaoText","cor_botao"]
+    ["corBotao","corBotaoText","cor_botao"],
+    ["corDestaque","corDestaqueText","cor_destaque"],
+    ["corFundo","corFundoText","cor_fundo"]
   ];
   let current = {};
 
@@ -50,8 +53,21 @@
     {name:"Karla",category:"Neutras"},{name:"Cabin",category:"Neutras"},{name:"Figtree",category:"Neutras"},
     {name:"IBM Plex Sans",category:"Neutras"},{name:"Josefin Sans",category:"Neutras"},{name:"Quicksand",category:"Neutras"}
   ];
-  const FONT_CATEGORIES = ["Todas","Modernas","Elegantes","Clássicas","Fortes","Criativas","Neutras"];
+  const FONT_CATEGORIES = ["Favoritas","Todas","Modernas","Elegantes","Clássicas","Fortes","Criativas","Neutras"];
+  const PALETTES = [
+    {name:"Minimalista",colors:["#111827","#E5E7EB","#111827","#111827","#6B7280","#F9FAFB"]},
+    {name:"Elegante",colors:["#6B2333","#D8C3A5","#201A1B","#6B2333","#B08D57","#F7F2EA"]},
+    {name:"Moderna",colors:["#2563EB","#DBEAFE","#172033","#2563EB","#7C3AED","#F8FAFC"]},
+    {name:"Corporativa",colors:["#123A5A","#D9E7F1","#10212E","#123A5A","#2F6B8A","#F4F8FB"]},
+    {name:"Escura",colors:["#B8DBC3","#173C2C","#F5F4ED","#B8DBC3","#D6A85F","#07140F"]},
+    {name:"Clara",colors:["#315C46","#DDEBE3","#18221D","#315C46","#B7791F","#F7F7F3"]},
+    {name:"Natureza",colors:["#3D6B4F","#BFD8C2","#1F2E24","#3D6B4F","#8A9A5B","#F1F5EE"]},
+    {name:"Terra",colors:["#8B4A2F","#D9B99B","#33241E","#8B4A2F","#C58B57","#F5ECE4"]},
+    {name:"Premium",colors:["#191919","#D8C19F","#F6F0E8","#D8C19F","#A67C3D","#0D0D0D"]},
+    {name:"Vibrante",colors:["#E63946","#FFD166","#172033","#E63946","#7B2CBF","#FFF8E7"]}
+  ];
   let activeFontCategory = "Todas";
+  let favoriteFonts = new Set();
   const loadedFonts = new Set();
 
   function fontCssUrl(names){
@@ -73,6 +89,7 @@
     el.selectedFontName.textContent=font.name;
     el.selectedFontName.style.fontFamily=`"${font.name}", sans-serif`;
     loadFonts([font.name]);
+    updateLivePreview();
     el.fontGrid.querySelectorAll(".font-option").forEach(button=>{
       const selected=button.dataset.font===font.name;
       button.classList.toggle("is-selected",selected);
@@ -102,7 +119,7 @@
   function renderFonts(){
     const query=el.fontSearch.value.trim().toLocaleLowerCase("pt-BR");
     const fonts=FONT_LIBRARY.filter(font=>{
-      const categoryMatches=activeFontCategory==="Todas"||font.category===activeFontCategory;
+      const categoryMatches=activeFontCategory==="Todas"||(activeFontCategory==="Favoritas"?favoriteFonts.has(font.name):font.category===activeFontCategory);
       const searchMatches=!query||font.name.toLocaleLowerCase("pt-BR").includes(query);
       return categoryMatches&&searchMatches;
     });
@@ -117,10 +134,16 @@
       button.dataset.font=font.name;
       button.setAttribute("role","option");
       button.setAttribute("aria-selected",String(el.fonte.value===font.name));
-      button.innerHTML=`<span class="font-option-preview" style="font-family:'${font.name}',sans-serif">Aa</span><span><strong style="font-family:'${font.name}',sans-serif">${font.name}</strong><small>${font.category}</small></span><span class="font-option-check" aria-hidden="true">✓</span>`;
+      const previewText=(el.fontPreviewText.value||"Cervejaria Inconfidentes").trim();
+      button.innerHTML=`<button type="button" class="font-favorite${favoriteFonts.has(font.name)?" is-favorite":""}" aria-label="${favoriteFonts.has(font.name)?"Remover dos favoritos":"Adicionar aos favoritos"}" title="Favoritar">★</button><span class="font-option-preview font-option-custom" style="font-family:'${font.name}',sans-serif">${previewText.replace(/[<>&]/g,"")}</span><span><strong>${font.name}</strong><small>${font.category}</small></span><span class="font-option-check" aria-hidden="true">✓</span>`;
+      button.querySelector(".font-favorite").addEventListener("click",event=>{
+        event.stopPropagation();
+        favoriteFonts.has(font.name)?favoriteFonts.delete(font.name):favoriteFonts.add(font.name);
+        localStorage.setItem(`misarte-favorite-fonts-${clientId}`,JSON.stringify([...favoriteFonts]));
+        renderFontCategories(); renderFonts();
+      });
       button.addEventListener("click",()=>{
         setSelectedFont(font.name);
-        closeFontLibrary();
       });
       el.fontGrid.append(button);
     });
@@ -141,6 +164,7 @@
     el.fontPickerButton.addEventListener("click",()=>el.fontLibrary.hidden?openFontLibrary():closeFontLibrary());
     el.closeFontLibrary.addEventListener("click",closeFontLibrary);
     el.fontSearch.addEventListener("input",renderFonts);
+    el.fontPreviewText.addEventListener("input",renderFonts);
     document.addEventListener("keydown",event=>{ if(event.key==="Escape"&&!el.fontLibrary.hidden) closeFontLibrary(); });
     document.addEventListener("click",event=>{
       if(!el.fontLibrary.hidden&&!el.fontLibrary.contains(event.target)&&!el.fontPickerButton.contains(event.target)) closeFontLibrary();
@@ -152,11 +176,54 @@
     clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.toast.hidden=true,3000);
   }
   function isHex(v){ return /^#[0-9a-f]{6}$/i.test(v); }
+  function getColorValues(){
+    const result={};
+    colors.forEach(([,text,field])=>result[field]=$("#"+text).value.trim());
+    return result;
+  }
+  function updateLivePreview(){
+    const frame=el.preview;
+    try{
+      const doc=frame.contentDocument;
+      if(!doc) return;
+      const root=doc.documentElement;
+      const c=getColorValues();
+      root.style.setProperty("--brand-primary",c.cor_primaria||"#B8DBC3");
+      root.style.setProperty("--brand-secondary",c.cor_secundaria||"#173C2C");
+      root.style.setProperty("--brand-text",c.cor_texto||"#F5F4ED");
+      root.style.setProperty("--brand-button",c.cor_botao||"#B8DBC3");
+      root.style.setProperty("--brand-accent",c.cor_destaque||"#D6A85F");
+      root.style.setProperty("--bg",c.cor_fundo||"#07140F");
+      root.style.setProperty("--brand-font",`"${el.fonte.value||"DM Sans"}",sans-serif`);
+      doc.body.style.backgroundColor=c.cor_fundo||"#07140F";
+    }catch(_){}
+  }
   function syncColors(){
     colors.forEach(([picker,text])=>{
       const p=$("#"+picker), t=$("#"+text);
-      p.addEventListener("input",()=>t.value=p.value.toUpperCase());
-      t.addEventListener("input",()=>{ if(isHex(t.value)) p.value=t.value; });
+      p.addEventListener("input",()=>{t.value=p.value.toUpperCase();el.selectedPaletteName.textContent="Personalizada";updateLivePreview();});
+      t.addEventListener("input",()=>{ if(isHex(t.value)){p.value=t.value;el.selectedPaletteName.textContent="Personalizada";updateLivePreview();} });
+    });
+    el.tema.addEventListener("change",updateLivePreview);
+    el.preview.addEventListener("load",()=>setTimeout(updateLivePreview,80));
+  }
+  function applyPalette(palette){
+    palette.colors.forEach((value,index)=>{
+      const [picker,text]=colors[index];
+      $("#"+picker).value=value; $("#"+text).value=value.toUpperCase();
+    });
+    el.selectedPaletteName.textContent=palette.name;
+    el.tema.value=["Escura","Premium"].includes(palette.name)?"escuro":"claro";
+    renderPalettes(); updateLivePreview();
+  }
+  function renderPalettes(){
+    el.paletteGrid.innerHTML="";
+    PALETTES.forEach(palette=>{
+      const button=document.createElement("button");
+      button.type="button"; button.className="palette-card";
+      button.innerHTML=`<span class="palette-swatches">${palette.colors.slice(0,5).map(c=>`<i style="background:${c}"></i>`).join("")}</span><strong>${palette.name}</strong>`;
+      button.addEventListener("click",()=>applyPalette(palette));
+      el.paletteGrid.append(button);
     });
   }
   function renderImage(node,url,label){
@@ -208,17 +275,20 @@
     if(!sessionData.session){ location.replace("./login.html"); return; }
     el.email.textContent=sessionData.session.user.email||"Usuária autenticada";
     const {data,error}=await db.from("clientes")
-      .select("id,nome,empresa,cor_primaria,cor_secundaria,cor_texto,cor_botao,tema,fonte,banner_url,favicon_url,catalogo_destaque")
+      .select("id,nome,empresa,cor_primaria,cor_secundaria,cor_texto,cor_botao,cor_destaque,cor_fundo,tema,fonte,fontes_favoritas,banner_url,favicon_url,catalogo_destaque")
       .eq("id",clientId).single();
     if(error){
       el.warning.hidden=false; el.loader.hidden=true; el.app.hidden=false;
       throw error;
     }
     current=data;
+    const storedFavorites=JSON.parse(localStorage.getItem(`misarte-favorite-fonts-${clientId}`)||"[]");
+    favoriteFonts=new Set((data.fontes_favoritas&&data.fontes_favoritas.length?data.fontes_favoritas:storedFavorites)||[]);
+    renderFontCategories(); renderFonts();
     el.name.textContent=data.nome||data.empresa||"Cliente";
     el.tema.value=data.tema||"escuro"; setSelectedFont(data.fonte||"DM Sans");
     colors.forEach(([picker,text,field])=>{
-      const value=data[field]||({cor_primaria:"#B8DBC3",cor_secundaria:"#173C2C",cor_texto:"#F5F4ED",cor_botao:"#B8DBC3"}[field]);
+      const value=data[field]||({cor_primaria:"#B8DBC3",cor_secundaria:"#173C2C",cor_texto:"#F5F4ED",cor_botao:"#B8DBC3",cor_destaque:"#D6A85F",cor_fundo:"#07140F"}[field]);
       $("#"+picker).value=value; $("#"+text).value=value.toUpperCase();
     });
     const {data:catalogs}=await db.from("catalogos").select("id,nome,status").eq("cliente_id",clientId).order("ordem");
@@ -239,7 +309,7 @@
   el.form.addEventListener("submit",async e=>{
     e.preventDefault();
     try{
-      const payload={tema:el.tema.value,fonte:el.fonte.value,catalogo_destaque:el.destaque.value||null};
+      const payload={tema:el.tema.value,fonte:el.fonte.value,fontes_favoritas:[...favoriteFonts],catalogo_destaque:el.destaque.value||null};
       colors.forEach(([,text,field])=>{ const v=$("#"+text).value.trim(); if(!isHex(v)) throw new Error("Use cores no formato #RRGGBB."); payload[field]=v.toUpperCase(); });
       el.save.disabled=true; el.save.textContent="Salvando...";
       const {error}=await db.from("clientes").update(payload).eq("id",clientId);
@@ -257,5 +327,6 @@
   el.logout.addEventListener("click",async()=>{await db.auth.signOut();location.replace("./login.html")});
   syncColors();
   initFontLibrary();
+  renderPalettes();
   load().catch(e=>{console.error(e);toast(e.message||"Erro ao carregar.","error")});
 })();
