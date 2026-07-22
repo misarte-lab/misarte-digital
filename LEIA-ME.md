@@ -1,50 +1,32 @@
-# MisArte Admin v1.0
+# MisArte Digital v1.5.0 — Sprint 1
 
-## Instalação
+## Objetivo
+Substituir o seletor simples de fontes da tela **Aparência** por uma biblioteca visual de fontes.
 
-1. Abra a pasta local `misarte-digital`.
-2. Copie a pasta `admin` deste pacote para dentro dela.
-3. Confirme que a estrutura ficou:
+## Como instalar
+1. Faça uma cópia de segurança do projeto atual.
+2. Abra esta pasta.
+3. Copie as pastas e arquivos para a raiz do projeto.
+4. Confirme a substituição dos arquivos existentes.
+5. Faça o commit no GitHub Desktop e clique em **Push origin**.
+6. Abra o painel administrativo, entre em um cliente e acesse **Aparência**.
+7. Teste a busca, as categorias, a seleção e o salvamento da fonte.
+8. Abra a página pública para confirmar a aplicação da fonte escolhida.
 
-```text
-misarte-digital/
-├── index.html
-├── admin/
-│   ├── login.html
-│   ├── dashboard.html
-│   ├── assets/
-│   ├── css/
-│   └── js/
-└── ...
-```
+## SQL
+Esta Sprint não exige novo SQL.
 
-4. No GitHub Desktop:
-   - Summary: `Adiciona painel administrativo MisArte`
-   - Clique em `Commit to main`
-   - Clique em `Push origin`
+## Arquivos alterados
+- `admin/aparencia.html`
+- `admin/js/aparencia.js`
+- `admin/css/admin.css`
+- `publico.html`
+- `publico.js`
 
-5. Depois da publicação, acesse:
-
-```text
-https://misarte-lab.github.io/misarte-digital/admin/login.html
-```
-
-## O que já funciona
-
-- Login com Supabase Auth
-- Sessão persistente
-- Proteção do dashboard
-- Redirecionamento para o login
-- Logout
-- Saudação “Olá, Mis 👋”
-- Contadores do painel
-- Listagem dos clientes da tabela `clientes`
-- Layout responsivo
-
-## Antes do primeiro acesso
-
-No Supabase, confirme que o usuário `miscristiane@gmail.com` existe em:
-
-Authentication → Users
-
-A senha é a senha cadastrada nesse usuário.
+## Teste recomendado
+- Buscar uma fonte pelo nome.
+- Alternar entre as categorias.
+- Selecionar uma fonte e salvar.
+- Recarregar a tela para confirmar que a seleção permanece.
+- Abrir a página pública e verificar a fonte.
+- Testar em celular ou janela estreita.

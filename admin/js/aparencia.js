@@ -11,6 +11,9 @@
     form:$("#appearanceForm"), save:$("#saveButton"), preview:$("#previewFrame"), previewTop:$("#previewTop"),
     identity:$("#identityTab"), catalogs:$("#catalogsTab"), back:$("#backLink"), toast:$("#toast"),
     tema:$("#tema"), fonte:$("#fonte"), destaque:$("#catalogoDestaque"),
+    fontPickerButton:$("#fontPickerButton"), fontLibrary:$("#fontLibrary"), fontSearch:$("#fontSearch"),
+    fontCategories:$("#fontCategories"), fontGrid:$("#fontGrid"), fontEmpty:$("#fontEmpty"),
+    fontResultCount:$("#fontResultCount"), selectedFontName:$("#selectedFontName"), closeFontLibrary:$("#closeFontLibrary"),
     bannerInput:$("#bannerInput"), faviconInput:$("#faviconInput"),
     bannerPreview:$("#bannerPreview"), faviconPreview:$("#faviconPreview"),
     removeBanner:$("#removeBanner"), removeFavicon:$("#removeFavicon")
@@ -22,6 +25,124 @@
     ["corBotao","corBotaoText","cor_botao"]
   ];
   let current = {};
+
+  const FONT_LIBRARY = [
+    {name:"DM Sans",category:"Modernas"},{name:"Inter",category:"Modernas"},{name:"Poppins",category:"Modernas"},
+    {name:"Montserrat",category:"Modernas"},{name:"Manrope",category:"Modernas"},{name:"Plus Jakarta Sans",category:"Modernas"},
+    {name:"Urbanist",category:"Modernas"},{name:"Outfit",category:"Modernas"},{name:"Sora",category:"Modernas"},
+    {name:"Rubik",category:"Modernas"},{name:"Nunito Sans",category:"Modernas"},{name:"Work Sans",category:"Modernas"},
+    {name:"Playfair Display",category:"Elegantes"},{name:"Cormorant Garamond",category:"Elegantes"},
+    {name:"Libre Baskerville",category:"Elegantes"},{name:"Bodoni Moda",category:"Elegantes"},
+    {name:"Prata",category:"Elegantes"},{name:"Cinzel",category:"Elegantes"},{name:"Italiana",category:"Elegantes"},
+    {name:"Marcellus",category:"Elegantes"},{name:"DM Serif Display",category:"Elegantes"},
+    {name:"Lora",category:"Clássicas"},{name:"Merriweather",category:"Clássicas"},{name:"Crimson Text",category:"Clássicas"},
+    {name:"EB Garamond",category:"Clássicas"},{name:"Source Serif 4",category:"Clássicas"},{name:"Noto Serif",category:"Clássicas"},
+    {name:"Spectral",category:"Clássicas"},{name:"Alegreya",category:"Clássicas"},{name:"Cardo",category:"Clássicas"},
+    {name:"Bebas Neue",category:"Fortes"},{name:"Oswald",category:"Fortes"},{name:"Anton",category:"Fortes"},
+    {name:"Archivo Black",category:"Fortes"},{name:"League Spartan",category:"Fortes"},{name:"Barlow Condensed",category:"Fortes"},
+    {name:"Roboto Condensed",category:"Fortes"},{name:"Teko",category:"Fortes"},{name:"Fjalla One",category:"Fortes"},
+    {name:"Righteous",category:"Criativas"},{name:"Comfortaa",category:"Criativas"},{name:"Fredoka",category:"Criativas"},
+    {name:"Baloo 2",category:"Criativas"},{name:"Pacifico",category:"Criativas"},{name:"Lobster",category:"Criativas"},
+    {name:"Caveat",category:"Criativas"},{name:"Dancing Script",category:"Criativas"},{name:"Satisfy",category:"Criativas"},
+    {name:"Bangers",category:"Criativas"},{name:"Permanent Marker",category:"Criativas"},
+    {name:"Roboto",category:"Neutras"},{name:"Open Sans",category:"Neutras"},{name:"Lato",category:"Neutras"},
+    {name:"Source Sans 3",category:"Neutras"},{name:"Noto Sans",category:"Neutras"},{name:"Mulish",category:"Neutras"},
+    {name:"Karla",category:"Neutras"},{name:"Cabin",category:"Neutras"},{name:"Figtree",category:"Neutras"},
+    {name:"IBM Plex Sans",category:"Neutras"},{name:"Josefin Sans",category:"Neutras"},{name:"Quicksand",category:"Neutras"}
+  ];
+  const FONT_CATEGORIES = ["Todas","Modernas","Elegantes","Clássicas","Fortes","Criativas","Neutras"];
+  let activeFontCategory = "Todas";
+  const loadedFonts = new Set();
+
+  function fontCssUrl(names){
+    const families=names.map(name=>`family=${encodeURIComponent(name).replace(/%20/g,"+")}`).join("&");
+    return `https://fonts.googleapis.com/css2?${families}&display=swap`;
+  }
+  function loadFonts(names){
+    const pending=[...new Set(names)].filter(name=>!loadedFonts.has(name));
+    if(!pending.length) return;
+    pending.forEach(name=>loadedFonts.add(name));
+    const link=document.createElement("link");
+    link.rel="stylesheet";
+    link.href=fontCssUrl(pending);
+    document.head.append(link);
+  }
+  function setSelectedFont(name){
+    const font=FONT_LIBRARY.find(item=>item.name===name)||FONT_LIBRARY[0];
+    el.fonte.value=font.name;
+    el.selectedFontName.textContent=font.name;
+    el.selectedFontName.style.fontFamily=`"${font.name}", sans-serif`;
+    loadFonts([font.name]);
+    el.fontGrid.querySelectorAll(".font-option").forEach(button=>{
+      const selected=button.dataset.font===font.name;
+      button.classList.toggle("is-selected",selected);
+      button.setAttribute("aria-selected",String(selected));
+    });
+  }
+  function renderFontCategories(){
+    el.fontCategories.innerHTML="";
+    FONT_CATEGORIES.forEach(category=>{
+      const button=document.createElement("button");
+      button.type="button";
+      button.className=`font-category${category===activeFontCategory?" is-active":""}`;
+      button.textContent=category;
+      button.setAttribute("role","tab");
+      button.setAttribute("aria-selected",String(category===activeFontCategory));
+      button.addEventListener("click",()=>{
+        activeFontCategory=category;
+        renderFontCategories();
+        renderFonts();
+      });
+      el.fontCategories.append(button);
+    });
+  }
+  function renderFonts(){
+    const query=el.fontSearch.value.trim().toLocaleLowerCase("pt-BR");
+    const fonts=FONT_LIBRARY.filter(font=>{
+      const categoryMatches=activeFontCategory==="Todas"||font.category===activeFontCategory;
+      const searchMatches=!query||font.name.toLocaleLowerCase("pt-BR").includes(query);
+      return categoryMatches&&searchMatches;
+    });
+    el.fontGrid.innerHTML="";
+    el.fontEmpty.hidden=fonts.length!==0;
+    el.fontResultCount.textContent=`${fonts.length} ${fonts.length===1?"fonte encontrada":"fontes encontradas"}`;
+    loadFonts(fonts.map(font=>font.name));
+    fonts.forEach(font=>{
+      const button=document.createElement("button");
+      button.type="button";
+      button.className=`font-option${el.fonte.value===font.name?" is-selected":""}`;
+      button.dataset.font=font.name;
+      button.setAttribute("role","option");
+      button.setAttribute("aria-selected",String(el.fonte.value===font.name));
+      button.innerHTML=`<span class="font-option-preview" style="font-family:'${font.name}',sans-serif">Aa</span><span><strong style="font-family:'${font.name}',sans-serif">${font.name}</strong><small>${font.category}</small></span><span class="font-option-check" aria-hidden="true">✓</span>`;
+      button.addEventListener("click",()=>{
+        setSelectedFont(font.name);
+        closeFontLibrary();
+      });
+      el.fontGrid.append(button);
+    });
+  }
+  function openFontLibrary(){
+    el.fontLibrary.hidden=false;
+    el.fontPickerButton.setAttribute("aria-expanded","true");
+    renderFonts();
+    setTimeout(()=>el.fontSearch.focus(),0);
+  }
+  function closeFontLibrary(){
+    el.fontLibrary.hidden=true;
+    el.fontPickerButton.setAttribute("aria-expanded","false");
+  }
+  function initFontLibrary(){
+    renderFontCategories();
+    renderFonts();
+    el.fontPickerButton.addEventListener("click",()=>el.fontLibrary.hidden?openFontLibrary():closeFontLibrary());
+    el.closeFontLibrary.addEventListener("click",closeFontLibrary);
+    el.fontSearch.addEventListener("input",renderFonts);
+    document.addEventListener("keydown",event=>{ if(event.key==="Escape"&&!el.fontLibrary.hidden) closeFontLibrary(); });
+    document.addEventListener("click",event=>{
+      if(!el.fontLibrary.hidden&&!el.fontLibrary.contains(event.target)&&!el.fontPickerButton.contains(event.target)) closeFontLibrary();
+    });
+  }
 
   function toast(message,type="success"){
     el.toast.textContent=message; el.toast.className=`toast ${type}`; el.toast.hidden=false;
@@ -92,7 +213,7 @@
     }
     current=data;
     el.name.textContent=data.nome||data.empresa||"Cliente";
-    el.tema.value=data.tema||"escuro"; el.fonte.value=data.fonte||"DM Sans";
+    el.tema.value=data.tema||"escuro"; setSelectedFont(data.fonte||"DM Sans");
     colors.forEach(([picker,text,field])=>{
       const value=data[field]||({cor_primaria:"#B8DBC3",cor_secundaria:"#173C2C",cor_texto:"#F5F4ED",cor_botao:"#B8DBC3"}[field]);
       $("#"+picker).value=value; $("#"+text).value=value.toUpperCase();
@@ -132,5 +253,6 @@
   el.menu.addEventListener("click",()=>el.sidebar.classList.toggle("is-open"));
   el.logout.addEventListener("click",async()=>{await db.auth.signOut();location.replace("./login.html")});
   syncColors();
+  initFontLibrary();
   load().catch(e=>{console.error(e);toast(e.message||"Erro ao carregar.","error")});
 })();

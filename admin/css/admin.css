@@ -1099,3 +1099,38 @@ select:focus,
   padding: .45rem .7rem;
   font-size: .78rem;
 }
+
+
+/* ===== v1.5.0 Sprint 1 — Biblioteca de fontes ===== */
+.font-field{position:relative;display:grid;gap:8px}
+.font-picker-button{width:100%;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 16px;border:1px solid var(--line-strong);border-radius:15px;background:rgba(3,12,8,.62);color:var(--text);text-align:left;cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.font-picker-button:hover,.font-picker-button[aria-expanded="true"]{border-color:var(--green);background:rgba(15,38,28,.88)}
+.font-picker-button:active{transform:translateY(1px)}
+.font-picker-button span:first-child{display:grid;gap:4px}
+.font-picker-button small{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.font-picker-button strong{font-size:22px;font-weight:600}
+.font-picker-button>span:last-child{font-size:22px;color:var(--green-bright)}
+.font-library{position:absolute;z-index:30;top:calc(100% + 9px);left:0;right:0;padding:16px;border:1px solid var(--line-strong);border-radius:18px;background:#081a12;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.font-library-toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.font-search{display:grid!important;grid-template-columns:auto 1fr;align-items:center;gap:9px;min-height:46px;padding:0 13px;border:1px solid var(--line-strong);border-radius:12px;background:rgba(3,12,8,.68)}
+.font-search span{font-size:20px;color:var(--muted)}
+.font-search input{width:100%;min-height:42px;border:0;outline:0;background:transparent;color:var(--text);font:inherit}
+.font-search input::placeholder{color:var(--muted)}
+.font-library-close{width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--muted);font-size:26px;cursor:pointer}
+.font-library-close:hover{color:var(--text);border-color:var(--line-strong)}
+.font-categories{display:flex;gap:8px;overflow-x:auto;padding:14px 0 6px;scrollbar-width:thin}
+.font-category{flex:0 0 auto;min-height:34px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer}
+.font-category:hover,.font-category.is-active{border-color:var(--green);background:rgba(142,191,159,.13);color:var(--text)}
+.font-result-count{margin:10px 2px 8px;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.font-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-height:390px;overflow-y:auto;padding-right:3px}
+.font-option{position:relative;display:grid;grid-template-columns:56px minmax(0,1fr) 22px;align-items:center;gap:11px;min-height:76px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(7,23,16,.78);color:var(--text);text-align:left;cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.font-option:hover{transform:translateY(-1px);border-color:var(--line-strong);background:rgba(17,43,31,.9)}
+.font-option.is-selected{border-color:var(--green);background:rgba(142,191,159,.12)}
+.font-option-preview{display:grid;place-items:center;width:56px;height:48px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.04);font-size:25px}
+.font-option>span:nth-child(2){display:grid;gap:4px;min-width:0}
+.font-option strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:17px;font-weight:600}
+.font-option small{color:var(--muted);font:700 10px/1.2 "DM Sans",sans-serif;text-transform:uppercase;letter-spacing:.06em}
+.font-option-check{opacity:0;color:var(--green-bright);font-size:16px}
+.font-option.is-selected .font-option-check{opacity:1}
+.font-empty{padding:30px 10px;text-align:center;color:var(--muted)}
+@media(max-width:760px){.font-library{position:fixed;top:auto;left:12px;right:12px;bottom:12px;max-height:80vh;overflow:hidden}.font-grid{grid-template-columns:1fr;max-height:52vh}}

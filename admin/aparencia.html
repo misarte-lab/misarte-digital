@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#07140f">
   <meta name="robots" content="noindex,nofollow">
   <title>Aparência | MisArte Digital</title>
-  <link rel="stylesheet" href="./css/admin.css?v=1.5.0">
+  <link rel="stylesheet" href="./css/admin.css?v=1.5.0-s1">
 </head>
 <body class="dashboard-page">
   <div id="pageLoader" class="page-loader"><div class="loader-mark"></div><span>Carregando aparência...</span></div>
@@ -62,16 +62,31 @@
                   <option value="claro">Claro</option>
                 </select>
               </label>
-              <label>Fonte
-                <select id="fonte">
-                  <option>DM Sans</option>
-                  <option>Poppins</option>
-                  <option>Montserrat</option>
-                  <option>Playfair Display</option>
-                  <option>Inter</option>
-                  <option>Lora</option>
-                </select>
-              </label>
+              <div class="font-field full-field">
+                <span class="field-label">Fonte da marca</span>
+                <input id="fonte" type="hidden" value="DM Sans">
+                <button id="fontPickerButton" class="font-picker-button" type="button" aria-expanded="false" aria-controls="fontLibrary">
+                  <span>
+                    <small>Fonte selecionada</small>
+                    <strong id="selectedFontName">DM Sans</strong>
+                  </span>
+                  <span aria-hidden="true">⌄</span>
+                </button>
+
+                <div id="fontLibrary" class="font-library" hidden>
+                  <div class="font-library-toolbar">
+                    <label class="font-search">
+                      <span aria-hidden="true">⌕</span>
+                      <input id="fontSearch" type="search" placeholder="Buscar fonte..." autocomplete="off">
+                    </label>
+                    <button id="closeFontLibrary" class="font-library-close" type="button" aria-label="Fechar biblioteca">×</button>
+                  </div>
+                  <div id="fontCategories" class="font-categories" role="tablist" aria-label="Categorias de fontes"></div>
+                  <p id="fontResultCount" class="font-result-count"></p>
+                  <div id="fontGrid" class="font-grid" role="listbox" aria-label="Biblioteca de fontes"></div>
+                  <div id="fontEmpty" class="font-empty" hidden>Nenhuma fonte encontrada.</div>
+                </div>
+              </div>
               <label>Cor principal
                 <span class="color-field"><input id="corPrimaria" type="color"><input id="corPrimariaText" type="text" maxlength="7"></span>
               </label>
@@ -128,7 +143,7 @@
 
   <div id="toast" class="toast" hidden role="status"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./js/supabase.js?v=1.5.0"></script>
-  <script src="./js/aparencia.js?v=1.5.0"></script>
+  <script src="./js/supabase.js?v=1.5.0-s1"></script>
+  <script src="./js/aparencia.js?v=1.5.0-s1"></script>
 </body>
 </html>

@@ -1,19 +1,21 @@
-# Changelog
+# CHANGELOG — v1.5.0 Sprint 1
 
-## v1.5.0
-- Personalização da página pública
-- Tema claro/escuro
-- Cores, fontes, banner e favicon
-- Catálogo em destaque
-- Prévia mobile no painel
+## Adicionado
+- Biblioteca visual com 62 Google Fonts.
+- Prévia de cada fonte usando a própria tipografia.
+- Busca instantânea por nome.
+- Categorias por estilo: Modernas, Elegantes, Clássicas, Fortes, Criativas e Neutras.
+- Contador de resultados.
+- Estado visual da fonte selecionada.
+- Interface responsiva para desktop e celular.
+- Fechamento da biblioteca pelo botão, clique externo ou tecla Escape.
 
-# MisArte Digital — Changelog
+## Alterado
+- O campo `<select>` simples foi substituído por um seletor visual.
+- A página pública agora carrega dinamicamente a fonte salva no cadastro.
+- Versões de cache atualizadas para `1.5.0-s1`.
 
-## v3.1.3 — Capa definitiva
-- O card dinâmico usa o arquivo já existente:
-  `cervejaria-inconfidentes/pages/pagina-01.webp`.
-- O fallback também aponta para esse mesmo arquivo.
-- Cache atualizado para v3.1.3.
-
-- Acesso direto à Aparência no painel inicial e nos cartões de clientes.
-- Identificação visual da versão v1.5.0 no painel.
+## Mantido
+- O valor continua sendo salvo no campo `fonte` da tabela `clientes`.
+- Nenhuma migração de banco de dados foi necessária.
+- Cores, tema, catálogo em destaque, banner e favicon permanecem funcionando.

@@ -29,8 +29,14 @@
     root.style.setProperty("--panel-2",dark?"#10271D":"#F1F4F1");
     root.style.setProperty("--muted",dark?"#9EB7AA":"#617067");
     root.style.setProperty("--line",dark?"rgba(174,220,190,.16)":"rgba(20,50,35,.13)");
-    const stacks={"DM Sans":'"DM Sans",sans-serif',Poppins:'Poppins,sans-serif',Montserrat:'Montserrat,sans-serif',"Playfair Display":'"Playfair Display",serif',Inter:'Inter,sans-serif',Lora:'Lora,serif'};
-    root.style.setProperty("--brand-font",stacks[data.fonte]||stacks["DM Sans"]);
+    const selectedFont=data.fonte||"DM Sans";
+    const serifFonts=new Set(["Playfair Display","Cormorant Garamond","Libre Baskerville","Bodoni Moda","Prata","Cinzel","Italiana","Marcellus","DM Serif Display","Lora","Merriweather","Crimson Text","EB Garamond","Source Serif 4","Noto Serif","Spectral","Alegreya","Cardo"]);
+    const fallback=serifFonts.has(selectedFont)?"serif":"sans-serif";
+    const fontLink=document.createElement("link");
+    fontLink.rel="stylesheet";
+    fontLink.href=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(selectedFont).replace(/%20/g,"+")}&display=swap`;
+    document.head.append(fontLink);
+    root.style.setProperty("--brand-font",`"${selectedFont}",${fallback}`);
     document.querySelector('meta[name="theme-color"]').setAttribute("content",dark?"#07140F":"#F7F7F3");
     if(data.favicon_url){
       let link=document.querySelector("link[rel='icon']")||document.createElement("link");
