@@ -17,9 +17,6 @@
     fontViewGrid:$("#fontViewGrid"), fontViewList:$("#fontViewList"),
     fontPreviewText:$("#fontPreviewText"), fontLivePreviewName:$("#fontLivePreviewName"), fontLivePreviewSample:$("#fontLivePreviewSample"),
     paletteGrid:$("#paletteGrid"), selectedPaletteName:$("#selectedPaletteName"),
-    modelGrid:$("#modelGrid"), modelFilters:$("#modelFilters"), modelCount:$("#modelCount"), modelEmpty:$("#modelEmpty"),
-    saveModelButton:$("#saveModelButton"), saveModelPanel:$("#saveModelPanel"), modelNameInput:$("#modelNameInput"),
-    confirmSaveModel:$("#confirmSaveModel"), cancelSaveModel:$("#cancelSaveModel"),
     bannerInput:$("#bannerInput"), faviconInput:$("#faviconInput"),
     bannerPreview:$("#bannerPreview"), faviconPreview:$("#faviconPreview"),
     removeBanner:$("#removeBanner"), removeFavicon:$("#removeFavicon")
@@ -48,19 +45,6 @@
     {name:"Premium",colors:["#191919","#D8C19F","#F6F0E8","#D8C19F","#A67C3D","#0D0D0D"]},
     {name:"Vibrante",colors:["#E63946","#FFD166","#172033","#E63946","#7B2CBF","#FFF8E7"]}
   ];
-  const VISUAL_MODELS = [
-    {id:"minimal",name:"Minimal",description:"Limpo, leve e objetivo",font:"DM Sans",theme:"claro",palette:"Minimalista",colors:["#111827","#E5E7EB","#111827","#111827","#6B7280","#F9FAFB"]},
-    {id:"elegante",name:"Elegante",description:"Sofisticação com contraste suave",font:"Playfair Display",theme:"claro",palette:"Elegante",colors:["#6B2333","#D8C3A5","#201A1B","#6B2333","#B08D57","#F7F2EA"]},
-    {id:"moderno",name:"Moderno",description:"Presença digital contemporânea",font:"Poppins",theme:"claro",palette:"Moderna",colors:["#2563EB","#DBEAFE","#172033","#2563EB","#7C3AED","#F8FAFC"]},
-    {id:"escuro",name:"Escuro",description:"Impacto e profundidade visual",font:"Sora",theme:"escuro",palette:"Escura",colors:["#B8DBC3","#173C2C","#F5F4ED","#B8DBC3","#D6A85F","#07140F"]},
-    {id:"vintage",name:"Vintage",description:"Personalidade clássica e artesanal",font:"Cinzel",theme:"claro",palette:"Terra",colors:["#8B4A2F","#D9B99B","#33241E","#8B4A2F","#C58B57","#F5ECE4"]},
-    {id:"premium",name:"Premium",description:"Luxo discreto e alto contraste",font:"Cormorant Garamond",theme:"escuro",palette:"Premium",colors:["#191919","#D8C19F","#F6F0E8","#D8C19F","#A67C3D","#0D0D0D"]}
-  ];
-  let customModels = [];
-  let favoriteModels = new Set();
-  let activeModelFilter = "todos";
-  let selectedModelId = null;
-
   let activeFontCategory = "Todas";
   let favoriteFonts = new Set();
   let fontUsage = {};
@@ -260,151 +244,6 @@
       el.paletteGrid.append(button);
     });
   }
-
-  function modelStorageKey(type){
-    return `misarte-models-${type}-${clientId}`;
-  }
-  function readModelStorage(){
-    try{
-      customModels=JSON.parse(localStorage.getItem(modelStorageKey("custom"))||"[]");
-      favoriteModels=new Set(JSON.parse(localStorage.getItem(modelStorageKey("favorites"))||"[]"));
-    }catch(_){
-      customModels=[]; favoriteModels=new Set();
-    }
-  }
-  function writeModelStorage(){
-    localStorage.setItem(modelStorageKey("custom"),JSON.stringify(customModels));
-    localStorage.setItem(modelStorageKey("favorites"),JSON.stringify([...favoriteModels]));
-  }
-  function currentModelSnapshot(name){
-    return {
-      id:`custom-${Date.now()}`,
-      name,
-      description:"Modelo personalizado",
-      font:el.fonte.value||"DM Sans",
-      theme:el.tema.value||"escuro",
-      palette:el.selectedPaletteName.textContent||"Personalizada",
-      colors:colors.map(([,text])=>$("#"+text).value.toUpperCase()),
-      custom:true
-    };
-  }
-  function applyVisualModel(model){
-    selectedModelId=model.id;
-    setSelectedFont(model.font);
-    el.tema.value=model.theme;
-    model.colors.forEach((value,index)=>{
-      const [picker,text]=colors[index];
-      $("#"+picker).value=value;
-      $("#"+text).value=value.toUpperCase();
-    });
-    el.selectedPaletteName.textContent=model.palette||model.name;
-    renderPalettes();
-    renderModels();
-    updateLivePreview();
-    toast(`Modelo ${model.name} aplicado. Salve a aparência para publicar.`);
-  }
-  function toggleModelFavorite(id,event){
-    event?.stopPropagation();
-    favoriteModels.has(id)?favoriteModels.delete(id):favoriteModels.add(id);
-    writeModelStorage();
-    renderModels();
-  }
-  function deleteCustomModel(id,event){
-    event?.stopPropagation();
-    const model=customModels.find(item=>item.id===id);
-    if(!model||!confirm(`Excluir o modelo "${model.name}"?`)) return;
-    customModels=customModels.filter(item=>item.id!==id);
-    favoriteModels.delete(id);
-    if(selectedModelId===id) selectedModelId=null;
-    writeModelStorage();
-    renderModels();
-    toast("Modelo excluído.");
-  }
-  function modelCard(model){
-    const button=document.createElement("article");
-    button.className=`model-card${selectedModelId===model.id?" is-selected":""}`;
-    button.dataset.model=model.id;
-    button.tabIndex=0;
-    button.setAttribute("role","button");
-    button.setAttribute("aria-label",`Aplicar modelo ${model.name}`);
-    const swatches=model.colors.slice(0,5).map(color=>`<i style="background:${color}"></i>`).join("");
-    button.innerHTML=`
-      <div class="model-preview" style="--model-bg:${model.colors[5]};--model-text:${model.colors[2]};--model-primary:${model.colors[0]};--model-accent:${model.colors[4]};font-family:'${model.font}',sans-serif">
-        <span class="model-preview-brand">Sua marca</span>
-        <span class="model-preview-line"></span>
-        <span class="model-preview-button">Conhecer</span>
-      </div>
-      <div class="model-card-body">
-        <div class="model-card-title"><strong>${model.name}</strong><span class="model-badge">${model.custom?"Meu modelo":"MisArte"}</span></div>
-        <p>${model.description}</p>
-        <div class="model-card-meta"><span>${model.font}</span><span class="model-swatches">${swatches}</span></div>
-      </div>
-      <button type="button" class="model-favorite${favoriteModels.has(model.id)?" is-favorite":""}" aria-label="${favoriteModels.has(model.id)?"Remover dos favoritos":"Adicionar aos favoritos"}" title="Favoritar">★</button>
-      ${model.custom?'<button type="button" class="model-delete" aria-label="Excluir modelo" title="Excluir">×</button>':""}
-      <span class="model-selected-mark" aria-hidden="true">✓</span>`;
-    button.addEventListener("click",()=>applyVisualModel(model));
-    button.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();applyVisualModel(model);}});
-    button.querySelector(".model-favorite").addEventListener("click",event=>toggleModelFavorite(model.id,event));
-    button.querySelector(".model-delete")?.addEventListener("click",event=>deleteCustomModel(model.id,event));
-    return button;
-  }
-  function renderModels(){
-    if(!el.modelGrid) return;
-    const all=[...VISUAL_MODELS,...customModels];
-    const visible=all.filter(model=>
-      activeModelFilter==="todos"||
-      (activeModelFilter==="favoritos"&&favoriteModels.has(model.id))||
-      (activeModelFilter==="meus"&&model.custom)
-    );
-    el.modelGrid.innerHTML="";
-    visible.forEach(model=>el.modelGrid.append(modelCard(model)));
-    el.modelEmpty.hidden=visible.length!==0;
-    el.modelCount.textContent=`${visible.length} ${visible.length===1?"modelo":"modelos"}`;
-    el.modelFilters.querySelectorAll("button").forEach(button=>{
-      const active=button.dataset.filter===activeModelFilter;
-      button.classList.toggle("is-active",active);
-      button.setAttribute("aria-selected",String(active));
-    });
-    loadFonts(visible.map(model=>model.font));
-  }
-  function initModels(){
-    if(!el.modelGrid) return;
-    readModelStorage();
-    renderModels();
-    el.modelFilters.addEventListener("click",event=>{
-      const button=event.target.closest("button[data-filter]");
-      if(!button) return;
-      activeModelFilter=button.dataset.filter;
-      renderModels();
-    });
-    el.saveModelButton.addEventListener("click",()=>{
-      el.saveModelPanel.hidden=false;
-      el.modelNameInput.value="";
-      setTimeout(()=>el.modelNameInput.focus(),0);
-    });
-    el.cancelSaveModel.addEventListener("click",()=>{
-      el.saveModelPanel.hidden=true;
-      el.modelNameInput.value="";
-    });
-    el.confirmSaveModel.addEventListener("click",()=>{
-      const name=el.modelNameInput.value.trim();
-      if(name.length<2){toast("Digite um nome para o modelo.","error");return;}
-      const model=currentModelSnapshot(name);
-      customModels.unshift(model);
-      selectedModelId=model.id;
-      writeModelStorage();
-      el.saveModelPanel.hidden=true;
-      el.modelNameInput.value="";
-      activeModelFilter="meus";
-      renderModels();
-      toast("Modelo personalizado salvo.");
-    });
-    el.modelNameInput.addEventListener("keydown",event=>{
-      if(event.key==="Enter"){event.preventDefault();el.confirmSaveModel.click();}
-      if(event.key==="Escape")el.cancelSaveModel.click();
-    });
-  }
-
   function renderImage(node,url,label){
     node.innerHTML=url?`<img src="${url}" alt="${label}">`:`<span>Sem ${label}</span>`;
   }
@@ -507,6 +346,5 @@
   syncColors();
   initFontLibrary();
   renderPalettes();
-  initModels();
   load().catch(e=>{console.error(e);toast(e.message||"Erro ao carregar.","error")});
 })();
