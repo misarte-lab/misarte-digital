@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#07140f">
   <meta name="robots" content="noindex,nofollow">
   <title>Aparência | MisArte Digital</title>
-  <link rel="stylesheet" href="./css/admin.css?v=1.5.0-s2">
+  <link rel="stylesheet" href="./css/admin.css?v=1.5.0-s2.2">
 </head>
 <body class="dashboard-page">
   <div id="pageLoader" class="page-loader"><div class="loader-mark"></div><span>Carregando aparência...</span></div>
@@ -53,6 +53,32 @@
 
       <div class="appearance-layout">
         <form id="appearanceForm" class="appearance-form">
+          <section class="appearance-card models-section">
+            <div class="media-card-heading models-heading">
+              <div><p class="eyebrow">MISARTE MODELS</p><h2>Modelos visuais</h2><p class="section-support">Aplique uma identidade completa com um clique ou salve a configuração atual.</p></div>
+              <button id="saveModelButton" class="button button-secondary" type="button">＋ Salvar como modelo</button>
+            </div>
+            <div class="model-toolbar">
+              <div id="modelFilters" class="model-filters" role="tablist" aria-label="Filtros de modelos">
+                <button type="button" class="is-active" data-filter="todos">Todos</button>
+                <button type="button" data-filter="favoritos">Favoritos</button>
+                <button type="button" data-filter="meus">Meus modelos</button>
+              </div>
+              <span id="modelCount" class="model-count"></span>
+            </div>
+            <div id="modelGrid" class="model-grid" aria-label="Biblioteca de modelos visuais"></div>
+            <div id="modelEmpty" class="model-empty" hidden>Nenhum modelo encontrado neste filtro.</div>
+            <div id="saveModelPanel" class="save-model-panel" hidden>
+              <label>Nome do modelo
+                <input id="modelNameInput" type="text" maxlength="36" placeholder="Ex.: Identidade da casa">
+              </label>
+              <div class="save-model-actions">
+                <button id="confirmSaveModel" class="button button-primary" type="button">Salvar modelo</button>
+                <button id="cancelSaveModel" class="button button-secondary" type="button">Cancelar</button>
+              </div>
+            </div>
+          </section>
+
           <section class="appearance-card">
             <div class="media-card-heading"><div><p class="eyebrow">TEMA</p><h2>Cores e estilo</h2></div></div>
             <div class="appearance-fields">
@@ -174,6 +200,6 @@
   <div id="toast" class="toast" hidden role="status"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./js/supabase.js?v=1.5.0-s2"></script>
-  <script src="./js/aparencia.js?v=1.5.0-s2"></script>
+  <script src="./js/aparencia.js?v=1.5.0-s2.2"></script>
 </body>
 </html>
