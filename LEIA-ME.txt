@@ -1,0 +1,20 @@
+SPRINT 2.3.2 — QR CODES
+
+Copie a pasta "admin" para a raiz do projeto e confirme a substituição.
+
+Esta entrega atualiza as duas estruturas existentes no backup:
+- admin/
+- admin/admin/
+
+Não precisa executar SQL.
+
+Teste:
+1. Abra Clientes.
+2. Abra um cliente.
+3. Clique em QR Codes.
+4. Clique em Gerar QR Code.
+5. Clique em Baixar PNG.
+
+Commit:
+git add .
+git commit -m "Sprint 2.3.2 - Categoria QR Codes"
