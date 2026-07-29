@@ -6,8 +6,7 @@
   <meta name="theme-color" content="#07140f">
   <meta name="robots" content="noindex,nofollow">
   <title>QR Codes | MisArte Digital</title>
-  <link rel="stylesheet" href="./css/admin.css?v=1.5.0">
-  <link rel="stylesheet" href="./css/qrcodes.css?v=2.3.1">
+  <link rel="stylesheet" href="./css/admin.css?v=2.3.2">
 </head>
 <body class="dashboard-page">
   <div id="pageLoader" class="page-loader" aria-live="polite">
@@ -16,15 +15,13 @@
 
   <div id="dashboardApp" class="dashboard-app" hidden>
     <aside class="sidebar">
-      <a class="sidebar-brand" href="./dashboard.html" aria-label="Painel MisArte Digital">
+      <a class="sidebar-brand" href="./dashboard.html">
         <img src="./assets/misarte-monograma.png" alt="">
         <div><strong>MisArte Digital</strong><span>Painel Administrativo</span></div>
       </a>
-      <nav class="sidebar-nav" aria-label="Navegação do painel">
+      <nav class="sidebar-nav">
         <a href="./dashboard.html"><span class="nav-icon">⌂</span>Visão geral</a>
-        <a href="./dashboard.html#projetos"><span class="nav-icon">◇</span>Projetos</a>
-        <a href="./clientes.html"><span class="nav-icon">◉</span>Clientes</a>
-        <a class="active" href="./qrcodes.html"><span class="nav-icon">▦</span>QR Codes</a>
+        <a class="active" href="./clientes.html"><span class="nav-icon">◉</span>Clientes</a>
       </nav>
       <div class="sidebar-bottom">
         <div class="user-chip">
@@ -36,128 +33,96 @@
     </aside>
 
     <main class="dashboard-main">
-      <header class="dashboard-header qr-header">
+      <header class="dashboard-header">
         <button id="menuButton" class="mobile-menu-button" type="button" aria-label="Abrir menu">☰</button>
         <div>
-          <p class="eyebrow">GESTÃO MIsARTE</p>
-          <h1>QR Codes</h1>
-          <p>Gere, organize e baixe os QR Codes dos clientes.</p>
+          <a id="backToClient" class="back-link" href="./clientes.html">← Voltar para o cliente</a>
+          <p class="eyebrow">QR CODES</p>
+          <h1 id="clientName">Carregando...</h1>
+          <p>Gere o QR Code oficial da página pública deste cliente.</p>
         </div>
-        <button id="newQrButton" class="button button-primary header-action" type="button">+ Novo QR Code</button>
       </header>
 
-      <section class="qr-summary" aria-label="Resumo">
-        <article><span>Total</span><strong id="qrTotal">—</strong></article>
-        <article><span>Ativos</span><strong id="qrActive">—</strong></article>
-        <article><span>Arquivados</span><strong id="qrArchived">—</strong></article>
+      <nav class="client-tabs" aria-label="Seções do cliente">
+        <a id="identityTab" class="client-tab-link" href="./cliente.html">Identidade visual</a>
+        <a id="appearanceTab" class="client-tab-link" href="./aparencia.html">Aparência</a>
+        <a id="catalogsTab" class="client-tab-link" href="./catalogos.html">Catálogos</a>
+        <a class="client-tab-link active" href="#">QR Codes</a>
+      </nav>
+
+      <section class="qr-layout">
+        <article class="qr-panel">
+          <div class="qr-panel-heading">
+            <div>
+              <p class="eyebrow">NOVO QR CODE</p>
+              <h2>Gerar QR Code</h2>
+            </div>
+            <span>PNG em alta resolução</span>
+          </div>
+
+          <form id="qrForm" class="qr-form">
+            <label>
+              <span>Nome do QR Code</span>
+              <input id="qrName" type="text" maxlength="80" placeholder="Ex.: Cardápio principal" required>
+            </label>
+
+            <label>
+              <span>URL de destino</span>
+              <input id="qrUrl" type="url" placeholder="https://..." required>
+              <small>A página pública do cliente é preenchida automaticamente.</small>
+            </label>
+
+            <div class="qr-actions">
+              <button class="button button-primary" type="submit">Gerar QR Code</button>
+              <button id="saveQrButton" class="button button-secondary" type="button" disabled>Salvar na biblioteca</button>
+            </div>
+            <p id="formMessage" class="form-message" role="status"></p>
+          </form>
+        </article>
+
+        <article class="qr-preview-card">
+          <div class="qr-panel-heading">
+            <div>
+              <p class="eyebrow">PRÉVIA</p>
+              <h2 id="previewTitle">Seu QR Code</h2>
+            </div>
+          </div>
+
+          <div id="qrPreview" class="qr-preview">
+            <div class="qr-empty">
+              <strong>Nenhum QR Code gerado</strong>
+              <span>Preencha os dados e clique em “Gerar QR Code”.</span>
+            </div>
+          </div>
+
+          <button id="downloadButton" class="button button-primary qr-download" type="button" disabled>
+            Baixar PNG
+          </button>
+        </article>
       </section>
 
-      <section class="qr-toolbar" aria-label="Filtros">
-        <label class="qr-search">
-          <span>Buscar</span>
-          <input id="searchInput" type="search" placeholder="Nome, cliente, código ou tipo">
-        </label>
-        <label>
-          <span>Status</span>
-          <select id="statusFilter">
-            <option value="">Todos</option>
-            <option value="ativo">Ativos</option>
-            <option value="inativo">Inativos</option>
-            <option value="arquivado">Arquivados</option>
-          </select>
-        </label>
-        <label>
-          <span>Tipo</span>
-          <select id="typeFilter">
-            <option value="">Todos</option>
-            <option value="cardapio">Cardápio</option>
-            <option value="instagram">Instagram</option>
-            <option value="whatsapp">WhatsApp</option>
-            <option value="site">Site</option>
-            <option value="google_maps">Google Maps</option>
-            <option value="personalizado">Personalizado</option>
-          </select>
-        </label>
-      </section>
+      <section class="qr-library-section">
+        <div class="section-title-row">
+          <div>
+            <p class="eyebrow">BIBLIOTECA</p>
+            <h2>QR Codes salvos</h2>
+          </div>
+          <span id="qrCount" class="version-badge">0 salvos</span>
+        </div>
 
-      <section class="panel-section">
-        <div id="qrState" class="projects-state table-card">Carregando QR Codes...</div>
-        <div id="qrGrid" class="qr-grid" hidden></div>
+        <div id="libraryState" class="projects-state table-card">
+          Nenhum QR Code salvo para este cliente.
+        </div>
+        <div id="qrLibrary" class="qr-library" hidden></div>
       </section>
     </main>
   </div>
 
-  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
-  <aside id="qrDrawer" class="client-drawer" aria-hidden="true" aria-labelledby="drawerTitle">
-    <div class="drawer-header">
-      <div><p class="eyebrow">QR CODE</p><h2 id="drawerTitle">Novo QR Code</h2></div>
-      <button id="closeDrawerButton" class="icon-button" type="button" aria-label="Fechar">×</button>
-    </div>
-
-    <form id="qrForm" class="client-form">
-      <input id="qrId" type="hidden">
-      <div class="form-grid">
-        <label class="full-field">
-          <span>Nome *</span>
-          <input id="qrName" required maxlength="120" placeholder="Ex.: QR Cardápio Principal">
-        </label>
-        <label class="full-field">
-          <span>Cliente *</span>
-          <select id="qrClient" required><option value="">Carregando clientes...</option></select>
-        </label>
-        <label>
-          <span>Tipo *</span>
-          <select id="qrType" required>
-            <option value="cardapio">Cardápio</option>
-            <option value="instagram">Instagram</option>
-            <option value="whatsapp">WhatsApp</option>
-            <option value="site">Site</option>
-            <option value="google_maps">Google Maps</option>
-            <option value="personalizado">Personalizado</option>
-          </select>
-        </label>
-        <label>
-          <span>Status *</span>
-          <select id="qrStatus" required>
-            <option value="ativo">Ativo</option>
-            <option value="inativo">Inativo</option>
-          </select>
-        </label>
-        <label class="full-field">
-          <span>URL de destino *</span>
-          <input id="qrUrl" type="url" required maxlength="2000" placeholder="https://...">
-          <small>Use a URL completa, começando por https://</small>
-        </label>
-        <label class="full-field">
-          <span>Observações</span>
-          <textarea id="qrNotes" rows="4" maxlength="500" placeholder="Informação interna opcional"></textarea>
-        </label>
-      </div>
-      <p id="formMessage" class="form-message" aria-live="polite"></p>
-      <div class="drawer-actions">
-        <button id="cancelButton" class="button button-secondary" type="button">Cancelar</button>
-        <button id="saveButton" class="button button-primary" type="submit">Gerar QR Code</button>
-      </div>
-    </form>
-  </aside>
-
-  <div id="previewModal" class="qr-modal" hidden>
-    <div class="qr-modal-card" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
-      <button id="closePreviewButton" class="icon-button qr-modal-close" type="button" aria-label="Fechar">×</button>
-      <p class="eyebrow">VISUALIZAÇÃO</p>
-      <h2 id="previewTitle">QR Code</h2>
-      <p id="previewMeta" class="qr-preview-meta"></p>
-      <div id="previewCanvas" class="qr-preview-canvas"></div>
-      <p id="previewUrl" class="qr-preview-url"></p>
-      <button id="downloadPreviewButton" class="button button-primary" type="button">Baixar PNG</button>
-    </div>
-  </div>
-
-  <div id="toast" class="toast" hidden aria-live="polite"></div>
+  <div id="toast" class="toast" hidden role="status"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  <script src="./js/supabase.js?v=1.0.0"></script>
-  <script src="./js/qrcodes.js?v=2.3.1"></script>
+  <script src="./js/supabase.js?v=1.5.0"></script>
+  <script src="./js/qrcodes.js?v=2.3.2"></script>
 </body>
 </html>

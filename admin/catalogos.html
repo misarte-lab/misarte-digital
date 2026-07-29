@@ -47,7 +47,7 @@
       <nav class="client-tabs" aria-label="Seções do cliente">
         <a id="identityTab" class="client-tab-link" href="./cliente.html">Identidade visual</a>
         <button class="active" type="button">Catálogos</button>
-        <button type="button" disabled>QR Codes <small>em breve</small></button>
+        <a id="qrCodesTab" class="client-tab-link" href="./qrcodes.html">QR Codes</a>
         <button type="button" disabled>Estatísticas <small>em breve</small></button>
       </nav>
 
@@ -161,5 +161,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./js/supabase.js?v=1.3.0"></script>
   <script src="./js/catalogos.js?v=1.3.0"></script>
+
+  <script>
+    (() => {
+      const id = new URLSearchParams(location.search).get("id");
+      const link = document.querySelector("#qrCodesTab");
+      if (id && link) link.href = `./qrcodes.html?id=${encodeURIComponent(id)}`;
+    })();
+  </script>
 </body>
 </html>

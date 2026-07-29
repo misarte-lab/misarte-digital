@@ -1,0 +1,20 @@
+SPRINT 2.3.2 — QR CODES
+
+Copie a pasta "admin" para a raiz do projeto e confirme a substituição dos arquivos.
+
+Arquivos novos:
+- admin/qrcodes.html
+- admin/js/qrcodes.js
+
+Arquivos atualizados:
+- admin/cliente.html
+- admin/aparencia.html
+- admin/catalogos.html
+- admin/css/admin.css
+
+Teste:
+1. Abra Clientes.
+2. Abra um cliente.
+3. Clique em QR Codes.
+4. Clique em Gerar QR Code.
+5. Baixe o PNG.
