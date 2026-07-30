@@ -133,7 +133,7 @@
 
     const { data, error } = await db
       .from("clientes")
-      .select("id,nome,empresa,categoria,cidade,estado,logo_url,capa_url")
+      .select("id,nome,empresa,categoria,cidade,estado,logo_url,capa_url,slug_publico")
       .eq("id", clientId)
       .single();
 
@@ -153,7 +153,11 @@
     el.path.textContent = `clientes/${data.id}/`;
     el.catalogsTab.href = `./catalogos.html?id=${encodeURIComponent(data.id)}`;
     el.appearanceTab.href = `./aparencia.html?id=${encodeURIComponent(data.id)}`;
-    el.publicPageButton.href = `../publico.html?cliente=${encodeURIComponent(data.id)}`;
+    const publicSlug = String(data.slug_publico || "").trim();
+
+el.publicPageButton.href = publicSlug
+  ? `../${encodeURIComponent(publicSlug)}/`
+  : `../publico.html?cliente=${encodeURIComponent(data.id)}`;
     preview(el.logoPreview, data.logo_url, "logo");
     preview(el.coverPreview, data.capa_url, "capa");
     el.removeLogo.hidden = !data.logo_url;
