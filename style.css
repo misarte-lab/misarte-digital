@@ -576,12 +576,16 @@ body.splash-active {
 .projects-dynamic .project-card.is-featured{
   border-color:rgba(79,197,140,.30);
 }
+.projects-dynamic .project-visual{
+  max-height:none;
+}
 
 .projects-dynamic .project-visual img{
   width:100%;
-  height:100%;
-  object-fit:cover;
+  height:auto;
+  object-fit:contain;
 }
+
 
 @media(max-width:760px){
   .projects-dynamic{

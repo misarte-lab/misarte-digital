@@ -28,16 +28,20 @@
     el.email.textContent = sessionData.session.user.email || "Usuária autenticada";
 
     const { data, error } = await db.from("clientes")
-      .select("id,nome,empresa").eq("id", clientId).single();
+      .select("id,nome,empresa,slug").eq("id", clientId).single();
     if (error || !data) throw error || new Error("Cliente não encontrado.");
 
     const name = data.nome || data.empresa || "Cliente";
     el.name.textContent = name;
     el.qrName.value = `QR Code - ${name}`;
 
-    const publicUrl = new URL("../publico.html", location.href);
-    publicUrl.searchParams.set("cliente", data.id);
-    el.qrUrl.value = publicUrl.href;
+   const publicSlug = String(data.slug || "").trim();
+
+const publicUrl = slug
+  ? `https://misarte.link/${publicSlug}/`
+  : `https://misarte.link/publico.html?cliente=${encodeURIComponent(data.id)}`;
+
+el.qrUrl.value = publicUrl;
 
     const query = `?id=${encodeURIComponent(data.id)}`;
     el.back.href = `./cliente.html${query}`;

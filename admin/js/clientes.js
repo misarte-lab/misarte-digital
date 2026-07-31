@@ -131,6 +131,9 @@
       const name = item.nome || item.empresa || "Sem nome";
       const location = [item.cidade, item.estado].filter(Boolean).join(" · ") || "Local não informado";
       const active = normalize(item.status) === "ativo";
+      const publicUrl = item.slug
+  ? `../${encodeURIComponent(item.slug)}/`
+  : `../publico.html?cliente=${encodeURIComponent(item.id)}`;
       return `
         <article class="client-card">
           <div class="client-card-top">
@@ -151,7 +154,7 @@
           <div class="client-actions">
             <a class="button button-primary" href="./cliente.html?id=${escapeHtml(item.id)}">Abrir</a>
             <a class="button button-secondary" href="./aparencia.html?id=${escapeHtml(item.id)}">Aparência</a>
-            <a class="button button-secondary" href="../publico.html?cliente=${escapeHtml(item.id)}" target="_blank" rel="noopener">Ver página pública</a>
+            <a class="button button-secondary" href="${escapeHtml(publicUrl)}" target="_blank" rel="noopener">Ver página pública</a>
             <button class="button button-secondary" type="button" data-action="edit" data-id="${escapeHtml(item.id)}">Editar</button>
             <button class="button button-text-danger" type="button" data-action="delete" data-id="${escapeHtml(item.id)}">Excluir</button>
           </div>
@@ -173,7 +176,7 @@
 
     const { data, error } = await client
       .from("clientes")
-      .select("id,nome,empresa,categoria,cidade,estado,status,destaque,ordem,logo_url,capa_url")
+     .select("id,nome,empresa,categoria,cidade,estado,status,destaque,ordem,logo_url,capa_url,slug")
       .order("ordem", { ascending: true });
 
     if (error) {

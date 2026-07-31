@@ -133,7 +133,7 @@
 
     const { data, error } = await db
       .from("clientes")
-      .select("id,nome,empresa,categoria,cidade,estado,logo_url,capa_url,slug_publico")
+      .select("id,nome,empresa,categoria,cidade,estado,logo_url,capa_url,slug")
       .eq("id", clientId)
       .single();
 
@@ -148,12 +148,13 @@
     }
 
     current = data;
+    console.log("CLIENTE:", data);
     el.name.textContent = data.nome || data.empresa || "Cliente";
     el.meta.textContent = [data.categoria, data.cidade, data.estado].filter(Boolean).join(" · ");
     el.path.textContent = `clientes/${data.id}/`;
     el.catalogsTab.href = `./catalogos.html?id=${encodeURIComponent(data.id)}`;
     el.appearanceTab.href = `./aparencia.html?id=${encodeURIComponent(data.id)}`;
-    const publicSlug = String(data.slug_publico || "").trim();
+    const publicSlug = String(data.slug || "").trim();
 
 el.publicPageButton.href = publicSlug
   ? `../${encodeURIComponent(publicSlug)}/`
