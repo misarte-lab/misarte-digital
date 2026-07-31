@@ -37,10 +37,9 @@
 
    const publicSlug = String(data.slug || "").trim();
 
-const publicUrl = slug
-  ? `https://misarte.link/${publicSlug}/`
+const publicUrl = publicSlug
+  ? `https://misarte.link/${encodeURIComponent(publicSlug)}/`
   : `https://misarte.link/publico.html?cliente=${encodeURIComponent(data.id)}`;
-
 el.qrUrl.value = publicUrl;
 
     const query = `?id=${encodeURIComponent(data.id)}`;
