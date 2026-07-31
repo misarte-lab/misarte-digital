@@ -2,7 +2,7 @@
   "cliente": "Cervejaria Inconfidentes",
   "titulo": "Escolha a sua experiência cervejeira",
   "homePage": 1,
-  "closingPage": 41,
+  "closingPage": 56,
   "fabricantes": [
     {
       "id": "ouropretana",
@@ -189,6 +189,74 @@
         {
           "pagina": 40,
           "nome": "Medieval"
+        }
+      ]
+    },
+    {
+      "id": "krug",
+      "nome": "Krug",
+      "inicio": 41,
+      "fim": 55,
+      "produtos": [
+        {
+          "pagina": 41,
+          "nome": "German Pils"
+        },
+        {
+          "pagina": 42,
+          "nome": "Amber Lager"
+        },
+        {
+          "pagina": 43,
+          "nome": "Krug 20 Hop Lager"
+        },
+        {
+          "pagina": 44,
+          "nome": "Cocoa Stout"
+        },
+        {
+          "pagina": 45,
+          "nome": "Light"
+        },
+        {
+          "pagina": 46,
+          "nome": "Austria Lager"
+        },
+        {
+          "pagina": 47,
+          "nome": "Austria Hefe Weizen"
+        },
+        {
+          "pagina": 48,
+          "nome": "Austria Golden"
+        },
+        {
+          "pagina": 49,
+          "nome": "Austria Dunkel"
+        },
+        {
+          "pagina": 50,
+          "nome": "Submissão Session IPA"
+        },
+        {
+          "pagina": 51,
+          "nome": "Calúnia American Pale Ale"
+        },
+        {
+          "pagina": 52,
+          "nome": "Inocência Tripel"
+        },
+        {
+          "pagina": 53,
+          "nome": "Rancor India Pale Ale"
+        },
+        {
+          "pagina": 54,
+          "nome": "Remorso Russian Imperial Stout"
+        },
+        {
+          "pagina": 55,
+          "nome": "Ignorância American Double IPA"
         }
       ]
     }

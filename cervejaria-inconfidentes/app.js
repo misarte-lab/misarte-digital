@@ -44,7 +44,7 @@ function openHome(push=true){
   window.scrollTo(0, 0);
 }
 function openPage(page,push=true){
-  page = Math.max(2, Math.min(41, Number(page)));
+  page = Math.max(2, Math.min(state.data.closingPage, Number(page)));
   state.page = page;
   state.currentBrand = brandForPage(page);
   homeView.hidden = true;
@@ -56,22 +56,37 @@ function openPage(page,push=true){
   pageImage.src = `pages/pagina-${String(page).padStart(2,"0")}.webp`;
   pageImage.alt = `${state.currentBrand?.nome || "Catálogo"} - página ${page}`;
   const pageHome = $("pageHomeHotspot");
-  const hasHomeButton = [12,17,29,41].includes(page);
+  const hasHomeButton = [12,17,29,40,55,state.data.closingPage].includes(page);
   pageHome.hidden = !hasHomeButton;
-  pageHome.classList.toggle("final", page === 41);
+  pageHome.classList.toggle("final", page === state.data.closingPage);
   if(push) history.pushState({view:"page",page},"",`#pagina-${page}`);
   window.scrollTo(0, 0);
   updateNav();
 }
 function updateNav(){
   const b = state.currentBrand;
+  const closing = state.data.closingPage;
+  if(!b){
+    $("prevBtn").disabled = state.page <= 2;
+    $("nextBtn").disabled = state.page >= closing;
+    return;
+  }
   $("prevBtn").disabled = state.page <= b.inicio;
-  $("nextBtn").disabled = state.page >= b.fim;
+  const isLastBrand = b === state.data.fabricantes[state.data.fabricantes.length - 1];
+  $("nextBtn").disabled = state.page >= b.fim && !(isLastBrand && closing > b.fim);
 }
 function step(delta){
   const b = state.currentBrand;
+  const closing = state.data.closingPage;
+  if(!b){
+    const target = state.page + delta;
+    if(target >= 2 && target <= closing) openPage(target);
+    return;
+  }
   const target = state.page + delta;
+  const isLastBrand = b === state.data.fabricantes[state.data.fabricantes.length - 1];
   if(target >= b.inicio && target <= b.fim) openPage(target);
+  else if(delta > 0 && isLastBrand && state.page === b.fim && closing > b.fim) openPage(closing);
 }
 function renderDrawer(mode="all"){
   drawerContent.innerHTML = "";

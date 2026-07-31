@@ -23,6 +23,12 @@
       "name": "Backer",
       "start": 30,
       "end": 40
+    },
+    {
+      "id": "krug",
+      "name": "Krug",
+      "start": 41,
+      "end": 55
     }
   ]
 }

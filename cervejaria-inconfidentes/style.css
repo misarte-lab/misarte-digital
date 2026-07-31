@@ -112,10 +112,11 @@ button{font:inherit}
 .cover-hotspot:active{
   background:rgba(255,255,255,.12);
 }
-.cover-hotspot.ouropretana{top:50.2%}
-.cover-hotspot.baden{top:58.3%}
-.cover-hotspot.verace{top:66.5%}
-.cover-hotspot.backer{top:74.8%}
+.cover-hotspot.ouropretana{top:48.1%}
+.cover-hotspot.baden{top:55.4%}
+.cover-hotspot.verace{top:62.7%}
+.cover-hotspot.backer{top:70.0%}
+.cover-hotspot.krug{top:77.3%}
 
 .page-wrap{
   position:relative;
