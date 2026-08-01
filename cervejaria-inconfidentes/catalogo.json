@@ -2,7 +2,7 @@
   "cliente": "Cervejaria Inconfidentes",
   "titulo": "Escolha a sua experiência cervejeira",
   "homePage": 1,
-  "closingPage": 56,
+ "closingPage": 59,
   "fabricantes": [
     {
       "id": "ouropretana",
@@ -259,6 +259,26 @@
           "nome": "Ignorância American Double IPA"
         }
       ]
+    }
+  ]
+},
+{
+  "id": "marianense",
+  "nome": "Cerveja Marianense",
+  "inicio": 56,
+  "fim": 58,
+  "produtos": [
+    {
+      "pagina": 56,
+      "nome": "Pale Ale com Rapadura"
+    },
+    {
+      "pagina": 57,
+      "nome": "Double IPA"
+    },
+    {
+      "pagina": 58,
+      "nome": "Blonde Ale"
     }
   ]
 }

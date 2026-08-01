@@ -56,7 +56,15 @@ function openPage(page,push=true){
   pageImage.src = `pages/pagina-${String(page).padStart(2,"0")}.webp`;
   pageImage.alt = `${state.currentBrand?.nome || "Catálogo"} - página ${page}`;
   const pageHome = $("pageHomeHotspot");
-  const hasHomeButton = [12,17,29,40,55,state.data.closingPage].includes(page);
+  const hasHomeButton = [
+  12,
+  17,
+  29,
+  40,
+  55,
+  58,
+  state.data.closingPage
+].includes(page);
   pageHome.hidden = !hasHomeButton;
   pageHome.classList.toggle("final", page === state.data.closingPage);
   if(push) history.pushState({view:"page",page},"",`#pagina-${page}`);
