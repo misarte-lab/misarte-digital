@@ -413,7 +413,26 @@ const saveCatalog = async (event) => {
   };
 
   const pdfFile = el.pdfInput?.files?.[0];
+  const MAX_PDF_SIZE = 25 * 1024 * 1024;
 
+  if (pdfFile && pdfFile.size > MAX_PDF_SIZE) {
+  el.save.disabled = false;
+  el.save.textContent = originalButtonText;
+
+  if (el.pdfStatus) {
+    el.pdfStatus.textContent =
+      "PDF acima do limite recomendado.";
+  }
+
+  const tamanho = (pdfFile.size / 1024 / 1024).toFixed(1);
+
+  setFormMessage(
+    `O PDF possui ${tamanho} MB. O tamanho máximo permitido é 25 MB. Exporte o PDF novamente utilizando compressão para Web.`,
+    "error"
+  );
+
+  return;
+}
   if (pdfFile) {
     const isPdf =
       pdfFile.type === "application/pdf" ||
