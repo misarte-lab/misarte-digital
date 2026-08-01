@@ -262,23 +262,31 @@
     }
   ]
 },
-{
-  "id": "marianense",
-  "nome": "Cerveja Marianense",
-  "inicio": 56,
-  "fim": 58,
-  "produtos": [
-    {
-      "pagina": 56,
-      "nome": "Pale Ale com Rapadura"
+        {
+          "pagina": 55,
+          "nome": "Ignorância American Double IPA"
+        }
+      ]
     },
     {
-      "pagina": 57,
-      "nome": "Double IPA"
-    },
-    {
-      "pagina": 58,
-      "nome": "Blonde Ale"
+      "id": "marianense",
+      "nome": "Cerveja Marianense",
+      "inicio": 56,
+      "fim": 58,
+      "produtos": [
+        {
+          "pagina": 56,
+          "nome": "Pale Ale com Rapadura"
+        },
+        {
+          "pagina": 57,
+          "nome": "Double IPA"
+        },
+        {
+          "pagina": 58,
+          "nome": "Blonde Ale"
+        }
+      ]
     }
   ]
 }
