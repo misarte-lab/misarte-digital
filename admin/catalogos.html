@@ -134,6 +134,30 @@
           <span>Descrição</span>
           <textarea id="catalogDescription" rows="5" maxlength="500" placeholder="Explique o conteúdo e a proposta deste catálogo."></textarea>
         </label>
+        <div class="full-field">
+  <label for="catalogPdf">PDF do catálogo</label>
+ <div id="currentPdfBox" class="upload-current" hidden>
+    <span>Arquivo atual:</span>
+    <a
+      id="currentPdfLink"
+      href="#"
+      target="_blank"
+      rel="noopener"
+    ></a>
+  </div>
+
+  <input
+    id="catalogPdf"
+    type="file"
+    accept="application/pdf,.pdf"
+  >
+
+  <p id="catalogPdfStatus" class="upload-status">
+    Selecione um PDF somente quando desejar substituir o arquivo atual.
+  </p>
+</div>
+  
+
       </div>
 
       <p id="formMessage" class="form-message" role="status"></p>

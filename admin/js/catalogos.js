@@ -33,6 +33,10 @@
     status: document.querySelector("#catalogStatus"),
     order: document.querySelector("#catalogOrder"),
     featured: document.querySelector("#catalogFeatured"),
+    pdfInput: document.querySelector("#catalogPdf"),
+    pdfBox: document.querySelector("#currentPdfBox"),
+    pdfLink: document.querySelector("#currentPdfLink"),
+    pdfStatus: document.querySelector("#catalogPdfStatus"),
     description: document.querySelector("#catalogDescription"),
     drawerTitle: document.querySelector("#drawerTitle"),
     formMessage: document.querySelector("#formMessage"),
@@ -144,7 +148,7 @@
 
     const { data, error } = await db
       .from("catalogos")
-      .select("id,cliente_id,nome,tipo,descricao,status,destaque,ordem,created_at")
+      .select("id,cliente_id,nome,tipo,descricao,status,destaque,ordem,pdf_url,pdf_nome,pdf_atualizado_em")
       .eq("cliente_id", clientId)
       .order("ordem", { ascending: true });
 
@@ -183,7 +187,20 @@
     el.drawerTitle.textContent = item ? "Editar catálogo" : "Novo catálogo";
     el.save.textContent = item ? "Salvar alterações" : "Salvar catálogo";
     setFormMessage();
-    el.backdrop.hidden = false;
+     el.catalogPdf.value = "";
+  if (item?.pdf_url) {
+  el.currentPdfBox.hidden = false;
+  el.currentPdfLink.href = item.pdf_url;
+  el.currentPdfLink.textContent = item.pdf_nome || "Abrir PDF atual";
+  el.catalogPdfStatus.textContent =
+    "Selecione um novo PDF somente para substituir o arquivo atual.";
+} else {
+  el.currentPdfBox.hidden = true;
+  el.currentPdfLink.href = "#";
+  el.currentPdfLink.textContent = "";
+  el.catalogPdfStatus.textContent = "Nenhum PDF enviado para este catálogo.";
+}
+el.backdrop.hidden = false;
     el.drawer.classList.add("is-open");
     el.drawer.setAttribute("aria-hidden", "false");
     document.body.classList.add("drawer-open");
@@ -207,35 +224,130 @@
 
     el.save.disabled = true;
     el.save.textContent = "Salvando...";
-    const payload = {
-      cliente_id: clientId,
-      nome: el.catalogName.value.trim(),
-      tipo: el.type.value,
-      status: el.status.value,
-      ordem: Number(el.order.value || 0),
-      destaque: el.featured.checked,
-      descricao: el.description.value.trim() || null
-    };
-
     const id = el.id.value;
-    const query = id
-      ? db.from("catalogos").update(payload).eq("id", id).eq("cliente_id", clientId)
-      : db.from("catalogos").insert(payload);
+const originalButtonText = id
+  ? "Salvar alterações"
+  : "Salvar catálogo";
+const payload = {
+  cliente_id: clientId,
+  nome: el.catalogName.value.trim(),
+  tipo: el.type.value,
+  status: el.status.value,
+  ordem: Number(el.order.value || 0),
+  destaque: el.featured.checked,
+  descricao: el.description.value.trim() || null
+};
 
-    const { error } = await query;
+const pdfFile = el.catalogPdf?.files?.[0];
+
+if (pdfFile) {
+  const isPdf =
+    pdfFile.type === "application/pdf" ||
+    pdfFile.name.toLowerCase().endsWith(".pdf");
+
+  if (!isPdf) {
     el.save.disabled = false;
-    el.save.textContent = id ? "Salvar alterações" : "Salvar catálogo";
+    el.save.textContent = originalButtonText;
+    setFormMessage("Selecione um arquivo PDF válido.", "error");
+    return;
+  }
 
-    if (error) {
-      console.error(error);
-      setFormMessage(error.message || "Não foi possível salvar.", "error");
-      return;
+  try {
+    if (el.catalogPdfStatus) {
+      el.catalogPdfStatus.textContent = "Enviando PDF...";
     }
 
-    closeDrawer();
-    await loadCatalogs();
-    showToast(id ? "Catálogo atualizado com sucesso." : "Catálogo criado com sucesso.");
-  };
+    const safeFileName = pdfFile.name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "-")
+      .replace(/-+/g, "-")
+      .toLowerCase();
+
+    const storagePath =
+      `${clientId}/${id || "novo"}-${Date.now()}-${safeFileName}`;
+
+    const { error: uploadError } = await db.storage
+      .from("catalogos-pdf")
+      .upload(storagePath, pdfFile, {
+        contentType: "application/pdf",
+        upsert: false
+      });
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+    const { data: publicUrlData } = db.storage
+      .from("catalogos-pdf")
+      .getPublicUrl(storagePath);
+
+    if (!publicUrlData?.publicUrl) {
+      throw new Error("Não foi possível gerar a URL pública do PDF.");
+    }
+
+    payload.pdf_url = publicUrlData.publicUrl;
+    payload.pdf_nome = pdfFile.name;
+    payload.pdf_atualizado_em = new Date().toISOString();
+
+    if (el.catalogPdfStatus) {
+      el.catalogPdfStatus.textContent =
+        "PDF enviado. Finalizando o catálogo...";
+    }
+  } catch (error) {
+    console.error(error);
+
+    el.save.disabled = false;
+    el.save.textContent = originalButtonText;
+
+    if (el.catalogPdfStatus) {
+      el.catalogPdfStatus.textContent =
+        "Não foi possível enviar o PDF.";
+    }
+
+    setFormMessage(
+      error.message || "Não foi possível enviar o PDF.",
+      "error"
+    );
+    return;
+  }
+}
+
+  const { error } = await query;
+
+el.save.disabled = false;
+el.save.textContent = originalButtonText;
+
+if (error) {
+  console.error(error);
+
+  if (el.catalogPdfStatus) {
+    el.catalogPdfStatus.textContent =
+      "O PDF foi enviado, mas o catálogo não pôde ser salvo.";
+  }
+
+  setFormMessage(
+    error.message || "Não foi possível salvar o catálogo.",
+    "error"
+  );
+  return;
+}
+
+if (el.catalogPdfStatus) {
+  el.catalogPdfStatus.textContent = pdfFile
+    ? "PDF atualizado com sucesso."
+    : "Nenhum novo PDF foi enviado.";
+}
+
+closeDrawer();
+await loadCatalogs();
+
+showToast(
+  id
+    ? "Catálogo atualizado com sucesso."
+    : "Catálogo criado com sucesso."
+);
+};
 
   const openDelete = (item) => {
     deleteTarget = item;
