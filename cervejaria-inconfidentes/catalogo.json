@@ -2,7 +2,7 @@
   "cliente": "Cervejaria Inconfidentes",
   "titulo": "Escolha a sua experiência cervejeira",
   "homePage": 1,
- "closingPage": 59,
+  "closingPage": 59,
   "fabricantes": [
     {
       "id": "ouropretana",
@@ -254,14 +254,6 @@
           "pagina": 54,
           "nome": "Remorso Russian Imperial Stout"
         },
-        {
-          "pagina": 55,
-          "nome": "Ignorância American Double IPA"
-        }
-      ]
-    }
-  ]
-},
         {
           "pagina": 55,
           "nome": "Ignorância American Double IPA"
