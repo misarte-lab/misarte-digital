@@ -50,6 +50,7 @@
 
   let catalogs = [];
   let deleteTarget = null;
+  let clientSlug = "";
 
   const normalize = (value) =>
     String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -67,6 +68,23 @@
     promocoes: "Promoções",
     outro: "Outro"
   }[value] || "Catálogo");
+  const formatDateTime = (value) => {
+  if (!value) return "Ainda não informado";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Data indisponível";
+  }
+
+  return date.toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+};
 
   const showToast = (message, type = "success") => {
     el.toast.textContent = message;
@@ -98,48 +116,171 @@
     });
   };
 
-  const render = () => {
-    el.total.textContent = catalogs.length;
-    el.published.textContent = catalogs.filter(item => item.status === "publicado").length;
-    el.drafts.textContent = catalogs.filter(item => item.status === "rascunho").length;
+ const render = () => {
+  el.total.textContent = catalogs.length;
+  el.published.textContent =
+    catalogs.filter(item => item.status === "publicado").length;
+  el.drafts.textContent =
+    catalogs.filter(item => item.status === "rascunho").length;
 
-    const list = filteredCatalogs();
-    if (!list.length) {
-      el.state.textContent = catalogs.length
-        ? "Nenhum catálogo corresponde aos filtros."
-        : "Nenhum catálogo cadastrado. Clique em “Novo catálogo” para começar.";
-      el.state.hidden = false;
-      el.grid.hidden = true;
-      return;
-    }
+  const list = filteredCatalogs();
 
-    el.grid.innerHTML = list.map(item => `
+  if (!list.length) {
+    el.state.textContent = catalogs.length
+      ? "Nenhum catálogo corresponde aos filtros."
+      : "Nenhum catálogo cadastrado. Clique em “Novo catálogo” para começar.";
+
+    el.state.hidden = false;
+    el.grid.hidden = true;
+    return;
+  }
+
+  const publicCatalogUrl = clientSlug
+    ? `https://misarte.link/${encodeURIComponent(clientSlug)}/`
+    : `https://misarte.link/publico.html?cliente=${encodeURIComponent(clientId)}`;
+
+  el.grid.innerHTML = list.map(item => {
+    const pdfUrl = String(item.pdf_url || "").trim();
+    const pdfName = item.pdf_nome || "PDF do catálogo";
+    const pdfUpdatedAt = formatDateTime(item.pdf_atualizado_em);
+
+    const pdfPreview = pdfUrl
+      ? `
+        <div class="catalog-pdf-preview">
+          <iframe
+            src="${escapeHtml(pdfUrl)}#page=1&toolbar=0&navpanes=0&scrollbar=0"
+            title="Primeira página de ${escapeHtml(item.nome)}"
+            loading="lazy"
+          ></iframe>
+        </div>
+      `
+      : `
+        <div class="catalog-pdf-preview catalog-pdf-empty">
+          <span>PDF</span>
+          <p>Nenhum arquivo enviado</p>
+        </div>
+      `;
+
+    const pdfButton = pdfUrl
+      ? `
+        <a
+          class="button button-secondary"
+          href="${escapeHtml(pdfUrl)}"
+          target="_blank"
+          rel="noopener"
+        >
+          Abrir PDF
+        </a>
+      `
+      : `
+        <button
+          class="button button-secondary"
+          type="button"
+          disabled
+        >
+          PDF não disponível
+        </button>
+      `;
+
+    return `
       <article class="catalog-card">
+        ${pdfPreview}
+
         <div class="catalog-card-top">
           <div>
             <p class="eyebrow">${escapeHtml(typeLabel(item.tipo))}</p>
             <h2>${escapeHtml(item.nome)}</h2>
           </div>
-          <span class="status-badge ${item.status === "publicado" ? "status-active" : "status-neutral"}">
-            ${escapeHtml(item.status === "publicado" ? "Publicado" : item.status === "arquivado" ? "Arquivado" : "Rascunho")}
+
+          <span class="status-badge ${
+            item.status === "publicado"
+              ? "status-active"
+              : "status-neutral"
+          }">
+            ${
+              item.status === "publicado"
+                ? "Publicado"
+                : item.status === "arquivado"
+                  ? "Arquivado"
+                  : "Rascunho"
+            }
           </span>
         </div>
-        <p class="catalog-description">${escapeHtml(item.descricao || "Sem descrição.")}</p>
-        <div class="catalog-card-meta">
-          <span>Ordem <strong>${escapeHtml(item.ordem ?? 0)}</strong></span>
-          <span>Destaque <strong>${item.destaque ? "Sim" : "Não"}</strong></span>
+
+        <p class="catalog-description">
+          ${escapeHtml(item.descricao || "Sem descrição.")}
+        </p>
+
+        <div class="catalog-pdf-info">
+          <p>
+            <span>Arquivo atual</span>
+            <strong>${escapeHtml(pdfUrl ? pdfName : "Nenhum PDF enviado")}</strong>
+          </p>
+
+          <p>
+            <span>Última atualização</span>
+            <strong>${escapeHtml(pdfUrl ? pdfUpdatedAt : "Ainda não atualizado")}</strong>
+          </p>
         </div>
+
+        <div class="catalog-card-meta">
+          <span>
+            Ordem
+            <strong>${escapeHtml(item.ordem ?? 0)}</strong>
+          </span>
+
+          <span>
+            Destaque
+            <strong>${item.destaque ? "Sim" : "Não"}</strong>
+          </span>
+        </div>
+
+        <div class="client-actions catalog-view-actions">
+          ${pdfButton}
+
+          <a
+            class="button button-primary"
+            href="${escapeHtml(publicCatalogUrl)}"
+            target="_blank"
+            rel="noopener"
+          >
+            Abrir catálogo
+          </a>
+        </div>
+
         <div class="client-actions">
-          <a class="button button-primary" href="./categorias.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}">Gerenciar categorias</a>
-          <button class="button button-secondary" type="button" data-action="edit" data-id="${escapeHtml(item.id)}">Editar</button>
-          <button class="button button-text-danger" type="button" data-action="delete" data-id="${escapeHtml(item.id)}">Excluir</button>
+          <a
+            class="button button-primary"
+            href="./categorias.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}"
+          >
+            Gerenciar categorias
+          </a>
+
+          <button
+            class="button button-secondary"
+            type="button"
+            data-action="edit"
+            data-id="${escapeHtml(item.id)}"
+          >
+            Editar
+          </button>
+
+          <button
+            class="button button-text-danger"
+            type="button"
+            data-action="delete"
+            data-id="${escapeHtml(item.id)}"
+          >
+            Excluir
+          </button>
         </div>
       </article>
-    `).join("");
+    `;
+  }).join("");
 
-    el.state.hidden = true;
-    el.grid.hidden = false;
-  };
+  el.state.hidden = true;
+  el.grid.hidden = false;
+};
 
   const loadCatalogs = async () => {
     el.state.hidden = false;
@@ -164,17 +305,24 @@
   };
 
   const loadClient = async () => {
-    const { data, error } = await db
-      .from("clientes")
-      .select("id,nome,empresa,categoria,cidade,estado")
-      .eq("id", clientId)
-      .single();
+  const { data, error } = await db
+    .from("clientes")
+    .select("id,nome,empresa,categoria,cidade,estado,slug")
+    .eq("id", clientId)
+    .single();
 
-    if (error) throw error;
-    el.name.textContent = data.nome || data.empresa || "Cliente";
-    el.meta.textContent = [data.categoria, data.cidade, data.estado].filter(Boolean).join(" · ");
-  };
+  if (error) throw error;
 
+  clientSlug = String(data.slug || "").trim();
+
+  el.name.textContent =
+    data.nome || data.empresa || "Cliente";
+
+  el.meta.textContent =
+    [data.categoria, data.cidade, data.estado]
+      .filter(Boolean)
+      .join(" · ");
+};
  const openDrawer = (item = null) => {
   el.form.reset();
 
