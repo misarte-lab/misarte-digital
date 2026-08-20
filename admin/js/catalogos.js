@@ -116,7 +116,7 @@
         const initialViewport = page.getViewport({ scale: 1 });
         const availableWidth = preview.clientWidth;
         const availableHeight = preview.clientHeight;
-        const scale = Math.min(
+        const scale = Math.max(
           availableWidth / initialViewport.width,
           availableHeight / initialViewport.height
         );
