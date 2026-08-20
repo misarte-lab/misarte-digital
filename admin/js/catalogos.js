@@ -42,6 +42,7 @@
     formMessage: document.querySelector("#formMessage"),
     save: document.querySelector("#saveButton"),
     modal: document.querySelector("#confirmModal"),
+    confirmTitle: document.querySelector("#confirmTitle"),
     confirmText: document.querySelector("#confirmText"),
     cancelDelete: document.querySelector("#cancelDeleteButton"),
     confirmDelete: document.querySelector("#confirmDeleteButton"),
@@ -49,7 +50,8 @@
   };
 
   let catalogs = [];
-  let deleteTarget = null;
+  let actionTarget = null;
+  let actionMode = null;
   let clientSlug = "";
 
   const normalize = (value) =>
@@ -296,6 +298,16 @@
         </div>
 
         <div class="client-actions">
+          ${item.status === "publicado" ? `
+            <button class="button button-secondary" type="button" data-action="unpublish" data-id="${escapeHtml(item.id)}">
+              Voltar para rascunho
+            </button>
+          ` : item.status === "rascunho" ? `
+            <button class="button button-primary" type="button" data-action="publish" data-id="${escapeHtml(item.id)}">
+              Publicar catálogo
+            </button>
+          ` : ""}
+
           <a
             class="button button-primary"
             href="./categorias.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}"
@@ -378,6 +390,7 @@
   el.catalogName.value = item?.nome || "";
   el.type.value = item?.tipo || "cardapio";
   el.status.value = item?.status || "rascunho";
+  el.status.disabled = item?.status === "publicado";
   el.order.value =
     item?.ordem ??
     (
@@ -443,6 +456,7 @@ const saveCatalog = async (event) => {
   }
 
   const id = el.id.value;
+  const currentCatalog = catalogs.find(item => String(item.id) === String(id));
   const originalButtonText = id
     ? "Salvar alterações"
     : "Salvar catálogo";
@@ -454,7 +468,7 @@ const saveCatalog = async (event) => {
     cliente_id: clientId,
     nome: el.catalogName.value.trim(),
     tipo: el.type.value,
-    status: el.status.value,
+    status: currentCatalog?.status === "publicado" ? "publicado" : el.status.value,
     ordem: Number(el.order.value || 0),
     destaque: el.featured.checked,
     descricao: el.description.value.trim() || null
@@ -600,40 +614,107 @@ const saveCatalog = async (event) => {
   );
 };
 
-  const openDelete = (item) => {
-    deleteTarget = item;
-    el.confirmText.textContent = `Você está prestes a excluir “${item.nome}”.`;
+  const openConfirmation = (item, mode) => {
+    actionTarget = item;
+    actionMode = mode;
+    const content = {
+      publish: {
+        title: "Publicar catálogo?",
+        text: `“${item.nome}” ficará disponível na página pública. O QR Code e o endereço atual do cliente não serão alterados.`,
+        button: "Publicar"
+      },
+      unpublish: {
+        title: "Voltar para rascunho?",
+        text: `“${item.nome}” deixará de aparecer na página pública, mas continuará salvo no painel.`,
+        button: "Voltar para rascunho"
+      },
+      delete: {
+        title: "Excluir catálogo?",
+        text: `Você está prestes a excluir “${item.nome}”. Esta ação não poderá ser desfeita.`,
+        button: "Excluir"
+      }
+    }[mode];
+    el.confirmTitle.textContent = content.title;
+    el.confirmText.textContent = content.text;
+    el.confirmDelete.textContent = content.button;
+    el.confirmDelete.className = mode === "delete" ? "button button-danger" : "button button-primary";
     el.modal.hidden = false;
   };
 
-  const closeDelete = () => {
-    deleteTarget = null;
-    el.modal.hidden = true;
-    el.confirmDelete.disabled = false;
-    el.confirmDelete.textContent = "Excluir";
-  };
-
-  const deleteCatalog = async () => {
-    if (!deleteTarget) return;
-    el.confirmDelete.disabled = true;
-    el.confirmDelete.textContent = "Excluindo...";
-
-    const { error } = await db
-      .from("catalogos")
-      .delete()
-      .eq("id", deleteTarget.id)
-      .eq("cliente_id", clientId);
-
-    if (error) {
-      console.error(error);
-      closeDelete();
-      showToast(error.message || "Não foi possível excluir.", "error");
+  const prepareAction = async (item, mode) => {
+    if (mode !== "publish") {
+      openConfirmation(item, mode);
       return;
     }
 
-    closeDelete();
+    const { data: categories, error: categoryError } = await db
+      .from("categorias")
+      .select("id")
+      .eq("catalogo_id", item.id)
+      .eq("status", "ativa");
+
+    if (categoryError) {
+      showToast(categoryError.message || "Não foi possível validar o catálogo.", "error");
+      return;
+    }
+
+    if (!categories?.length) {
+      showToast("Crie ao menos uma categoria ativa antes de publicar.", "error");
+      return;
+    }
+
+    const { count, error: productError } = await db
+      .from("produtos")
+      .select("id", { count: "exact", head: true })
+      .in("categoria_id", categories.map(category => category.id))
+      .eq("status", "disponivel");
+
+    if (productError) {
+      showToast(productError.message || "Não foi possível validar os produtos.", "error");
+      return;
+    }
+
+    if (!count) {
+      showToast("Adicione ao menos um produto disponível antes de publicar.", "error");
+      return;
+    }
+
+    openConfirmation(item, mode);
+  };
+
+  const closeConfirmation = () => {
+    actionTarget = null;
+    actionMode = null;
+    el.modal.hidden = true;
+    el.confirmDelete.disabled = false;
+  };
+
+  const confirmAction = async () => {
+    if (!actionTarget || !actionMode) return;
+    el.confirmDelete.disabled = true;
+    el.confirmDelete.textContent = actionMode === "delete" ? "Excluindo..." : "Salvando...";
+
+    const query = actionMode === "delete"
+      ? db.from("catalogos").delete().eq("id", actionTarget.id).eq("cliente_id", clientId)
+      : db.from("catalogos").update({ status: actionMode === "publish" ? "publicado" : "rascunho" })
+          .eq("id", actionTarget.id).eq("cliente_id", clientId);
+    const { error } = await query;
+
+    if (error) {
+      console.error(error);
+      closeConfirmation();
+      showToast(error.message || "Não foi possível concluir a ação.", "error");
+      return;
+    }
+
+    const successMessage = actionMode === "delete"
+      ? "Catálogo excluído com sucesso."
+      : actionMode === "publish"
+        ? "Catálogo publicado com sucesso."
+        : "Catálogo voltou para rascunho.";
+    closeConfirmation();
     await loadCatalogs();
-    showToast("Catálogo excluído com sucesso.");
+    showToast(successMessage);
   };
 
   const start = async () => {
@@ -668,17 +749,21 @@ const saveCatalog = async (event) => {
     control.addEventListener(control === el.search ? "input" : "change", render);
   });
 
-  el.grid.addEventListener("click", (event) => {
+  el.grid.addEventListener("click", async (event) => {
     const button = event.target.closest("button[data-action]");
     if (!button) return;
     const item = catalogs.find(catalog => String(catalog.id) === button.dataset.id);
     if (!item) return;
     if (button.dataset.action === "edit") openDrawer(item);
-    if (button.dataset.action === "delete") openDelete(item);
+    if (["publish", "unpublish", "delete"].includes(button.dataset.action)) {
+      button.disabled = true;
+      await prepareAction(item, button.dataset.action);
+      button.disabled = false;
+    }
   });
 
-  el.cancelDelete.addEventListener("click", closeDelete);
-  el.confirmDelete.addEventListener("click", deleteCatalog);
+  el.cancelDelete.addEventListener("click", closeConfirmation);
+  el.confirmDelete.addEventListener("click", confirmAction);
   el.menu.addEventListener("click", () => el.sidebar.classList.toggle("is-open"));
   el.logout.addEventListener("click", async () => {
     await db.auth.signOut();
