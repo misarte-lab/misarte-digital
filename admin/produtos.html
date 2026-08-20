@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Produtos | MisArte Digital</title>
-<link rel="stylesheet" href="./css/admin.css?v=1.4.0">
+<link rel="stylesheet" href="./css/admin.css?v=1.6.0">
 </head>
 <body class="dashboard-page">
 <div id="pageLoader" class="page-loader"><div class="loader-mark"></div><span>Validando acesso...</span></div>
@@ -61,6 +61,15 @@
 <label><span>Ordem</span><input id="productOrder" type="number" min="1" step="1"></label>
 <label class="checkbox-field"><input id="productFeatured" type="checkbox"><span>Produto em destaque</span></label>
 <label class="full-field"><span>Descrição</span><textarea id="productDescription" rows="5" maxlength="600" placeholder="Descreva sabor, ingredientes, tamanho ou diferenciais."></textarea></label>
+<div class="form-group full-field">
+  <label for="productImage">Imagem do produto</label>
+  <div id="currentProductImage" class="product-image-current" hidden>
+    <img id="currentProductImagePreview" alt="Imagem atual do produto">
+    <label class="checkbox-field"><input id="removeProductImage" type="checkbox"><span>Remover imagem atual</span></label>
+  </div>
+  <input id="productImage" type="file" accept="image/jpeg,image/png,image/webp">
+  <p id="productImageStatus" class="upload-status">A imagem será otimizada automaticamente antes do envio.</p>
+</div>
 </div>
 <p class="form-hint">A ordem é preenchida automaticamente. Altere apenas para reorganizar os produtos.</p>
 <p id="formMessage" class="form-message"></p>
@@ -73,5 +82,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./js/supabase.js?v=1.3.2"></script>
-<script src="./js/produtos.js?v=1.3.2"></script>
+<script src="./js/produtos.js?v=1.6.0"></script>
 </body></html>

@@ -81,11 +81,11 @@
     const {data:categories,error:categoryError}=await db.from("categorias").select("id,nome,descricao,ordem").eq("catalogo_id",catalogId).eq("status","ativa").order("ordem");
     if(categoryError)throw categoryError;
     if(!categories?.length){el.categories.innerHTML="";el.empty.hidden=false;el.empty.textContent="Este catálogo ainda não possui categorias publicadas.";return}
-    const {data:products,error:productError}=await db.from("produtos").select("id,categoria_id,nome,descricao,preco,destaque,ordem").in("categoria_id",categories.map(c=>c.id)).eq("status","disponivel").order("destaque",{ascending:false}).order("ordem");
+    const {data:products,error:productError}=await db.from("produtos").select("id,categoria_id,nome,descricao,preco,destaque,ordem,imagem_url").in("categoria_id",categories.map(c=>c.id)).eq("status","disponivel").order("destaque",{ascending:false}).order("ordem");
     if(productError)throw productError;
     el.categories.innerHTML=categories.map(category=>{
       const items=(products||[]).filter(p=>String(p.categoria_id)===String(category.id));if(!items.length)return"";
-      return `<section class="category-section"><div class="category-header"><h3>${esc(category.nome)}</h3>${category.descricao?`<p>${esc(category.descricao)}</p>`:""}</div><div class="products-grid">${items.map(product=>`<article class="product-item"><div class="product-top"><div><h4>${esc(product.nome)}</h4>${product.destaque?'<div class="product-tags"><span class="product-tag">Destaque</span></div>':""}</div>${product.preco!==null?`<span class="product-price">${esc(money(product.preco))}</span>`:""}</div>${product.descricao?`<p class="product-description">${esc(product.descricao)}</p>`:""}</article>`).join("")}</div></section>`;
+      return `<section class="category-section"><div class="category-header"><h3>${esc(category.nome)}</h3>${category.descricao?`<p>${esc(category.descricao)}</p>`:""}</div><div class="products-grid">${items.map(product=>`<article class="product-item">${product.imagem_url?`<img class="product-image" src="${esc(product.imagem_url)}" alt="${esc(product.nome)}" loading="lazy">`:""}<div class="product-body"><div class="product-top"><div><h4>${esc(product.nome)}</h4>${product.destaque?'<div class="product-tags"><span class="product-tag">Destaque</span></div>':""}</div>${product.preco!==null?`<span class="product-price">${esc(money(product.preco))}</span>`:""}</div>${product.descricao?`<p class="product-description">${esc(product.descricao)}</p>`:""}</div></article>`).join("")}</div></section>`;
     }).join("");
     if(!el.categories.innerHTML.trim()){el.empty.hidden=false;el.empty.textContent="Nenhum produto disponível neste catálogo."}
   }
