@@ -73,6 +73,26 @@ Testar o primeiro produto com imagem no catálogo nativo:
 8. Salvar e conferir a imagem no painel.
 9. Abrir a página pública e validar a apresentação.
 
+## Atualização posterior do mesmo dia
+
+- O primeiro produto com imagem foi cadastrado com sucesso no catálogo nativo.
+- Foi identificado que a imagem aparecia cortada no cartão.
+- O código foi ajustado para mostrar a imagem completa, usando encaixe sem recorte, tanto no painel administrativo quanto no catálogo público.
+- Esse ajuste modificou:
+  - `admin/css/admin.css`
+  - `admin/produtos.html`
+  - `publico.css`
+  - `publico.html`
+- O próximo teste é atualizar o painel com `Ctrl + F5` e confirmar a imagem completa.
+- O VS Code começou a apresentar o erro `launch-failed`, código `57`, após falhas do processo de extensões.
+- Tentativa recomendada para reabrir em modo seguro:
+
+```text
+"C:\Users\mis_c\AppData\Local\Programs\Microsoft VS Code\Code.exe" --disable-extensions --disable-gpu
+```
+
+- Se o erro persistir, o projeto e este documento permanecem preservados no GitHub.
+
 ## Evolução planejada do catálogo nativo
 
 1. Editor essencial de categorias, produtos, imagens, preços, descrição, ordem e disponibilidade.
@@ -90,4 +110,3 @@ Testar o primeiro produto com imagem no catálogo nativo:
 3. Clonar `https://github.com/misarte-lab/misarte-digital.git`.
 4. Entrar no Supabase usando “Continue with GitHub”.
 5. Abrir este documento e continuar a partir de “Próximo passo exato”.
-
