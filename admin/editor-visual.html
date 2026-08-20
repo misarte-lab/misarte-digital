@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#07140f">
   <title>Editor visual | MisArte Digital</title>
   <link rel="stylesheet" href="./css/admin.css?v=1.4.1">
-  <link rel="stylesheet" href="./css/editor-visual.css?v=1.0.3">
+  <link rel="stylesheet" href="./css/editor-visual.css?v=1.0.4">
 </head>
 <body class="visual-editor-page">
   <div id="pageLoader" class="page-loader"><div class="loader-mark"></div><span>Preparando o editor...</span></div>
@@ -65,6 +65,7 @@
         <form id="elementProperties" hidden>
           <p class="eyebrow">ELEMENTO SELECIONADO</p><h2>Botão interativo</h2>
           <label><span>Texto do botão</span><input id="elementText" maxlength="100"></label>
+          <label><span>Aparência</span><select id="elementAppearance"><option value="visivel">Botão visível</option><option value="invisivel">Área invisível sobre a arte</option></select></label>
           <label><span>Imagem ou logotipo</span><input id="elementImage" type="file" accept="image/png,image/jpeg,image/webp"></label>
           <div class="measure-grid">
             <label><span>Posição X (%)</span><input id="elementX" type="number" min="0" max="100" step="0.1"></label>
@@ -84,6 +85,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
   <script src="./js/supabase.js?v=1.3.0"></script>
-  <script src="./js/editor-visual.js?v=1.0.3"></script>
+  <script src="./js/editor-visual.js?v=1.0.4"></script>
 </body>
 </html>
