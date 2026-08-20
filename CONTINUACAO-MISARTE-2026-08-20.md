@@ -110,3 +110,88 @@ Testar o primeiro produto com imagem no catálogo nativo:
 3. Clonar `https://github.com/misarte-lab/misarte-digital.git`.
 4. Entrar no Supabase usando “Continue with GitHub”.
 5. Abrir este documento e continuar a partir de “Próximo passo exato”.
+
+## Ponto de continuidade — Editor visual (20/08/2026, final do dia)
+
+### Regra principal confirmada
+
+- Não alterar nem substituir agora o catálogo original entregue à Cervejaria Inconfidentes.
+- Não alterar o endereço nem o QR Code definitivo do cliente.
+- Construir primeiro todo o sistema de criação visual dentro da MisArte.
+- Somente quando o editor estiver completo, recriar/importar os catálogos existentes e publicar de forma controlada.
+- O painel administrativo pertence exclusivamente à MisArte; clientes não possuem acesso de edição.
+
+### Editor visual criado e publicado
+
+- Novo módulo: `admin/editor-visual.html`.
+- O catálogo de teste é o catálogo `7`, chamado “Cervejas Artesanais”, mantido como rascunho.
+- O editor possui:
+  - criação e exclusão de páginas;
+  - duplicação de páginas com seus elementos;
+  - arte de fundo completa;
+  - importação de PDF;
+  - conversão sequencial das páginas do PDF em WebP otimizado;
+  - lista de páginas com rolagem independente;
+  - página central fixa;
+  - zoom de 50% a 200%;
+  - prévia privada autenticada;
+  - áreas clicáveis visíveis ou invisíveis;
+  - arraste e gravação automática da posição;
+  - destinos para página, categoria, produto ou URL.
+- O PDF da Cervejaria foi importado e gerou 58 páginas visuais.
+- A arte completa das páginas foi preservada.
+
+### SQL executado
+
+- O arquivo `supabase/v1.7.0-editor-visual.sql` já foi executado com sucesso no Supabase.
+- Foram criadas as tabelas:
+  - `catalogo_paginas`;
+  - `pagina_elementos`.
+- As políticas permitem administração somente pela conta `miscristiane@gmail.com`.
+
+### Interatividade da capa
+
+- As medidas exatas dos botões do catálogo original foram recuperadas:
+  - posição horizontal: `24.4%`;
+  - largura: `56.2%`;
+  - altura: `6.3%`.
+- Destinos originais confirmados:
+  - Ouropretana → página 2 (`top: 48.1%`);
+  - Baden Baden → página 13 (`top: 55.4%`);
+  - Verace → página 18 (`top: 62.7%`);
+  - Backer → página 30 (`top: 70.0%`);
+  - Krug → página 41 (`top: 77.3%`);
+  - Marianense → página 56 (`top: 84.6%`).
+- Foi criado o botão **Configurar as 6 marcas automaticamente**, que substitui as áreas de teste e cria as seis áreas com posições e destinos exatos.
+- Na edição, áreas invisíveis aparecem pontilhadas; na prévia e no catálogo final ficam totalmente transparentes.
+
+### Menu superior planejado
+
+- O catálogo final também deverá reproduzir o menu no canto superior direito.
+- O menu abrirá todas as marcas e suas respectivas cervejas.
+- Cada cerveja levará diretamente à sua página.
+- A última página de cada marca terá uma área sobre “Voltar ao início”, ligada à capa.
+- O arquivo `supabase/v1.7.1-menu-visual.sql` já está no GitHub, mas **ainda precisa ser executado no Supabase**.
+- Esse SQL adicionará a cada página:
+  - marca/grupo do menu;
+  - título exibido no menu;
+  - opção de mostrar ou ocultar no menu.
+
+### Última versão publicada
+
+- Commit mais recente: `db47603` — “Configura automaticamente links da capa”.
+- Repositório local e GitHub estavam sincronizados após esse commit.
+- Endereço recomendado para evitar cache:
+  - `https://misarte.link/admin/editor-visual.html?cliente=1&catalogo=7&versao=12`
+
+### Próximo passo exato ao retomar
+
+1. Abrir o endereço do Editor visual acima.
+2. Selecionar a página **Capa**.
+3. Clicar em **Configurar as 6 marcas automaticamente**.
+4. Confirmar a substituição das áreas de teste.
+5. Abrir **Prévia da página** e testar as seis faixas inteiras.
+6. Executar `supabase/v1.7.1-menu-visual.sql` no SQL Editor do Supabase.
+7. Desenvolver e testar o menu superior agrupado por marca e cerveja.
+8. Criar automaticamente os botões “Voltar ao início” nas últimas páginas de cada marca.
+9. Manter o catálogo original e o QR Code atuais sem alterações durante todo esse processo.
