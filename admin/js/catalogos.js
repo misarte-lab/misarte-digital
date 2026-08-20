@@ -315,6 +315,13 @@
             Gerenciar categorias
           </a>
 
+          <a
+            class="button button-primary"
+            href="./editor-visual.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}"
+          >
+            Editor visual
+          </a>
+
           <button
             class="button button-secondary"
             type="button"

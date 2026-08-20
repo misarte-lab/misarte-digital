@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07140f">
+  <title>Editor visual | MisArte Digital</title>
+  <link rel="stylesheet" href="./css/admin.css?v=1.4.1">
+  <link rel="stylesheet" href="./css/editor-visual.css?v=1.0.0">
+</head>
+<body class="visual-editor-page">
+  <div id="pageLoader" class="page-loader"><div class="loader-mark"></div><span>Preparando o editor...</span></div>
+  <div id="editorApp" hidden>
+    <header class="visual-editor-header">
+      <div>
+        <a id="backLink" class="back-link" href="./catalogos.html">← Voltar aos catálogos</a>
+        <p class="eyebrow">EDITOR VISUAL · RASCUNHO PRIVADO</p>
+        <h1 id="catalogName">Carregando...</h1>
+        <p id="clientName" class="visual-editor-subtitle"></p>
+      </div>
+      <div class="visual-editor-header-actions">
+        <button id="previewButton" class="button button-secondary" type="button">Prévia da página</button>
+        <span class="status-badge status-neutral">Não publicado</span>
+      </div>
+    </header>
+
+    <main class="visual-editor-layout">
+      <aside class="visual-panel pages-panel">
+        <div class="visual-panel-title"><div><p class="eyebrow">PÁGINAS</p><h2>Estrutura</h2></div><button id="newPageButton" class="icon-button" type="button" title="Nova página">+</button></div>
+        <div id="pagesList" class="pages-list"></div>
+        <button id="duplicatePageButton" class="button button-secondary full-button" type="button" disabled>Duplicar página</button>
+        <button id="deletePageButton" class="button button-text-danger full-button" type="button" disabled>Excluir página</button>
+      </aside>
+
+      <section class="editor-workspace">
+        <div id="emptyCanvas" class="editor-empty">Crie uma página para começar.</div>
+        <div id="canvasShell" class="canvas-shell" hidden>
+          <div id="pageCanvas" class="page-canvas" aria-label="Área visual da página"></div>
+        </div>
+        <p class="canvas-help">Arraste os botões para posicioná-los. As medidas são proporcionais e se adaptam ao celular.</p>
+      </section>
+
+      <aside class="visual-panel properties-panel">
+        <div id="pageProperties">
+          <p class="eyebrow">PÁGINA SELECIONADA</p><h2>Configuração</h2>
+          <label><span>Nome</span><input id="pageName" maxlength="120"></label>
+          <label><span>Tipo</span><select id="pageType"><option value="capa">Capa</option><option value="conteudo">Conteúdo</option></select></label>
+          <label><span>Arte de fundo</span><input id="backgroundInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+          <p id="backgroundStatus" class="field-help">Envie PNG, JPG ou WebP.</p>
+          <button id="savePageButton" class="button button-primary full-button" type="button">Salvar página</button>
+          <hr>
+          <button id="addButtonElement" class="button button-primary full-button" type="button">+ Botão interativo</button>
+        </div>
+
+        <form id="elementProperties" hidden>
+          <p class="eyebrow">ELEMENTO SELECIONADO</p><h2>Botão interativo</h2>
+          <label><span>Texto do botão</span><input id="elementText" maxlength="100"></label>
+          <label><span>Imagem ou logotipo</span><input id="elementImage" type="file" accept="image/png,image/jpeg,image/webp"></label>
+          <div class="measure-grid">
+            <label><span>Posição X (%)</span><input id="elementX" type="number" min="0" max="100" step="0.1"></label>
+            <label><span>Posição Y (%)</span><input id="elementY" type="number" min="0" max="100" step="0.1"></label>
+            <label><span>Largura (%)</span><input id="elementWidth" type="number" min="2" max="100" step="0.1"></label>
+            <label><span>Altura (%)</span><input id="elementHeight" type="number" min="2" max="100" step="0.1"></label>
+          </div>
+          <label><span>Ao clicar, levar para</span><select id="destinationType"><option value="nenhum">Nenhum destino</option><option value="pagina">Outra página</option><option value="categoria">Categoria</option><option value="produto">Produto</option><option value="url">Endereço externo</option></select></label>
+          <label id="destinationSelectField" hidden><span>Destino</span><select id="destinationId"></select></label>
+          <label id="destinationUrlField" hidden><span>Endereço</span><input id="destinationUrl" type="url" placeholder="https://..."></label>
+          <div class="element-actions"><button class="button button-primary" type="submit">Salvar botão</button><button id="deleteElementButton" class="button button-text-danger" type="button">Excluir</button></div>
+        </form>
+      </aside>
+    </main>
+  </div>
+  <div id="toast" class="toast" hidden></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./js/supabase.js?v=1.3.0"></script>
+  <script src="./js/editor-visual.js?v=1.0.0"></script>
+</body>
+</html>
+
