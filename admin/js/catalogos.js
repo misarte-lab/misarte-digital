@@ -115,11 +115,7 @@
         const page = await pdf.getPage(1);
         const initialViewport = page.getViewport({ scale: 1 });
         const availableWidth = preview.clientWidth;
-        const availableHeight = preview.clientHeight;
-        const scale = Math.max(
-          availableWidth / initialViewport.width,
-          availableHeight / initialViewport.height
-        );
+        const scale = availableWidth / initialViewport.width;
         const viewport = page.getViewport({ scale });
         const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
 
