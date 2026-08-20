@@ -42,6 +42,8 @@
   async function selectPage(id){
     selectedPage=pages.find(page=>String(page.id)===String(id));selectedElement=null;if(!selectedPage)return;
     el.pageName.value=selectedPage.nome;el.pageType.value=selectedPage.tipo;el.backgroundStatus.textContent=selectedPage.fundo_url?"Arte de fundo carregada.":"Envie PNG, JPG ou WebP.";
+    const pageRatio=selectedPage.largura/selectedPage.altura,availableHeight=Math.max(420,window.innerHeight-260);
+    el.shell.style.width=`min(100%, ${Math.min(470,availableHeight*pageRatio)}px)`;
     el.canvas.style.aspectRatio=`${selectedPage.largura}/${selectedPage.altura}`;el.canvas.style.backgroundImage=selectedPage.fundo_url?`url("${selectedPage.fundo_url}")`:"none";
     el.empty.hidden=true;el.shell.hidden=false;el.duplicate.disabled=false;el.deletePage.disabled=false;el.elementForm.hidden=true;renderPageList();await loadElements();
   }
