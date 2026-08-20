@@ -21,6 +21,31 @@
     el.message.className = `form-message ${type}`.trim();
   };
 
+  const showDefinitiveQrCode = () => {
+    const name = el.qrName.value.trim();
+    const url = el.qrUrl.value.trim();
+    try { new URL(url); } catch {
+      setMessage("O endereço definitivo do cliente não é válido.", "error");
+      return;
+    }
+
+    const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(url)}&size=900&margin=4&ecLevel=H&dark=07140f&light=ffffff`;
+    const img = new Image();
+    img.alt = `QR Code definitivo de ${name}`;
+    img.onload = () => {
+      el.preview.innerHTML = "";
+      el.preview.appendChild(img);
+      el.title.textContent = name;
+      el.download.href = qrUrl;
+      el.download.download = `${slug(name)}.png`;
+      el.download.classList.remove("is-disabled");
+      el.download.setAttribute("aria-disabled", "false");
+      setMessage("QR Code definitivo carregado.", "success");
+    };
+    img.onerror = () => setMessage("Não foi possível carregar o QR Code. Verifique a internet.", "error");
+    img.src = qrUrl;
+  };
+
   const load = async () => {
     if (!clientId) return location.replace("./clientes.html");
     const { data: sessionData } = await db.auth.getSession();
@@ -50,29 +75,12 @@ el.qrUrl.value = publicUrl;
 
     el.loader.hidden = true;
     el.app.hidden = false;
+    showDefinitiveQrCode();
   };
 
   el.form.addEventListener("submit", (event) => {
     event.preventDefault();
-    const name = el.qrName.value.trim();
-    const url = el.qrUrl.value.trim();
-    try { new URL(url); } catch { setMessage("Digite uma URL válida.", "error"); return; }
-
-    const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(url)}&size=900&margin=4&ecLevel=H&dark=07140f&light=ffffff`;
-    const img = new Image();
-    img.alt = `QR Code ${name}`;
-    img.onload = () => {
-      el.preview.innerHTML = "";
-      el.preview.appendChild(img);
-      el.title.textContent = name;
-      el.download.href = qrUrl;
-      el.download.download = `${slug(name)}.png`;
-      el.download.classList.remove("is-disabled");
-      el.download.setAttribute("aria-disabled", "false");
-      setMessage("QR Code gerado com sucesso.", "success");
-    };
-    img.onerror = () => setMessage("Não foi possível gerar o QR Code. Verifique a internet.", "error");
-    img.src = qrUrl;
+    showDefinitiveQrCode();
   });
 
   el.download.addEventListener("click", async (event) => {

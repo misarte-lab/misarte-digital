@@ -34,7 +34,7 @@
           <a id="backToClient" class="back-link" href="./clientes.html">← Voltar para o cliente</a>
           <p class="eyebrow">QR CODES</p>
           <h1 id="clientName">Carregando...</h1>
-          <p>Gere o QR Code da página pública deste cliente.</p>
+          <p>Consulte e baixe o QR Code definitivo da página pública deste cliente.</p>
         </div>
       </header>
 
@@ -47,13 +47,13 @@
 
       <section class="qr-layout">
         <article class="qr-panel">
-          <p class="eyebrow">GERADOR</p>
-          <h2>Gerar QR Code</h2>
+          <p class="eyebrow">ENDEREÇO DEFINITIVO</p>
+          <h2>QR Code do cliente</h2>
           <form id="qrForm" class="qr-form">
-            <label><span>Nome</span><input id="qrName" type="text" maxlength="80" required></label>
-            <label><span>URL de destino</span><input id="qrUrl" type="url" required></label>
+            <label><span>Nome</span><input id="qrName" type="text" maxlength="80" required readonly></label>
+            <label><span>URL de destino</span><input id="qrUrl" type="url" required readonly></label>
             <p id="formMessage" class="form-message"></p>
-            <button class="button button-primary" type="submit">Gerar QR Code</button>
+            <button class="button button-primary" type="submit">Atualizar visualização</button>
           </form>
         </article>
 
@@ -61,7 +61,7 @@
           <p class="eyebrow">PRÉVIA</p>
           <h2 id="previewTitle">QR Code</h2>
           <div id="qrPreview" class="qr-preview">
-            <div class="qr-empty"><strong>Nenhum QR Code gerado</strong><span>Preencha os dados e clique em “Gerar QR Code”.</span></div>
+            <div class="qr-empty"><strong>Carregando QR Code</strong><span>Aguarde a identificação do endereço definitivo.</span></div>
           </div>
           <a id="downloadButton" class="button button-primary qr-download is-disabled" href="#" download="qrcode.png" aria-disabled="true">Baixar PNG</a>
         </article>
@@ -72,6 +72,6 @@
   <div id="toast" class="toast" hidden></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./js/supabase.js?v=1.5.0"></script>
-  <script src="./js/qrcodes.js?v=2.3.2"></script>
+  <script src="./js/qrcodes.js?v=2.3.3"></script>
 </body>
 </html>
