@@ -277,12 +277,21 @@
           ${pdfButton}
 
           <a
+            class="button button-secondary"
+            href="../publico.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}&preview=1"
+            target="_blank"
+            rel="noopener"
+          >
+            Prévia privada
+          </a>
+
+          <a
             class="button button-primary"
             href="${escapeHtml(publicCatalogUrl)}"
             target="_blank"
             rel="noopener"
           >
-            Abrir catálogo
+            Abrir catálogo atual
           </a>
         </div>
 

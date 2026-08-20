@@ -10,6 +10,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--brand-font)}
+.preview-notice{position:sticky;top:0;z-index:20;padding:12px 20px;background:#d6a85f;color:#171108;text-align:center;font-size:13px;font-weight:800;letter-spacing:.04em}
 button{font:inherit}
 .public-loader{position:fixed;inset:0;display:grid;place-content:center;gap:14px;text-align:center;background:var(--bg);z-index:20;color:var(--muted)}
 .public-loader-mark{display:grid;place-items:center;width:58px;height:58px;margin:auto;border:1px solid var(--line);border-radius:18px;color:var(--green);font-family:"Playfair Display",serif;font-size:32px}

@@ -1,12 +1,16 @@
 (() => {
   const db = window.misarteSupabase;
-  const clientId = new URLSearchParams(location.search).get("cliente");
+  const params = new URLSearchParams(location.search);
+  const clientId = params.get("cliente");
+  const previewCatalogId = params.get("catalogo");
+  const previewMode = params.get("preview") === "1" && Boolean(previewCatalogId);
   const $ = s => document.querySelector(s);
   const el = {
     loader:$("#publicLoader"),app:$("#publicApp"),hero:$("#hero"),logo:$("#clientLogo"),
     clientName:$("#clientName"),clientMeta:$("#clientMeta"),chooser:$("#catalogChooser"),
     buttons:$("#catalogButtons"),catalogType:$("#catalogType"),catalogName:$("#catalogName"),
-    catalogDescription:$("#catalogDescription"),empty:$("#emptyState"),categories:$("#categoriesContainer")
+    catalogDescription:$("#catalogDescription"),empty:$("#emptyState"),categories:$("#categoriesContainer"),
+    previewNotice:$("#previewNotice")
   };
   let catalogs=[], selectedCatalogId=null, client=null;
   const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
@@ -64,8 +68,10 @@
     if(heroImage) el.hero.style.backgroundImage=`url("${heroImage}")`;
   }
   async function loadCatalogs(){
-    const {data,error}=await db.from("catalogos").select("id,nome,tipo,descricao,destaque,ordem")
-      .eq("cliente_id",clientId).eq("status","publicado").order("destaque",{ascending:false}).order("ordem",{ascending:true});
+    let query=db.from("catalogos").select("id,nome,tipo,descricao,destaque,ordem,status").eq("cliente_id",clientId);
+    if(previewMode)query=query.eq("id",previewCatalogId);
+    else query=query.eq("status","publicado").order("destaque",{ascending:false}).order("ordem",{ascending:true});
+    const {data,error}=await query;
     if(error) throw error; catalogs=data||[];
     if(!catalogs.length){el.empty.hidden=false;el.empty.textContent="Nenhum catálogo publicado no momento.";return}
     const preferred=catalogs.find(c=>String(c.id)===String(client.catalogo_destaque));
@@ -90,5 +96,5 @@
     if(!el.categories.innerHTML.trim()){el.empty.hidden=false;el.empty.textContent="Nenhum produto disponível neste catálogo."}
   }
   el.buttons.addEventListener("click",async e=>{const b=e.target.closest(".catalog-button");if(!b)return;await renderCatalog(b.dataset.id);$("#catalogContent").scrollIntoView({behavior:"smooth",block:"start"})});
-  (async()=>{if(!clientId){showError("O endereço do cliente está incompleto.");return}try{await loadClient();await loadCatalogs();el.loader.hidden=true;el.app.hidden=false}catch(error){console.error(error);showError(error.message||"Não foi possível abrir o catálogo.")}})();
+  (async()=>{if(!clientId){showError("O endereço do cliente está incompleto.");return}try{if(previewMode){const{data}=await db.auth.getSession();if(!data.session)throw new Error("Entre no painel administrativo para visualizar este rascunho.");el.previewNotice.hidden=false}await loadClient();await loadCatalogs();el.loader.hidden=true;el.app.hidden=false}catch(error){console.error(error);showError(error.message||"Não foi possível abrir o catálogo.")}})();
 })();
