@@ -99,6 +99,48 @@
     el.formMessage.className = `form-message ${type}`.trim();
   };
 
+  const renderPdfCovers = async () => {
+    if (!window.pdfjsLib) return;
+
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
+    const canvases = el.grid.querySelectorAll("canvas[data-pdf-url]");
+
+    await Promise.all([...canvases].map(async canvas => {
+      const preview = canvas.closest(".catalog-pdf-preview");
+
+      try {
+        const pdf = await window.pdfjsLib.getDocument(canvas.dataset.pdfUrl).promise;
+        const page = await pdf.getPage(1);
+        const initialViewport = page.getViewport({ scale: 1 });
+        const availableWidth = preview.clientWidth;
+        const availableHeight = preview.clientHeight;
+        const scale = Math.min(
+          availableWidth / initialViewport.width,
+          availableHeight / initialViewport.height
+        );
+        const viewport = page.getViewport({ scale });
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+
+        canvas.width = Math.floor(viewport.width * pixelRatio);
+        canvas.height = Math.floor(viewport.height * pixelRatio);
+        canvas.style.width = `${viewport.width}px`;
+        canvas.style.height = `${viewport.height}px`;
+
+        await page.render({
+          canvasContext: canvas.getContext("2d"),
+          viewport,
+          transform: pixelRatio === 1 ? null : [pixelRatio, 0, 0, pixelRatio, 0, 0]
+        }).promise;
+      } catch (error) {
+        console.error("Não foi possível gerar a capa do PDF.", error);
+        preview.classList.add("catalog-pdf-empty");
+        preview.innerHTML = "<span>PDF</span><p>Não foi possível carregar a capa</p>";
+      }
+    }));
+  };
+
   const filteredCatalogs = () => {
     const term = normalize(el.search.value);
     const status = normalize(el.statusFilter.value);
@@ -147,13 +189,11 @@
     const pdfPreview = pdfUrl
       ? `
         <div class="catalog-pdf-preview">
-          <iframe
-            src="${escapeHtml(pdfUrl)}#page=1&zoom=page-width&toolbar=0&navpanes=0&scrollbar=0"
-            title="Primeira página de ${escapeHtml(item.nome)}"
-            loading="lazy"
-            scrolling="no"
-            tabindex="-1"
-          ></iframe>
+          <canvas
+            data-pdf-url="${escapeHtml(pdfUrl)}"
+            role="img"
+            aria-label="Primeira página de ${escapeHtml(item.nome)}"
+          ></canvas>
         </div>
       `
       : `
@@ -282,6 +322,7 @@
 
   el.state.hidden = true;
   el.grid.hidden = false;
+  renderPdfCovers();
 };
 
   const loadCatalogs = async () => {
