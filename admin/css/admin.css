@@ -1302,6 +1302,7 @@ select:focus,
   height: 100%;
   border: 0;
   background: #fff;
+  pointer-events: none;
 }
 
 .catalog-pdf-empty {

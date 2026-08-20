@@ -148,9 +148,11 @@
       ? `
         <div class="catalog-pdf-preview">
           <iframe
-            src="${escapeHtml(pdfUrl)}#page=1&toolbar=0&navpanes=0&scrollbar=0"
+            src="${escapeHtml(pdfUrl)}#page=1&zoom=page-width&toolbar=0&navpanes=0&scrollbar=0"
             title="Primeira página de ${escapeHtml(item.nome)}"
             loading="lazy"
+            scrolling="no"
+            tabindex="-1"
           ></iframe>
         </div>
       `
