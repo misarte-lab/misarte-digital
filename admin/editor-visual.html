@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#07140f">
   <title>Editor visual | MisArte Digital</title>
   <link rel="stylesheet" href="./css/admin.css?v=1.4.1">
-  <link rel="stylesheet" href="./css/editor-visual.css?v=1.0.4">
+  <link rel="stylesheet" href="./css/editor-visual.css?v=1.0.5">
 </head>
 <body class="visual-editor-page">
   <div id="pageLoader" class="page-loader"><div class="loader-mark"></div><span>Preparando o editor...</span></div>
@@ -59,20 +59,21 @@
           <p id="backgroundStatus" class="field-help">Envie PNG, JPG ou WebP.</p>
           <button id="savePageButton" class="button button-primary full-button" type="button">Salvar página</button>
           <hr>
-          <button id="addButtonElement" class="button button-primary full-button" type="button">+ Botão interativo</button>
+          <button id="addButtonElement" class="button button-primary full-button" type="button">+ Área clicável</button>
         </div>
 
         <form id="elementProperties" novalidate hidden>
-          <p class="eyebrow">ELEMENTO SELECIONADO</p><h2>Botão interativo</h2>
-          <label><span>Texto do botão</span><input id="elementText" maxlength="100"></label>
+          <p class="eyebrow">ÁREA SELECIONADA</p><h2>Interatividade</h2>
+          <label><span>Nome para identificação</span><input id="elementText" maxlength="100"></label>
           <label><span>Aparência</span><select id="elementAppearance"><option value="visivel">Botão visível</option><option value="invisivel">Área invisível sobre a arte</option></select></label>
+          <button id="fitCoverButton" class="button button-secondary full-button" type="button">Ajustar à faixa da capa</button>
           <label><span>Imagem ou logotipo</span><input id="elementImage" type="file" accept="image/png,image/jpeg,image/webp"></label>
-          <div class="measure-grid">
+          <details class="advanced-settings"><summary>Ajustes avançados de posição e tamanho</summary><div class="measure-grid">
             <label><span>Posição X (%)</span><input id="elementX" type="number" min="0" max="100" step="any"></label>
             <label><span>Posição Y (%)</span><input id="elementY" type="number" min="0" max="100" step="any"></label>
             <label><span>Largura (%)</span><input id="elementWidth" type="number" min="2" max="100" step="any"></label>
             <label><span>Altura (%)</span><input id="elementHeight" type="number" min="2" max="100" step="any"></label>
-          </div>
+          </div></details>
           <label><span>Ao clicar, levar para</span><select id="destinationType"><option value="nenhum">Nenhum destino</option><option value="pagina">Outra página</option><option value="categoria">Categoria</option><option value="produto">Produto</option><option value="url">Endereço externo</option></select></label>
           <label id="destinationSelectField" hidden><span>Destino</span><select id="destinationId"></select></label>
           <label id="destinationUrlField" hidden><span>Endereço</span><input id="destinationUrl" type="url" placeholder="https://..."></label>
@@ -85,6 +86,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
   <script src="./js/supabase.js?v=1.3.0"></script>
-  <script src="./js/editor-visual.js?v=1.0.8"></script>
+  <script src="./js/editor-visual.js?v=1.0.9"></script>
 </body>
 </html>
