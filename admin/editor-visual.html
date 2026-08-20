@@ -28,6 +28,11 @@
       <aside class="visual-panel pages-panel">
         <div class="visual-panel-title"><div><p class="eyebrow">PÁGINAS</p><h2>Estrutura</h2></div><button id="newPageButton" class="icon-button" type="button" title="Nova página">+</button></div>
         <div id="pagesList" class="pages-list"></div>
+        <label class="button button-primary full-button import-pdf-button">
+          Importar PDF
+          <input id="pdfInput" type="file" accept="application/pdf,.pdf" hidden>
+        </label>
+        <p id="pdfStatus" class="field-help">Cada página será convertida em uma página visual.</p>
         <button id="duplicatePageButton" class="button button-secondary full-button" type="button" disabled>Duplicar página</button>
         <button id="deletePageButton" class="button button-text-danger full-button" type="button" disabled>Excluir página</button>
       </aside>
@@ -72,8 +77,8 @@
   </div>
   <div id="toast" class="toast" hidden></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
   <script src="./js/supabase.js?v=1.3.0"></script>
-  <script src="./js/editor-visual.js?v=1.0.0"></script>
+  <script src="./js/editor-visual.js?v=1.0.1"></script>
 </body>
 </html>
-
