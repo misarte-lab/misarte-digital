@@ -62,16 +62,16 @@
           <button id="addButtonElement" class="button button-primary full-button" type="button">+ Botão interativo</button>
         </div>
 
-        <form id="elementProperties" hidden>
+        <form id="elementProperties" novalidate hidden>
           <p class="eyebrow">ELEMENTO SELECIONADO</p><h2>Botão interativo</h2>
           <label><span>Texto do botão</span><input id="elementText" maxlength="100"></label>
           <label><span>Aparência</span><select id="elementAppearance"><option value="visivel">Botão visível</option><option value="invisivel">Área invisível sobre a arte</option></select></label>
           <label><span>Imagem ou logotipo</span><input id="elementImage" type="file" accept="image/png,image/jpeg,image/webp"></label>
           <div class="measure-grid">
-            <label><span>Posição X (%)</span><input id="elementX" type="number" min="0" max="100" step="0.1"></label>
-            <label><span>Posição Y (%)</span><input id="elementY" type="number" min="0" max="100" step="0.1"></label>
-            <label><span>Largura (%)</span><input id="elementWidth" type="number" min="2" max="100" step="0.1"></label>
-            <label><span>Altura (%)</span><input id="elementHeight" type="number" min="2" max="100" step="0.1"></label>
+            <label><span>Posição X (%)</span><input id="elementX" type="number" min="0" max="100" step="any"></label>
+            <label><span>Posição Y (%)</span><input id="elementY" type="number" min="0" max="100" step="any"></label>
+            <label><span>Largura (%)</span><input id="elementWidth" type="number" min="2" max="100" step="any"></label>
+            <label><span>Altura (%)</span><input id="elementHeight" type="number" min="2" max="100" step="any"></label>
           </div>
           <label><span>Ao clicar, levar para</span><select id="destinationType"><option value="nenhum">Nenhum destino</option><option value="pagina">Outra página</option><option value="categoria">Categoria</option><option value="produto">Produto</option><option value="url">Endereço externo</option></select></label>
           <label id="destinationSelectField" hidden><span>Destino</span><select id="destinationId"></select></label>
