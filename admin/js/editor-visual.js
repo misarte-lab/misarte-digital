@@ -77,7 +77,7 @@
       const returnPages=[12,17,29,40,55,58,59].map(order=>({order,page:pageByOrder.get(order)}));
       for(const {order,page} of returnPages){
         const {error:deleteError}=await db.from("pagina_elementos").delete().eq("pagina_id",page.id).eq("conteudo","Voltar ao início");if(deleteError)throw deleteError;
-        const isClosing=order===59;const {error}=await db.from("pagina_elementos").insert({pagina_id:page.id,tipo:"botao",conteudo:"Voltar ao início",estilos:{aparencia:"invisivel"},posicao_x:isClosing?19:53,posicao_y:isClosing?49:93.5,largura:isClosing?62:35,altura:isClosing?8:5,destino_tipo:"pagina",destino_id:cover.id,ordem:99});if(error)throw error;
+        const isClosing=order===59,needsVisibleButton=[40,55].includes(order);const {error}=await db.from("pagina_elementos").insert({pagina_id:page.id,tipo:"botao",conteudo:"Voltar ao início",estilos:needsVisibleButton?{aparencia:"visivel",variante:"voltar-inicio"}:{aparencia:"invisivel"},posicao_x:isClosing?19:needsVisibleButton?59:53,posicao_y:isClosing?49:needsVisibleButton?94.5:93.5,largura:isClosing?62:needsVisibleButton?29:35,altura:isClosing?8:needsVisibleButton?3.8:5,destino_tipo:"pagina",destino_id:cover.id,ordem:99});if(error)throw error;
       }
       await loadPages(selectedPage?.id);toast("Menu, retornos e contracapa configurados.");
     }catch(error){toast(error.message||"Não foi possível configurar o catálogo.","error")}finally{el.setupMenu.disabled=false}
@@ -91,7 +91,7 @@
   function clearCanvas(){selectedPage=null;selectedElement=null;el.empty.hidden=false;el.shell.hidden=true;el.duplicate.disabled=true;el.deletePage.disabled=true;el.elementForm.hidden=true;renderPageList()}
   async function loadElements(){const {data,error}=await db.from("pagina_elementos").select("*").eq("pagina_id",selectedPage.id).order("ordem");if(error)throw error;elements=data||[];renderElements()}
   function renderElements(){
-    el.canvas.innerHTML=elements.map(item=>`<div class="visual-element ${item.estilos?.aparencia==="invisivel"?"is-invisible":""} ${String(item.id)===String(selectedElement?.id)?"selected":""}" data-element-id="${esc(item.id)}" style="left:${item.posicao_x}%;top:${item.posicao_y}%;width:${item.largura}%;height:${item.altura}%">${item.imagem_url?`<img src="${esc(item.imagem_url)}" alt="">`:`<span>${esc(item.conteudo||"Botão")}</span>`}</div>`).join("");
+    el.canvas.innerHTML=elements.map(item=>`<div class="visual-element ${item.estilos?.aparencia==="invisivel"?"is-invisible":""} ${item.estilos?.variante==="voltar-inicio"?"is-home-button":""} ${String(item.id)===String(selectedElement?.id)?"selected":""}" data-element-id="${esc(item.id)}" style="left:${item.posicao_x}%;top:${item.posicao_y}%;width:${item.largura}%;height:${item.altura}%">${item.imagem_url?`<img src="${esc(item.imagem_url)}" alt="">`:`<span>${esc(item.conteudo||"Botão")}</span>`}</div>`).join("");
     el.canvas.querySelectorAll(".visual-element").forEach(node=>previewMode?enablePreviewAction(node):enableDrag(node));
   }
   function enablePreviewAction(node){node.addEventListener("click",async()=>{const item=elements.find(value=>String(value.id)===String(node.dataset.elementId));if(!item)return;if(item.destino_tipo==="pagina"&&item.destino_id){await selectPage(item.destino_id);return}if(item.destino_tipo==="url"&&item.destino_url){window.open(item.destino_url,"_blank","noopener");return}if(item.destino_tipo==="categoria"||item.destino_tipo==="produto")toast("O destino está configurado e será ativado na página pública final.")})}
