@@ -47,7 +47,7 @@
     el.canvas.style.aspectRatio=`${selectedPage.largura}/${selectedPage.altura}`;el.canvas.style.backgroundImage=selectedPage.fundo_url?`url("${selectedPage.fundo_url}")`:"none";
     el.empty.hidden=true;el.shell.hidden=false;el.duplicate.disabled=false;el.deletePage.disabled=false;el.elementForm.hidden=true;renderPageList();await loadElements();updatePreviewNavigation();
   }
-  function navigationPages(){return selectedPage?.mostrar_menu&&selectedPage.menu_grupo?pages.filter(page=>page.mostrar_menu&&page.menu_grupo===selectedPage.menu_grupo):pages}
+  function navigationPages(){if(!selectedPage?.mostrar_menu||!selectedPage.menu_grupo)return pages;const groupPages=pages.filter(page=>page.mostrar_menu&&page.menu_grupo===selectedPage.menu_grupo),lastMenuPage=pages.filter(page=>page.mostrar_menu).at(-1);if(lastMenuPage?.menu_grupo===selectedPage.menu_grupo)return [...groupPages,...pages.filter(page=>!page.mostrar_menu&&Number(page.ordem)>Number(lastMenuPage.ordem))];return groupPages}
   function updatePreviewNavigation(){if(!selectedPage)return;const available=navigationPages(),index=available.findIndex(page=>String(page.id)===String(selectedPage.id));el.previewPrevious.disabled=index<=0;el.previewNext.disabled=index<0||index>=available.length-1}
   async function movePreview(direction){const available=navigationPages(),index=available.findIndex(page=>String(page.id)===String(selectedPage?.id)),target=available[index+direction];if(target)await selectPage(target.id)}
   function applyZoom(){const percent=Math.round(zoomLevel*100);el.shell.style.width=`${Math.round(fitCanvasWidth*zoomLevel)}px`;el.zoomLabel.textContent=`${percent}%`;el.zoomOut.disabled=zoomLevel<=.5;el.zoomIn.disabled=zoomLevel>=2}
@@ -78,7 +78,7 @@
       const returnPages=[12,17,29,40,55,58,59].map(order=>({order,page:pageByOrder.get(order)}));
       for(const {order,page} of returnPages){
         const {error:deleteError}=await db.from("pagina_elementos").delete().eq("pagina_id",page.id).eq("conteudo","Voltar ao início");if(deleteError)throw deleteError;
-        const isClosing=order===59,needsVisibleButton=[40,55].includes(order);const {error}=await db.from("pagina_elementos").insert({pagina_id:page.id,tipo:"botao",conteudo:"Voltar ao início",estilos:needsVisibleButton?{aparencia:"visivel",variante:"voltar-inicio"}:{aparencia:"invisivel"},posicao_x:isClosing?19:needsVisibleButton?59:53,posicao_y:isClosing?49:needsVisibleButton?94.5:93.5,largura:isClosing?62:needsVisibleButton?29:35,altura:isClosing?8:needsVisibleButton?3.8:5,destino_tipo:"pagina",destino_id:cover.id,ordem:99});if(error)throw error;
+        const isClosing=order===59,needsVisibleButton=[40,55].includes(order);const {error}=await db.from("pagina_elementos").insert({pagina_id:page.id,tipo:"botao",conteudo:"Voltar ao início",imagem_url:needsVisibleButton?`${location.origin}/assets/botao-voltar-inicio.png`:null,estilos:needsVisibleButton?{aparencia:"visivel",variante:"voltar-inicio"}:{aparencia:"invisivel"},posicao_x:isClosing?19:needsVisibleButton?59:53,posicao_y:isClosing?49:needsVisibleButton?94.5:93.5,largura:isClosing?62:needsVisibleButton?29:35,altura:isClosing?8:needsVisibleButton?3.8:5,destino_tipo:"pagina",destino_id:cover.id,ordem:99});if(error)throw error;
       }
       await loadPages(selectedPage?.id);toast("Menu, retornos e contracapa configurados.");
     }catch(error){toast(error.message||"Não foi possível configurar o catálogo.","error")}finally{el.setupMenu.disabled=false}
