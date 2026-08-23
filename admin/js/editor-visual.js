@@ -74,10 +74,10 @@
       updates.push({page:closing,payload:{nome:"Contracapa",menu_grupo:null,menu_titulo:null,mostrar_menu:false}});
       if(updates.length!==59)throw new Error("Não encontrei todas as 59 páginas do catálogo.");
       for(const item of updates){const {error}=await db.from("catalogo_paginas").update(item.payload).eq("id",item.page.id).eq("catalogo_id",catalogId);if(error)throw error}
-      const returnPages=[12,17,29,40,55,58,59].map(order=>pageByOrder.get(order));
-      for(const page of returnPages){
+      const returnPages=[12,17,29,40,55,58,59].map(order=>({order,page:pageByOrder.get(order)}));
+      for(const {order,page} of returnPages){
         const {error:deleteError}=await db.from("pagina_elementos").delete().eq("pagina_id",page.id).eq("conteudo","Voltar ao início");if(deleteError)throw deleteError;
-        const {error}=await db.from("pagina_elementos").insert({pagina_id:page.id,tipo:"botao",conteudo:"Voltar ao início",estilos:{aparencia:"invisivel"},posicao_x:53,posicao_y:93.5,largura:35,altura:5,destino_tipo:"pagina",destino_id:cover.id,ordem:99});if(error)throw error;
+        const isClosing=order===59;const {error}=await db.from("pagina_elementos").insert({pagina_id:page.id,tipo:"botao",conteudo:"Voltar ao início",estilos:{aparencia:"invisivel"},posicao_x:isClosing?19:53,posicao_y:isClosing?49:93.5,largura:isClosing?62:35,altura:isClosing?8:5,destino_tipo:"pagina",destino_id:cover.id,ordem:99});if(error)throw error;
       }
       await loadPages(selectedPage?.id);toast("Menu, retornos e contracapa configurados.");
     }catch(error){toast(error.message||"Não foi possível configurar o catálogo.","error")}finally{el.setupMenu.disabled=false}
