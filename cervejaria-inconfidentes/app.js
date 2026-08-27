@@ -1,172 +1,39 @@
-const state = { data:null, page:1, currentBrand:null };
-const $ = (id) => document.getElementById(id);
+const SUPABASE_URL="https://sflpvafkopvngciojaqe.supabase.co",SUPABASE_KEY="sb_publishable_3fRcC4NF1Ni4fBm2JGmxwA_MAC-AR1B",CLIENT_SLUG="cervejaria-inconfidentes";
+const state={data:null,pages:[],elements:[],visual:false,page:1,currentBrand:null},$=id=>document.getElementById(id);
+const homeView=$("homeView"),readerView=$("readerView"),pageImage=$("pageImage"),bottomNav=$("bottomNav"),drawer=$("drawer"),drawerBackdrop=$("drawerBackdrop"),drawerTitle=$("drawerTitle"),drawerContent=$("drawerContent");
 
-const homeView = $("homeView");
-const readerView = $("readerView");
-const pageImage = $("pageImage");
-const bottomNav = $("bottomNav");
-const drawer = $("drawer");
-const drawerBackdrop = $("drawerBackdrop");
-const drawerTitle = $("drawerTitle");
-const drawerContent = $("drawerContent");
-
-fetch("catalogo.json")
-  .then(r => r.json())
-  .then(data => {
-    state.data = data;
-    renderHome();
-    handleInitialRoute();
-  })
-  .catch(() => {
-    document.body.innerHTML = '<div class="loading">Não foi possível carregar o catálogo.</div>';
-  });
-
-function renderHome(){
-  document.querySelectorAll(".cover-hotspot").forEach(btn => {
-    btn.addEventListener("click", () => openPage(Number(btn.dataset.page)));
-  });
+async function api(path){const response=await fetch(`${SUPABASE_URL}/rest/v1/${path}`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});if(!response.ok)throw new Error(`Supabase ${response.status}`);return response.json()}
+async function loadVisual(){
+  const clients=await api(`clientes?slug=eq.${CLIENT_SLUG}&select=catalogo_qr_id&limit=1`),catalogId=clients[0]?.catalogo_qr_id;if(!catalogId)return false;
+  const pages=await api(`catalogo_paginas?catalogo_id=eq.${catalogId}&status=eq.ativa&select=id,nome,tipo,fundo_url,largura,altura,ordem,menu_grupo,menu_titulo,mostrar_menu&order=ordem.asc`);if(!pages.length||pages.some(page=>!page.fundo_url))return false;
+  const ids=pages.map(page=>page.id).join(","),elements=await api(`pagina_elementos?pagina_id=in.(${ids})&select=id,pagina_id,tipo,conteudo,imagem_url,posicao_x,posicao_y,largura,altura,destino_tipo,destino_id,destino_url,estilos,ordem&order=ordem.asc`);
+  state.visual=true;state.pages=pages;state.elements=elements;state.data={closingPage:pages.length,fabricantes:buildGroups(pages)};return true;
 }
+function buildGroups(pages){const groups=new Map();pages.filter(page=>page.mostrar_menu).forEach(page=>{const name=page.menu_grupo||"Outros";if(!groups.has(name))groups.set(name,[]);groups.get(name).push({nome:page.menu_titulo||page.nome,pagina:Number(page.ordem)})});return [...groups].map(([nome,produtos])=>({nome,produtos,inicio:produtos[0].pagina,fim:produtos.at(-1).pagina}))}
+async function start(){try{await loadVisual()}catch(error){console.warn("Catálogo visual indisponível; usando versão segura.",error)}if(!state.visual){const response=await fetch("catalogo.json");if(!response.ok)throw new Error("Catálogo indisponível");state.data=await response.json()}renderHome();handleInitialRoute()}
+start().catch(()=>{document.body.innerHTML='<div class="loading">Não foi possível carregar o catálogo.</div>'});
 
-function brandForPage(page){
-  return state.data.fabricantes.find(b => page >= b.inicio && page <= b.fim) || null;
-}
-function openHome(push=true){
-  state.page = 1;
-  state.currentBrand = null;
-  homeView.hidden = false;
-  homeView.style.display = "flex";
-  readerView.hidden = true;
-  readerView.style.display = "none";
-  bottomNav.hidden = true;
-  bottomNav.style.display = "none";
-  closeDrawer();
-  if(push) history.pushState({view:"home"},"","#inicio");
-  window.scrollTo(0, 0);
-}
+function pageByOrder(order){return state.pages.find(page=>Number(page.ordem)===Number(order))}
+function renderHome(){if(state.visual){const cover=pageByOrder(1),wrap=homeView.querySelector(".cover-wrap");wrap.innerHTML=`<img src="${esc(cover.fundo_url)}" alt="${esc(cover.nome)}">`;addElements(wrap,cover)}else document.querySelectorAll(".cover-hotspot").forEach(button=>button.addEventListener("click",()=>openPage(Number(button.dataset.page))))}
+function brandForPage(page){return state.data.fabricantes.find(group=>page>=group.inicio&&page<=group.fim)||null}
+function openHome(push=true){state.page=1;state.currentBrand=null;homeView.hidden=false;homeView.style.display="flex";readerView.hidden=true;readerView.style.display="none";bottomNav.hidden=true;bottomNav.style.display="none";closeDrawer();if(push)history.pushState({view:"home"},"","#inicio");window.scrollTo(0,0)}
 function openPage(page,push=true){
-  page = Math.max(2, Math.min(state.data.closingPage, Number(page)));
-  state.page = page;
-  state.currentBrand = brandForPage(page);
-  homeView.hidden = true;
-  homeView.style.display = "none";
-  readerView.hidden = false;
-  readerView.style.display = "block";
-  bottomNav.hidden = false;
-  bottomNav.style.display = "grid";
-  pageImage.src = `pages/pagina-${String(page).padStart(2,"0")}.webp`;
-  pageImage.alt = `${state.currentBrand?.nome || "Catálogo"} - página ${page}`;
-  const pageHome = $("pageHomeHotspot");
-  const hasHomeButton = [
-  12,
-  17,
-  29,
-  40,
-  55,
-  58,
-  state.data.closingPage
-].includes(page);
-  pageHome.hidden = !hasHomeButton;
-  pageHome.classList.toggle("final", page === state.data.closingPage);
-  if(push) history.pushState({view:"page",page},"",`#pagina-${page}`);
-  window.scrollTo(0, 0);
-  updateNav();
+  page=Math.max(2,Math.min(state.data.closingPage,Number(page)));state.page=page;state.currentBrand=brandForPage(page);homeView.hidden=true;homeView.style.display="none";readerView.hidden=false;readerView.style.display="block";bottomNav.hidden=false;bottomNav.style.display="grid";
+  const visualPage=state.visual?pageByOrder(page):null;pageImage.src=visualPage?.fundo_url||`pages/pagina-${String(page).padStart(2,"0")}.webp`;pageImage.alt=visualPage?.nome||`${state.currentBrand?.nome||"Catálogo"} - página ${page}`;
+  const wrap=readerView.querySelector(".page-wrap");wrap.querySelectorAll(".visual-hotspot").forEach(node=>node.remove());if(visualPage)addElements(wrap,visualPage);
+  const pageHome=$("pageHomeHotspot");pageHome.hidden=state.visual||![12,17,29,40,55,58,state.data.closingPage].includes(page);pageHome.classList.toggle("final",page===state.data.closingPage);if(push)history.pushState({view:"page",page},"",`#pagina-${page}`);window.scrollTo(0,0);updateNav();
 }
-function updateNav(){
-  const b = state.currentBrand;
-  const closing = state.data.closingPage;
-  if(!b){
-    $("prevBtn").disabled = state.page <= 2;
-    $("nextBtn").disabled = state.page >= closing;
-    return;
-  }
-  $("prevBtn").disabled = state.page <= b.inicio;
-  const isLastBrand = b === state.data.fabricantes[state.data.fabricantes.length - 1];
-  $("nextBtn").disabled = state.page >= b.fim && !(isLastBrand && closing > b.fim);
-}
-function step(delta){
-  const b = state.currentBrand;
-  const closing = state.data.closingPage;
-  if(!b){
-    const target = state.page + delta;
-    if(target >= 2 && target <= closing) openPage(target);
-    return;
-  }
-  const target = state.page + delta;
-  const isLastBrand = b === state.data.fabricantes[state.data.fabricantes.length - 1];
-  if(target >= b.inicio && target <= b.fim) openPage(target);
-  else if(delta > 0 && isLastBrand && state.page === b.fim && closing > b.fim) openPage(closing);
-}
-function renderDrawer(mode="all"){
-  drawerContent.innerHTML = "";
-  if(mode === "brand" && state.currentBrand){
-    drawerTitle.textContent = state.currentBrand.nome;
-    addBrandGroup(state.currentBrand);
-  } else {
-    drawerTitle.textContent = "Marcas e rótulos";
-    state.data.fabricantes.forEach(addBrandGroup);
-  }
-}
-function addBrandGroup(brand){
-  const group = document.createElement("section");
-  group.className = "drawer-group";
-  const title = document.createElement("h3");
-  title.textContent = brand.nome;
-  group.appendChild(title);
-  brand.produtos.forEach(p => {
-    const btn = document.createElement("button");
-    btn.className = "drawer-item" + (p.pagina === state.page ? " active" : "");
-    btn.textContent = p.nome;
-    btn.addEventListener("click", () => { openPage(p.pagina); closeDrawer(); });
-    group.appendChild(btn);
-  });
-  drawerContent.appendChild(group);
-}
-function openDrawer(mode="all"){
-  renderDrawer(mode);
-  drawer.hidden = false;
-  drawerBackdrop.hidden = false;
-  requestAnimationFrame(() => drawer.classList.add("open"));
-  drawer.setAttribute("aria-hidden","false");
-}
-function closeDrawer(){
-  drawer.classList.remove("open");
-  drawer.setAttribute("aria-hidden","true");
-  drawerBackdrop.hidden = true;
-  setTimeout(()=>{ if(!drawer.classList.contains("open")) drawer.hidden = true; },230);
-}
-function handleInitialRoute(){
-  const m = location.hash.match(/pagina-(\d+)/);
-  if(m) openPage(Number(m[1]),false); else openHome(false);
-}
-$("homeBtn").addEventListener("click",()=>openHome());
-$("brandsBtn").addEventListener("click",()=>openHome());
-$("prevBtn").addEventListener("click",()=>step(-1));
-$("nextBtn").addEventListener("click",()=>step(1));
-$("labelsBtn").addEventListener("click",()=>openDrawer("brand"));
-$("menuBtn").addEventListener("click",()=>openDrawer("all"));
-$("closeDrawer").addEventListener("click",closeDrawer);
-drawerBackdrop.addEventListener("click",closeDrawer);
-window.addEventListener("popstate",handleInitialRoute);
+function addElements(container,page){state.elements.filter(item=>String(item.pagina_id)===String(page.id)).forEach(item=>{if(item.tipo!=="botao"||item.destino_tipo==="nenhum")return;const button=document.createElement("button");button.className=`visual-hotspot${item.estilos?.aparencia==="invisivel"?" is-invisible":""}`;button.style.cssText=`left:${item.posicao_x}%;top:${item.posicao_y}%;width:${item.largura}%;height:${item.altura}%`;button.setAttribute("aria-label",item.conteudo||"Abrir");button.innerHTML=item.imagem_url?`<img src="${esc(item.imagem_url)}" alt="">`:esc(item.conteudo||"");button.addEventListener("click",()=>followDestination(item));container.appendChild(button)})}
+function followDestination(item){if(item.destino_tipo==="pagina"){const target=state.pages.find(page=>String(page.id)===String(item.destino_id));if(target)Number(target.ordem)===1?openHome():openPage(target.ordem)}else if(item.destino_tipo==="url"&&item.destino_url)location.href=item.destino_url}
+function updateNav(){const b=state.currentBrand,closing=state.data.closingPage;if(!b){$("prevBtn").disabled=state.page<=2;$("nextBtn").disabled=state.page>=closing;return}$("prevBtn").disabled=state.page<=b.inicio;const last=b===state.data.fabricantes.at(-1);$("nextBtn").disabled=state.page>=b.fim&&!(last&&closing>b.fim)}
+function step(delta){const b=state.currentBrand,closing=state.data.closingPage,target=state.page+delta;if(!b){if(target>=2&&target<=closing)openPage(target);return}const last=b===state.data.fabricantes.at(-1);if(target>=b.inicio&&target<=b.fim)openPage(target);else if(delta>0&&last&&state.page===b.fim&&closing>b.fim)openPage(closing)}
+function renderDrawer(mode="all"){drawerContent.innerHTML="";if(mode==="brand"&&state.currentBrand){drawerTitle.textContent=state.currentBrand.nome;addBrandGroup(state.currentBrand)}else{drawerTitle.textContent="Marcas e rótulos";state.data.fabricantes.forEach(addBrandGroup)}}
+function addBrandGroup(group){const section=document.createElement("section");section.className="drawer-group";section.innerHTML=`<h3>${esc(group.nome)}</h3>`;group.produtos.forEach(product=>{const button=document.createElement("button");button.className=`drawer-item${product.pagina===state.page?" active":""}`;button.textContent=product.nome;button.addEventListener("click",()=>{openPage(product.pagina);closeDrawer()});section.appendChild(button)});drawerContent.appendChild(section)}
+function openDrawer(mode="all"){renderDrawer(mode);drawer.hidden=false;drawerBackdrop.hidden=false;requestAnimationFrame(()=>drawer.classList.add("open"));drawer.setAttribute("aria-hidden","false")}
+function closeDrawer(){drawer.classList.remove("open");drawer.setAttribute("aria-hidden","true");drawerBackdrop.hidden=true;setTimeout(()=>{if(!drawer.classList.contains("open"))drawer.hidden=true},230)}
+function handleInitialRoute(){const match=location.hash.match(/pagina-(\d+)/);if(match)openPage(Number(match[1]),false);else openHome(false)}
+function esc(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
 
-let x0 = null;
-readerView.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive:true});
-readerView.addEventListener("touchend", e => {
-  if(x0 === null) return;
-  const dx = e.changedTouches[0].clientX - x0;
-  if(Math.abs(dx) > 55) step(dx < 0 ? 1 : -1);
-  x0 = null;
-}, {passive:true});
-$("pageHomeHotspot").addEventListener("click",()=>openHome());
-
-
-// Retorno condicional ao portfólio da MisArte.
-// O botão só aparece quando a visita chega por "?origem=misarte".
-(() => {
-  const params = new URLSearchParams(window.location.search);
-  const veioDaMisarte = params.get('origem') === 'misarte';
-  const returnButton = document.getElementById('misarteReturn');
-
-  if (returnButton && veioDaMisarte) {
-    returnButton.hidden = false;
-  }
-})();
+$("homeBtn").addEventListener("click",()=>openHome());$("brandsBtn").addEventListener("click",()=>openHome());$("prevBtn").addEventListener("click",()=>step(-1));$("nextBtn").addEventListener("click",()=>step(1));$("labelsBtn").addEventListener("click",()=>openDrawer("brand"));$("menuBtn").addEventListener("click",()=>openDrawer("all"));$("closeDrawer").addEventListener("click",closeDrawer);drawerBackdrop.addEventListener("click",closeDrawer);window.addEventListener("popstate",handleInitialRoute);$("pageHomeHotspot").addEventListener("click",()=>openHome());
+let x0=null;readerView.addEventListener("touchstart",event=>{x0=event.touches[0].clientX},{passive:true});readerView.addEventListener("touchend",event=>{if(x0===null)return;const dx=event.changedTouches[0].clientX-x0;if(Math.abs(dx)>55)step(dx<0?1:-1);x0=null},{passive:true});
+(()=>{const params=new URLSearchParams(location.search),button=$("misarteReturn");if(button&&params.get("origem")==="misarte")button.hidden=false})();
