@@ -180,9 +180,15 @@
     const pdfUrl = String(item.pdf_url || "").trim();
     const pdfName = item.pdf_nome || "PDF do catálogo";
     const pdfUpdatedAt = formatDateTime(item.pdf_atualizado_em);
-    const itemPublicCatalogUrl =
-      `../publico.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}&versao=1.6.4`;
     const isQrCatalog = String(item.id) === String(clientQrCatalogId);
+    const itemPublicCatalogUrl = isQrCatalog && clientSlug
+      ? `https://misarte.link/${encodeURIComponent(clientSlug)}/?origem=painel`
+      : pdfUrl || `../publico.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}&versao=1.6.4`;
+    const itemPublicCatalogLabel = isQrCatalog
+      ? "Abrir catálogo do QR"
+      : pdfUrl
+        ? "Abrir Cardápio"
+        : "Abrir este catálogo";
     const qrAddressButton = isQrCatalog && clientSlug
       ? `<a class="button button-primary" href="https://misarte.link/${encodeURIComponent(clientSlug)}/" target="_blank" rel="noopener">Abrir endereço do QR</a>`
       : "";
@@ -301,7 +307,7 @@
             target="_blank"
             rel="noopener"
           >
-            Abrir este catálogo
+            ${itemPublicCatalogLabel}
           </a>
 
           ${qrAddressButton}
