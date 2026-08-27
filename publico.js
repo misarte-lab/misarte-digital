@@ -1,5 +1,4 @@
 (() => {
-  const db = window.misarteSupabase;
   const SUPABASE_URL = "https://sflpvafkopvngciojaqe.supabase.co";
   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_3fRcC4NF1Ni4fBm2JGmxwA_MAC-AR1B";
   const params = new URLSearchParams(location.search);
@@ -65,10 +64,9 @@
   }
   async function loadClient(){
     const fields="id,nome,empresa,categoria,cidade,estado,status,logo_url,capa_url,cor_primaria,cor_secundaria,cor_texto,cor_botao,cor_destaque,cor_fundo,tema,fonte,banner_url,favicon_url,catalogo_destaque";
-    let data,error;
-    if(db){({data,error}=await db.from("clientes").select(fields).eq("id",clientId).eq("status","ativo").single())}
-    else{const rows=await publicSelect("clientes",`select=${fields}&id=eq.${encodeURIComponent(clientId)}&status=eq.ativo&limit=1`);data=rows[0]||null}
-    if(error||!data) throw new Error("Cliente não encontrado ou página ainda não publicada.");
+    const rows=await publicSelect("clientes",`select=${fields}&id=eq.${encodeURIComponent(clientId)}&status=eq.ativo&limit=1`);
+    const data=rows[0]||null;
+    if(!data) throw new Error("Cliente não encontrado ou página ainda não publicada.");
     client=data; applyTheme(data);
     const name=data.nome||data.empresa||"Cliente";
     document.title=`${name} | Catálogo Digital`;el.clientName.textContent=name;
@@ -78,19 +76,9 @@
     if(heroImage) el.hero.style.backgroundImage=`url("${heroImage}")`;
   }
   async function loadCatalogs(){
-    let data,error;
-    if(previewMode){
-      const result=await db.from("catalogos").select("id,nome,tipo,descricao,destaque,ordem,status").eq("cliente_id",clientId).eq("id",requestedCatalogId);data=result.data;error=result.error;
-    }else if(db){
-      let query=db.from("catalogos").select("id,nome,tipo,descricao,destaque,ordem,status").eq("cliente_id",clientId).eq("status","publicado");
-      if(requestedCatalogId)query=query.eq("id",requestedCatalogId);
-      else query=query.order("destaque",{ascending:false}).order("ordem",{ascending:true});
-      ({data,error}=await query);
-    }else{
-      const selected=requestedCatalogId?`&id=eq.${encodeURIComponent(requestedCatalogId)}`:"&order=destaque.desc,ordem.asc";
-      data=await publicSelect("catalogos",`select=id,nome,tipo,descricao,destaque,ordem,status&cliente_id=eq.${encodeURIComponent(clientId)}&status=eq.publicado${selected}`);
-    }
-    if(error) throw error; catalogs=data||[];
+    const selected=requestedCatalogId?`&id=eq.${encodeURIComponent(requestedCatalogId)}`:"&order=destaque.desc,ordem.asc";
+    const data=await publicSelect("catalogos",`select=id,nome,tipo,descricao,destaque,ordem,status&cliente_id=eq.${encodeURIComponent(clientId)}&status=eq.publicado${selected}`);
+    catalogs=data||[];
     if(!catalogs.length){el.empty.hidden=false;el.empty.textContent="Nenhum catálogo publicado no momento.";return}
     const preferred=catalogs.find(c=>String(c.id)===String(requestedCatalogId||client.catalogo_destaque));
     selectedCatalogId=(preferred||catalogs[0]).id;
@@ -102,15 +90,9 @@
     el.catalogType.textContent=typeLabel(catalog.tipo).toUpperCase();el.catalogName.textContent=catalog.nome;el.catalogDescription.textContent=catalog.descricao||"";
     el.empty.hidden=true;el.categories.innerHTML='<div class="public-empty">Carregando itens...</div>';
     el.buttons.querySelectorAll(".catalog-button").forEach(b=>b.classList.toggle("active",String(b.dataset.id)===String(catalogId)));
-    let categories,categoryError;
-    if(db){({data:categories,error:categoryError}=await db.from("categorias").select("id,nome,descricao,ordem").eq("catalogo_id",catalogId).eq("status","ativa").order("ordem"))}
-    else{categories=await publicSelect("categorias",`select=id,nome,descricao,ordem&catalogo_id=eq.${encodeURIComponent(catalogId)}&status=eq.ativa&order=ordem.asc`)}
-    if(categoryError)throw categoryError;
+    const categories=await publicSelect("categorias",`select=id,nome,descricao,ordem&catalogo_id=eq.${encodeURIComponent(catalogId)}&status=eq.ativa&order=ordem.asc`);
     if(!categories?.length){el.categories.innerHTML="";el.empty.hidden=false;el.empty.textContent="Este catálogo ainda não possui categorias publicadas.";return}
-    let products,productError;
-    if(db){({data:products,error:productError}=await db.from("produtos").select("id,categoria_id,nome,descricao,preco,destaque,ordem,imagem_url").in("categoria_id",categories.map(c=>c.id)).eq("status","disponivel").order("destaque",{ascending:false}).order("ordem"))}
-    else{products=await publicSelect("produtos",`select=id,categoria_id,nome,descricao,preco,destaque,ordem,imagem_url&categoria_id=in.(${categories.map(c=>encodeURIComponent(c.id)).join(",")})&status=eq.disponivel&order=destaque.desc,ordem.asc`)}
-    if(productError)throw productError;
+    const products=await publicSelect("produtos",`select=id,categoria_id,nome,descricao,preco,destaque,ordem,imagem_url&categoria_id=in.(${categories.map(c=>encodeURIComponent(c.id)).join(",")})&status=eq.disponivel&order=destaque.desc,ordem.asc`);
     el.categories.innerHTML=categories.map(category=>{
       const items=(products||[]).filter(p=>String(p.categoria_id)===String(category.id));if(!items.length)return"";
       return `<section class="category-section"><div class="category-header"><h3>${esc(category.nome)}</h3>${category.descricao?`<p>${esc(category.descricao)}</p>`:""}</div><div class="products-grid">${items.map(product=>`<article class="product-item">${product.imagem_url?`<img class="product-image" src="${esc(product.imagem_url)}" alt="${esc(product.nome)}" loading="lazy">`:""}<div class="product-body"><div class="product-top"><div><h4>${esc(product.nome)}</h4>${product.destaque?'<div class="product-tags"><span class="product-tag">Destaque</span></div>':""}</div>${product.preco!==null?`<span class="product-price">${esc(money(product.preco))}</span>`:""}</div>${product.descricao?`<p class="product-description">${esc(product.descricao)}</p>`:""}</div></article>`).join("")}</div></section>`;
@@ -118,5 +100,5 @@
     if(!el.categories.innerHTML.trim()){el.empty.hidden=false;el.empty.textContent="Nenhum produto disponível neste catálogo."}
   }
   el.buttons.addEventListener("click",async e=>{const b=e.target.closest(".catalog-button");if(!b)return;await renderCatalog(b.dataset.id);$("#catalogContent").scrollIntoView({behavior:"smooth",block:"start"})});
-  (async()=>{if(!clientId){showError("O endereço do cliente está incompleto.");return}try{if(previewMode){if(!db)throw new Error("A prévia privada está temporariamente indisponível.");const{data}=await db.auth.getSession();if(!data.session)throw new Error("Entre no painel administrativo para visualizar este rascunho.");el.previewNotice.hidden=false}await loadClient();await loadCatalogs();el.loader.hidden=true;el.app.hidden=false}catch(error){console.error(error);showError(error.message||"Não foi possível abrir o catálogo.")}})();
+  (async()=>{if(!clientId){showError("O endereço do cliente está incompleto.");return}try{if(previewMode)throw new Error("Abra a prévia privada pelo Editor visual.");await loadClient();await loadCatalogs();el.loader.hidden=true;el.app.hidden=false}catch(error){console.error(error);showError(error.message||"Não foi possível abrir o catálogo.")}})();
 })();
