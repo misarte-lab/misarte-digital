@@ -52,6 +52,8 @@
   let catalogs = [];
   let actionTarget = null;
   let actionMode = null;
+  let clientSlug = "";
+  let clientQrCatalogId = null;
 
   const normalize = (value) =>
     String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -180,6 +182,10 @@
     const pdfUpdatedAt = formatDateTime(item.pdf_atualizado_em);
     const itemPublicCatalogUrl =
       `../publico.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}`;
+    const isQrCatalog = String(item.id) === String(clientQrCatalogId);
+    const qrAddressButton = isQrCatalog && clientSlug
+      ? `<a class="button button-primary" href="https://misarte.link/${encodeURIComponent(clientSlug)}/" target="_blank" rel="noopener">Abrir endereço do QR</a>`
+      : "";
 
     const pdfPreview = pdfUrl
       ? `
@@ -270,6 +276,11 @@
             Destaque
             <strong>${item.destaque ? "Sim" : "Não"}</strong>
           </span>
+
+          <span>
+            Catálogo do QR
+            <strong>${isQrCatalog ? "Sim" : "Não"}</strong>
+          </span>
         </div>
 
         <div class="client-actions catalog-view-actions">
@@ -292,9 +303,19 @@
           >
             Abrir este catálogo
           </a>
+
+          ${qrAddressButton}
         </div>
 
         <div class="client-actions">
+          ${item.status === "publicado" && !isQrCatalog ? `
+            <button class="button button-primary" type="button" data-action="setqr" data-id="${escapeHtml(item.id)}">
+              Usar este catálogo no QR
+            </button>
+          ` : isQrCatalog ? `
+            <span class="status-badge status-active">Ligado ao QR do cliente</span>
+          ` : ""}
+
           ${item.status === "publicado" ? `
             <button class="button button-secondary" type="button" data-action="unpublish" data-id="${escapeHtml(item.id)}">
               Voltar para rascunho
@@ -371,11 +392,14 @@
   const loadClient = async () => {
   const { data, error } = await db
     .from("clientes")
-    .select("id,nome,empresa,categoria,cidade,estado")
+    .select("id,nome,empresa,categoria,cidade,estado,slug,catalogo_qr_id")
     .eq("id", clientId)
     .single();
 
   if (error) throw error;
+
+  clientSlug = String(data.slug || "").trim();
+  clientQrCatalogId = data.catalogo_qr_id;
 
   el.name.textContent =
     data.nome || data.empresa || "Cliente";
@@ -630,6 +654,11 @@ const saveCatalog = async (event) => {
         text: `“${item.nome}” deixará de aparecer na página pública, mas continuará salvo no painel.`,
         button: "Voltar para rascunho"
       },
+      setqr: {
+        title: "Usar este catálogo no QR?",
+        text: `“${item.nome}” passará a ser o catálogo associado ao endereço permanente do cliente. O QR impresso não será alterado.`,
+        button: "Confirmar catálogo do QR"
+      },
       delete: {
         title: "Excluir catálogo?",
         text: `Você está prestes a excluir “${item.nome}”. Esta ação não poderá ser desfeita.`,
@@ -644,6 +673,11 @@ const saveCatalog = async (event) => {
   };
 
   const prepareAction = async (item, mode) => {
+    if (["unpublish", "delete"].includes(mode) && String(item.id) === String(clientQrCatalogId)) {
+      showToast("Escolha primeiro outro catálogo para o QR antes de retirar ou excluir este.", "error");
+      return;
+    }
+
     if (mode !== "publish") {
       openConfirmation(item, mode);
       return;
@@ -696,10 +730,12 @@ const saveCatalog = async (event) => {
     el.confirmDelete.disabled = true;
     el.confirmDelete.textContent = actionMode === "delete" ? "Excluindo..." : "Salvando...";
 
-    const query = actionMode === "delete"
-      ? db.from("catalogos").delete().eq("id", actionTarget.id).eq("cliente_id", clientId)
-      : db.from("catalogos").update({ status: actionMode === "publish" ? "publicado" : "rascunho" })
-          .eq("id", actionTarget.id).eq("cliente_id", clientId);
+    const query = actionMode === "setqr"
+      ? db.from("clientes").update({ catalogo_qr_id: actionTarget.id }).eq("id", clientId)
+      : actionMode === "delete"
+        ? db.from("catalogos").delete().eq("id", actionTarget.id).eq("cliente_id", clientId)
+        : db.from("catalogos").update({ status: actionMode === "publish" ? "publicado" : "rascunho" })
+            .eq("id", actionTarget.id).eq("cliente_id", clientId);
     const { error } = await query;
 
     if (error) {
@@ -711,10 +747,13 @@ const saveCatalog = async (event) => {
 
     const successMessage = actionMode === "delete"
       ? "Catálogo excluído com sucesso."
+      : actionMode === "setqr"
+        ? "Catálogo associado ao QR do cliente."
       : actionMode === "publish"
         ? "Catálogo publicado com sucesso."
         : "Catálogo voltou para rascunho.";
     closeConfirmation();
+    await loadClient();
     await loadCatalogs();
     showToast(successMessage);
   };
@@ -757,7 +796,7 @@ const saveCatalog = async (event) => {
     const item = catalogs.find(catalog => String(catalog.id) === button.dataset.id);
     if (!item) return;
     if (button.dataset.action === "edit") openDrawer(item);
-    if (["publish", "unpublish", "delete"].includes(button.dataset.action)) {
+    if (["publish", "unpublish", "delete", "setqr"].includes(button.dataset.action)) {
       button.disabled = true;
       await prepareAction(item, button.dataset.action);
       button.disabled = false;

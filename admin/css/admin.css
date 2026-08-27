@@ -1003,7 +1003,7 @@ select:focus,
 }
 .catalog-card-meta {
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:10px;
   margin-bottom:18px;
 }
@@ -1027,6 +1027,7 @@ select:focus,
   .catalog-summary { grid-template-columns:1fr; }
   .catalog-toolbar { grid-template-columns:1fr; }
   .catalog-toolbar label:first-child { grid-column:auto; }
+  .catalog-card-meta { grid-template-columns:1fr; }
 }
 
 /* ===== v1.3.1 Categorias ===== */
