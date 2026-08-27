@@ -47,7 +47,17 @@ comment on column public.clientes.catalogo_qr_id is
 -- Configuração inicial confirmada para a Cervejaria Inconfidentes:
 -- o Cardápio é o material impresso e Cervejas Artesanais é o catálogo do QR.
 update public.catalogos
-set destaque = (lower(nome) = 'cervejas artesanais')
+set destaque = (
+  id = (
+    select catalogo_qr.id
+    from public.catalogos as catalogo_qr
+    where catalogo_qr.cliente_id = catalogos.cliente_id
+      and lower(catalogo_qr.nome) = 'cervejas artesanais'
+      and catalogo_qr.status = 'publicado'
+    order by catalogo_qr.id
+    limit 1
+  )
+)
 where cliente_id = (
   select id from public.clientes
   where slug = 'cervejaria-inconfidentes'
