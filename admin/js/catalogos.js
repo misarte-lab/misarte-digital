@@ -181,7 +181,7 @@
     const pdfName = item.pdf_nome || "PDF do catálogo";
     const pdfUpdatedAt = formatDateTime(item.pdf_atualizado_em);
     const itemPublicCatalogUrl =
-      `../publico.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}`;
+      `../publico.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}&versao=1.6.3`;
     const isQrCatalog = String(item.id) === String(clientQrCatalogId);
     const qrAddressButton = isQrCatalog && clientSlug
       ? `<a class="button button-primary" href="https://misarte.link/${encodeURIComponent(clientSlug)}/" target="_blank" rel="noopener">Abrir endereço do QR</a>`
