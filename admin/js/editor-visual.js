@@ -78,7 +78,7 @@
       const returnPages=[12,17,29,40,55,58,59].map(order=>({order,page:pageByOrder.get(order)}));
       for(const {order,page} of returnPages){
         const {error:deleteError}=await db.from("pagina_elementos").delete().eq("pagina_id",page.id).eq("conteudo","Voltar ao início");if(deleteError)throw deleteError;
-        const isClosing=order===59,needsVisibleButton=[40,55].includes(order);const {error}=await db.from("pagina_elementos").insert({pagina_id:page.id,tipo:"botao",conteudo:"Voltar ao início",imagem_url:null,estilos:needsVisibleButton?{aparencia:"visivel",variante:"voltar-inicio"}:{aparencia:"invisivel"},posicao_x:isClosing?19:needsVisibleButton?59:53,posicao_y:isClosing?49:needsVisibleButton?94.5:93.5,largura:isClosing?62:needsVisibleButton?29:35,altura:isClosing?8:needsVisibleButton?3.8:5,destino_tipo:"pagina",destino_id:cover.id,ordem:99});if(error)throw error;
+        const isClosing=order===59;const {error}=await db.from("pagina_elementos").insert({pagina_id:page.id,tipo:"botao",conteudo:"Voltar ao início",imagem_url:null,estilos:{aparencia:"invisivel"},posicao_x:isClosing?19:53,posicao_y:isClosing?49:93.5,largura:isClosing?62:35,altura:isClosing?8:5,destino_tipo:"pagina",destino_id:cover.id,ordem:99});if(error)throw error;
       }
       await loadPages(selectedPage?.id);toast("Menu, retornos e contracapa configurados.");
     }catch(error){toast(error.message||"Não foi possível configurar o catálogo.","error")}finally{el.setupMenu.disabled=false}

@@ -1,29 +1,41 @@
 const SUPABASE_URL="https://sflpvafkopvngciojaqe.supabase.co",SUPABASE_KEY="sb_publishable_3fRcC4NF1Ni4fBm2JGmxwA_MAC-AR1B",CLIENT_SLUG="cervejaria-inconfidentes";
 const state={data:null,pages:[],elements:[],visual:false,page:1,currentBrand:null},$=id=>document.getElementById(id);
+const imageCache=new Map();
 const homeView=$("homeView"),readerView=$("readerView"),pageImage=$("pageImage"),bottomNav=$("bottomNav"),drawer=$("drawer"),drawerBackdrop=$("drawerBackdrop"),drawerTitle=$("drawerTitle"),drawerContent=$("drawerContent");
 
 async function api(path){const response=await fetch(`${SUPABASE_URL}/rest/v1/${path}`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});if(!response.ok)throw new Error(`Supabase ${response.status}`);return response.json()}
 async function loadVisual(){
   const clients=await api(`clientes?slug=eq.${CLIENT_SLUG}&select=catalogo_qr_id&limit=1`),catalogId=clients[0]?.catalogo_qr_id;if(!catalogId)return false;
+  const cached=readCache(catalogId);if(cached){setVisual(cached.pages,cached.elements);refreshVisual(catalogId).catch(()=>{});return true}
+  const fresh=await fetchVisual(catalogId);if(!fresh)return false;setVisual(fresh.pages,fresh.elements);writeCache(catalogId,fresh.pages,fresh.elements);return true;
+}
+async function fetchVisual(catalogId){
   const pages=await api(`catalogo_paginas?catalogo_id=eq.${catalogId}&status=eq.ativa&select=id,nome,tipo,fundo_url,largura,altura,ordem,menu_grupo,menu_titulo,mostrar_menu&order=ordem.asc`);if(!pages.length||pages.some(page=>!page.fundo_url))return false;
   const ids=pages.map(page=>page.id).join(","),elements=await api(`pagina_elementos?pagina_id=in.(${ids})&select=id,pagina_id,tipo,conteudo,imagem_url,posicao_x,posicao_y,largura,altura,destino_tipo,destino_id,destino_url,estilos,ordem&order=ordem.asc`);
-  state.visual=true;state.pages=pages;state.elements=elements;state.data={closingPage:pages.length,fabricantes:buildGroups(pages)};return true;
+  return {pages,elements};
 }
+function setVisual(pages,elements){state.visual=true;state.pages=pages;state.elements=elements;state.data={closingPage:pages.length,fabricantes:buildGroups(pages)}}
+async function refreshVisual(catalogId){const fresh=await fetchVisual(catalogId);if(!fresh)return;setVisual(fresh.pages,fresh.elements);writeCache(catalogId,fresh.pages,fresh.elements);if(state.page===1)renderHome();else openPage(state.page,false)}
+function readCache(catalogId){try{const cached=JSON.parse(localStorage.getItem(`misarte-catalogo-${catalogId}`));return cached?.pages?.length===59&&Array.isArray(cached.elements)?cached:null}catch{return null}}
+function writeCache(catalogId,pages,elements){try{localStorage.setItem(`misarte-catalogo-${catalogId}`,JSON.stringify({pages,elements}))}catch{}}
+function preload(order){const page=state.visual?pageByOrder(order):null,url=page?.fundo_url;if(!url||imageCache.has(url))return;const image=new Image();image.decoding="async";image.src=url;imageCache.set(url,image)}
+function preloadAround(order){[order+1,order-1,order+2].filter(value=>value>=1&&value<=state.data.closingPage).forEach(preload)}
 function buildGroups(pages){const groups=new Map();pages.filter(page=>page.mostrar_menu).forEach(page=>{const name=page.menu_grupo||"Outros";if(!groups.has(name))groups.set(name,[]);groups.get(name).push({nome:page.menu_titulo||page.nome,pagina:Number(page.ordem)})});return [...groups].map(([nome,produtos])=>({nome,produtos,inicio:produtos[0].pagina,fim:produtos.at(-1).pagina}))}
 async function start(){try{await loadVisual()}catch(error){console.warn("Catálogo visual indisponível; usando versão segura.",error)}if(!state.visual){const response=await fetch("catalogo.json");if(!response.ok)throw new Error("Catálogo indisponível");state.data=await response.json()}renderHome();handleInitialRoute()}
 start().catch(()=>{document.body.innerHTML='<div class="loading">Não foi possível carregar o catálogo.</div>'});
 
 function pageByOrder(order){return state.pages.find(page=>Number(page.ordem)===Number(order))}
-function renderHome(){if(state.visual){const cover=pageByOrder(1),wrap=homeView.querySelector(".cover-wrap");wrap.innerHTML=`<img src="${esc(cover.fundo_url)}" alt="${esc(cover.nome)}">`;addElements(wrap,cover)}else document.querySelectorAll(".cover-hotspot").forEach(button=>button.addEventListener("click",()=>openPage(Number(button.dataset.page))))}
+function renderHome(){if(state.visual){const cover=pageByOrder(1),wrap=homeView.querySelector(".cover-wrap");wrap.innerHTML=`<img src="${esc(cover.fundo_url)}" alt="${esc(cover.nome)}" fetchpriority="high">`;addElements(wrap,cover);preload(2)}else document.querySelectorAll(".cover-hotspot").forEach(button=>button.addEventListener("click",()=>openPage(Number(button.dataset.page))))}
 function brandForPage(page){return state.data.fabricantes.find(group=>page>=group.inicio&&page<=group.fim)||null}
 function openHome(push=true){state.page=1;state.currentBrand=null;homeView.hidden=false;homeView.style.display="flex";readerView.hidden=true;readerView.style.display="none";bottomNav.hidden=true;bottomNav.style.display="none";closeDrawer();if(push)history.pushState({view:"home"},"","#inicio");window.scrollTo(0,0)}
 function openPage(page,push=true){
   page=Math.max(2,Math.min(state.data.closingPage,Number(page)));state.page=page;state.currentBrand=brandForPage(page);homeView.hidden=true;homeView.style.display="none";readerView.hidden=false;readerView.style.display="block";bottomNav.hidden=false;bottomNav.style.display="grid";
   const visualPage=state.visual?pageByOrder(page):null;pageImage.src=visualPage?.fundo_url||`pages/pagina-${String(page).padStart(2,"0")}.webp`;pageImage.alt=visualPage?.nome||`${state.currentBrand?.nome||"Catálogo"} - página ${page}`;
   const wrap=readerView.querySelector(".page-wrap");wrap.querySelectorAll(".visual-hotspot").forEach(node=>node.remove());if(visualPage)addElements(wrap,visualPage);
+  preloadAround(page);
   const pageHome=$("pageHomeHotspot");pageHome.hidden=state.visual||![12,17,29,40,55,58,state.data.closingPage].includes(page);pageHome.classList.toggle("final",page===state.data.closingPage);if(push)history.pushState({view:"page",page},"",`#pagina-${page}`);window.scrollTo(0,0);updateNav();
 }
-function addElements(container,page){state.elements.filter(item=>String(item.pagina_id)===String(page.id)).forEach(item=>{if(item.tipo!=="botao"||item.destino_tipo==="nenhum")return;const button=document.createElement("button");button.className=`visual-hotspot${item.estilos?.aparencia==="invisivel"?" is-invisible":""}`;button.style.cssText=`left:${item.posicao_x}%;top:${item.posicao_y}%;width:${item.largura}%;height:${item.altura}%`;button.setAttribute("aria-label",item.conteudo||"Abrir");button.innerHTML=item.imagem_url?`<img src="${esc(item.imagem_url)}" alt="">`:esc(item.conteudo||"");button.addEventListener("click",()=>followDestination(item));container.appendChild(button)})}
+function addElements(container,page){state.elements.filter(item=>String(item.pagina_id)===String(page.id)).forEach(item=>{if(item.tipo!=="botao"||item.destino_tipo==="nenhum")return;const button=document.createElement("button");button.className=`visual-hotspot${item.estilos?.aparencia==="invisivel"?" is-invisible":""}`;button.style.cssText=`left:${item.posicao_x}%;top:${item.posicao_y}%;width:${item.largura}%;height:${item.altura}%`;button.setAttribute("aria-label",item.conteudo||"Abrir");button.innerHTML=item.imagem_url?`<img src="${esc(item.imagem_url)}" alt="">`:esc(item.conteudo||"");const warmTarget=()=>{if(item.destino_tipo==="pagina"){const target=state.pages.find(page=>String(page.id)===String(item.destino_id));if(target)preload(Number(target.ordem))}};button.addEventListener("pointerenter",warmTarget,{once:true});button.addEventListener("touchstart",warmTarget,{once:true,passive:true});button.addEventListener("click",()=>followDestination(item));container.appendChild(button)})}
 function followDestination(item){if(item.destino_tipo==="pagina"){const target=state.pages.find(page=>String(page.id)===String(item.destino_id));if(target)Number(target.ordem)===1?openHome():openPage(target.ordem)}else if(item.destino_tipo==="url"&&item.destino_url)location.href=item.destino_url}
 function updateNav(){const b=state.currentBrand,closing=state.data.closingPage;if(!b){$("prevBtn").disabled=state.page<=2;$("nextBtn").disabled=state.page>=closing;return}$("prevBtn").disabled=state.page<=b.inicio;const last=b===state.data.fabricantes.at(-1);$("nextBtn").disabled=state.page>=b.fim&&!(last&&closing>b.fim)}
 function step(delta){const b=state.currentBrand,closing=state.data.closingPage,target=state.page+delta;if(!b){if(target>=2&&target<=closing)openPage(target);return}const last=b===state.data.fabricantes.at(-1);if(target>=b.inicio&&target<=b.fim)openPage(target);else if(delta>0&&last&&state.page===b.fim&&closing>b.fim)openPage(closing)}
