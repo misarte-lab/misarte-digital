@@ -52,7 +52,6 @@
   let catalogs = [];
   let actionTarget = null;
   let actionMode = null;
-  let clientSlug = "";
 
   const normalize = (value) =>
     String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -175,14 +174,12 @@
     return;
   }
 
-  const publicCatalogUrl = clientSlug
-    ? `https://misarte.link/${encodeURIComponent(clientSlug)}/`
-    : `https://misarte.link/publico.html?cliente=${encodeURIComponent(clientId)}`;
-
   el.grid.innerHTML = list.map(item => {
     const pdfUrl = String(item.pdf_url || "").trim();
     const pdfName = item.pdf_nome || "PDF do catálogo";
     const pdfUpdatedAt = formatDateTime(item.pdf_atualizado_em);
+    const itemPublicCatalogUrl =
+      `../publico.html?cliente=${encodeURIComponent(clientId)}&catalogo=${encodeURIComponent(item.id)}`;
 
     const pdfPreview = pdfUrl
       ? `
@@ -289,11 +286,11 @@
 
           <a
             class="button button-primary"
-            href="${escapeHtml(publicCatalogUrl)}"
+            href="${escapeHtml(itemPublicCatalogUrl)}"
             target="_blank"
             rel="noopener"
           >
-            Abrir catálogo atual
+            Abrir este catálogo
           </a>
         </div>
 
@@ -374,13 +371,11 @@
   const loadClient = async () => {
   const { data, error } = await db
     .from("clientes")
-    .select("id,nome,empresa,categoria,cidade,estado,slug")
+    .select("id,nome,empresa,categoria,cidade,estado")
     .eq("id", clientId)
     .single();
 
   if (error) throw error;
-
-  clientSlug = String(data.slug || "").trim();
 
   el.name.textContent =
     data.nome || data.empresa || "Cliente";

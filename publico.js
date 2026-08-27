@@ -2,8 +2,8 @@
   const db = window.misarteSupabase;
   const params = new URLSearchParams(location.search);
   const clientId = params.get("cliente");
-  const previewCatalogId = params.get("catalogo");
-  const previewMode = params.get("preview") === "1" && Boolean(previewCatalogId);
+  const requestedCatalogId = params.get("catalogo");
+  const previewMode = params.get("preview") === "1" && Boolean(requestedCatalogId);
   const $ = s => document.querySelector(s);
   const el = {
     loader:$("#publicLoader"),app:$("#publicApp"),hero:$("#hero"),logo:$("#clientLogo"),
@@ -69,12 +69,13 @@
   }
   async function loadCatalogs(){
     let query=db.from("catalogos").select("id,nome,tipo,descricao,destaque,ordem,status").eq("cliente_id",clientId);
-    if(previewMode)query=query.eq("id",previewCatalogId);
+    if(previewMode)query=query.eq("id",requestedCatalogId);
+    else if(requestedCatalogId)query=query.eq("id",requestedCatalogId).eq("status","publicado");
     else query=query.eq("status","publicado").order("destaque",{ascending:false}).order("ordem",{ascending:true});
     const {data,error}=await query;
     if(error) throw error; catalogs=data||[];
     if(!catalogs.length){el.empty.hidden=false;el.empty.textContent="Nenhum catálogo publicado no momento.";return}
-    const preferred=catalogs.find(c=>String(c.id)===String(client.catalogo_destaque));
+    const preferred=catalogs.find(c=>String(c.id)===String(requestedCatalogId||client.catalogo_destaque));
     selectedCatalogId=(preferred||catalogs[0]).id;
     if(catalogs.length>1){el.chooser.hidden=false;el.buttons.innerHTML=catalogs.map(c=>`<button class="catalog-button ${String(c.id)===String(selectedCatalogId)?"active":""}" data-id="${esc(c.id)}">${esc(c.nome)}</button>`).join("")}
     await renderCatalog(selectedCatalogId);
