@@ -16,8 +16,9 @@ async function fetchVisual(catalogId){
 }
 function setVisual(pages,elements){state.visual=true;state.pages=pages;state.elements=elements;state.data={closingPage:pages.length,fabricantes:buildGroups(pages)}}
 async function refreshVisual(catalogId){const fresh=await fetchVisual(catalogId);if(!fresh)return;setVisual(fresh.pages,fresh.elements);writeCache(catalogId,fresh.pages,fresh.elements);if(state.page===1)renderHome();else openPage(state.page,false)}
-function readCache(catalogId){try{const cached=JSON.parse(localStorage.getItem(`misarte-catalogo-${catalogId}`));return cached?.pages?.length===59&&Array.isArray(cached.elements)?cached:null}catch{return null}}
-function writeCache(catalogId,pages,elements){try{localStorage.setItem(`misarte-catalogo-${catalogId}`,JSON.stringify({pages,elements}))}catch{}}
+function cacheKey(catalogId){return `misarte-catalogo-${catalogId}-v3.2.2`}
+function readCache(catalogId){try{const cached=JSON.parse(localStorage.getItem(cacheKey(catalogId)));return cached?.pages?.length===59&&Array.isArray(cached.elements)?cached:null}catch{return null}}
+function writeCache(catalogId,pages,elements){try{localStorage.setItem(cacheKey(catalogId),JSON.stringify({pages,elements}))}catch{}}
 function preload(order){const page=state.visual?pageByOrder(order):null,url=page?.fundo_url;if(!url||imageCache.has(url))return;const image=new Image();image.decoding="async";image.src=url;imageCache.set(url,image)}
 function preloadAround(order){[order+1,order-1,order+2].filter(value=>value>=1&&value<=state.data.closingPage).forEach(preload)}
 function buildGroups(pages){const groups=new Map();pages.filter(page=>page.mostrar_menu).forEach(page=>{const name=page.menu_grupo||"Outros";if(!groups.has(name))groups.set(name,[]);groups.get(name).push({nome:page.menu_titulo||page.nome,pagina:Number(page.ordem)})});return [...groups].map(([nome,produtos])=>({nome,produtos,inicio:produtos[0].pagina,fim:produtos.at(-1).pagina}))}

@@ -33,8 +33,8 @@ button{font:inherit}
 }
 .brand-card strong{display:block;font-family:Georgia,serif;font-size:20px;color:var(--gold-2)}
 .brand-card span{display:block;margin-top:6px;font-size:12px;opacity:.76}
-.reader-view{padding:12px 12px 28px}
-.reader-stage{display:flex;justify-content:center;align-items:flex-start;min-height:calc(100vh - 156px)}
+.reader-view{padding:12px 12px calc(104px + var(--safe-bottom))}
+.reader-stage{display:flex;justify-content:center;align-items:flex-start;min-height:calc(100vh - 156px);padding-bottom:18px}
 .reader-stage img{
   display:block;width:100%;max-width:560px;height:auto;border-radius:14px;
   box-shadow:0 18px 55px rgba(0,0,0,.56);background:#efe7d5
