@@ -16,7 +16,7 @@ async function fetchVisual(catalogId){
 }
 function setVisual(pages,elements){state.visual=true;state.pages=pages;state.elements=elements;state.data={closingPage:pages.length,fabricantes:buildGroups(pages)}}
 async function refreshVisual(catalogId){const fresh=await fetchVisual(catalogId);if(!fresh)return;setVisual(fresh.pages,fresh.elements);writeCache(catalogId,fresh.pages,fresh.elements);if(state.page===1)renderHome();else openPage(state.page,false)}
-function cacheKey(catalogId){return `misarte-catalogo-${catalogId}-v3.2.4`}
+function cacheKey(catalogId){return `misarte-catalogo-${catalogId}-v3.2.5`}
 function readCache(catalogId){try{const cached=JSON.parse(localStorage.getItem(cacheKey(catalogId)));return cached?.pages?.length===59&&Array.isArray(cached.elements)?cached:null}catch{return null}}
 function writeCache(catalogId,pages,elements){try{localStorage.setItem(cacheKey(catalogId),JSON.stringify({pages,elements}))}catch{}}
 function preload(order){const page=state.visual?pageByOrder(order):null,url=page?.fundo_url;if(!url||imageCache.has(url))return;const image=new Image();image.decoding="async";image.src=url;imageCache.set(url,image)}
