@@ -136,14 +136,32 @@ readerView.addEventListener("touchend", e => {
 $("pageHomeHotspot").addEventListener("click",()=>openHome());
 
 
-// Retorno condicional ao portfólio da MisArte.
-// O botão só aparece quando a visita chega por "?origem=misarte".
+// Retorno condicional à MisArte.
 (() => {
   const params = new URLSearchParams(window.location.search);
   const veioDaMisarte = params.get('origem') === 'misarte';
+  const idioma = params.get('lang') || 'pt-BR';
   const returnButton = document.getElementById('misarteReturn');
 
   if (returnButton && veioDaMisarte) {
     returnButton.hidden = false;
+
+    const isLocal =
+  window.location.hostname === '127.0.0.1' ||
+  window.location.hostname === 'localhost';
+
+returnButton.href = isLocal
+  ? `../misarte-digital-main/?origem=projeto&lang=${encodeURIComponent(idioma)}#projeto`
+  : `../?origem=projeto&lang=${encodeURIComponent(idioma)}#projeto`;
+
+    const returnText = returnButton.querySelector('span:last-child');
+
+    if (idioma === 'es-ES') {
+      if (returnText) returnText.textContent = 'Volver a MisArte';
+      returnButton.setAttribute('aria-label', 'Volver a MisArte Digital');
+    } else {
+      if (returnText) returnText.textContent = 'Voltar à MisArte';
+      returnButton.setAttribute('aria-label', 'Voltar à MisArte Digital');
+    }
   }
 })();
