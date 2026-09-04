@@ -25,14 +25,24 @@ const observer = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // Splash screen
-document.body.classList.add('splash-active');
-window.addEventListener('load', () => {
-  const splash = document.getElementById('splash');
-  setTimeout(() => {
-    splash?.classList.add('hide');
-    document.body.classList.remove('splash-active');
-  }, 2050);
-});
+const returnFromProject =
+  new URLSearchParams(window.location.search).get('origem') === 'projeto';
+
+const splash = document.getElementById('splash');
+
+if (returnFromProject) {
+  splash?.classList.add('hide');
+  document.body.classList.remove('splash-active');
+} else {
+  document.body.classList.add('splash-active');
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      splash?.classList.add('hide');
+      document.body.classList.remove('splash-active');
+    }, 2050);
+  });
+}
 
 // Compact navbar on scroll
 const header = document.querySelector('.site-header');
@@ -158,7 +168,7 @@ function renderProjects(clients) {
         <div class="project-copy">
           <p class="project-tag">${category} · EXPERIÊNCIA DIGITAL</p>
           <h3>${name}</h3>
-          <p>Projeto digital desenvolvido para valorizar a identidade da marca, facilitar a navegação e permitir atualizações contínuas.</p>
+          <p data-i18n="projectCardDescription">Projeto digital desenvolvido para valorizar a identidade da marca, facilitar a navegação e permitir atualizações contínuas.</p>
 
           <div class="project-highlights">
             <span>Navegação mobile</span>
@@ -204,3 +214,130 @@ async function loadProjectsFromSupabase() {
 }
 
 loadProjectsFromSupabase();
+// Idiomas PT-BR / ES-ES
+const languageButtons = document.querySelectorAll(".language-btn");
+
+const testTranslations = {
+ "pt-BR": {
+  navPlatform: "Plataforma",
+  navProject: "Projeto",
+  navPrinciples: "Princípios",
+  navContact: "Contato",
+  heroEyebrow: "PLATAFORMA DE EXPERIÊNCIAS DIGITAIS",
+  heroTagline: "Sua marca merece ser vivida.",
+  heroDescription: "Criamos experiências digitais que aproximam pessoas, produtos e marcas.",
+  heroPlatformButton: "Conheça a plataforma",
+  heroProjectButton: "Ver último projeto publicado",
+  platformEyebrow: "POSSIBILIDADES",
+  platformTitle: "O que sua marca pode se tornar.",
+  featureExperiencesTitle: "Experiências digitais",
+  featureExperiencesText: "Muito além de um catálogo. Criamos experiências que despertam curiosidade, facilitam a navegação e valorizam cada detalhe.",
+   featureIdentityTitle: "Identidade",
+   featureIdentityText: "Cada projeto possui personalidade própria. Sua empresa nunca será apenas mais uma dentro de um modelo genérico.",
+   featureUpdatesTitle: "Atualização contínua",
+   featureUpdatesBadge: "Atualização contínua",
+   featureUpdatesText: "Seu conteúdo evolui sem exigir um novo QR Code. O endereço permanece; a experiência fica sempre atualizada.",
+   featureDesignTitle: "Design estratégico",
+   featureDesignText: "Cada botão, cor, movimento e espaço tem uma função. Design bonito, mas sempre pensado para gerar resultado.",
+   projectEyebrow: "PROJETO EM DESTAQUE",
+   projectTitle: "Último projeto publicado.",
+   projectDescription: "Uma experiência digital criada para simplificar a navegação por dezenas de rótulos, preservar a identidade visual e permitir atualizações sem trocar o QR Code.",
+   projectCardDescription: "Projeto digital desenvolvido para valorizar a identidade da marca, facilitar a navegação e permitir atualizações contínuas.",
+   projectBadgeMobile: "Navegação mobile",
+   projectBadgeQr: "QR Code permanente",
+   projectExplore: "Explorar projeto",
+   principlesEyebrow: "NOSSA FORMA DE PENSAR",
+   principlesTitle: "Como pensamos.",
+   principle1Line1: "Menos interface.",
+   principle1Line2: "Mais experiência.",
+   principle2Line1: "Cada detalhe",
+   principle2Line2: "comunica.",
+   principle3Line1: "Tecnologia deve facilitar.",
+   principle3Line2: "Nunca complicar.",
+   principle4Line1: "Sua marca é única.",
+   principle4Line2: "Sua experiência também.",
+   contactEyebrow: "VAMOS CONVERSAR",
+   contactTitle: "Vamos construir algo que represente sua marca?",
+   contactText: "Projetos digitais exclusivos, pensados para a forma como seus clientes descobrem, exploram e vivem a sua empresa.",
+   contactButton: "Solicitar um projeto",
+   footerTagline: "Sua marca merece ser vivida.",
+   footerDescription: "Experiências digitais para empresas que desejam ser lembradas.",
+   footerHome: "Início",
+   footerProjects: "Projetos"
+
+
+},
+"es-ES": {
+  navPlatform: "Plataforma",
+  navProject: "Proyecto",
+  navPrinciples: "Principios",
+  navContact: "Contacto",
+  heroEyebrow: "PLATAFORMA DE EXPERIENCIAS DIGITALES",
+  heroTagline: "Tu marca merece ser vivida.",
+  heroDescription: "Creamos experiencias digitales que acercan personas, productos y marcas.",
+  heroPlatformButton: "Conoce la plataforma",
+  heroProjectButton: "Ver último proyecto publicado",
+  platformEyebrow: "POSIBILIDADES",
+  platformTitle: "En lo que puede convertirse tu marca.",
+  featureExperiencesTitle: "Experiencias digitales",
+  featureExperiencesText: "Mucho más que un catálogo. Creamos experiencias que despiertan curiosidad, facilitan la navegación y realzan cada detalle.",
+  featureIdentityTitle: "Identidad",
+  featureIdentityText: "Cada proyecto tiene una personalidad propia. Tu empresa nunca será una más dentro de un modelo genérico.",
+  featureUpdatesTitle: "Actualización continua",
+  featureUpdatesBadge: "Actualización continua",
+  featureUpdatesText: "Tu contenido evoluciona sin necesidad de un nuevo código QR. La dirección permanece; la experiencia se mantiene siempre actualizada.",
+  featureDesignTitle: "Diseño estratégico",
+  featureDesignText: "Cada botón, color, movimiento y espacio tiene una función. Un diseño atractivo, pero siempre pensado para generar resultados.",
+  projectEyebrow: "PROYECTO DESTACADO",
+  projectTitle: "Último proyecto publicado.",
+  projectDescription: "Una experiencia digital creada para simplificar la navegación por decenas de etiquetas, preservar la identidad visual y permitir actualizaciones sin cambiar el código QR.",
+  projectCardDescription: "Proyecto digital desarrollado para realzar la identidad de la marca, facilitar la navegación y permitir actualizaciones continuas.",
+  projectBadgeMobile: "Navegación móvil",
+  projectBadgeQr: "Código QR permanente",
+  projectExplore: "Explorar proyecto",
+  principlesEyebrow: "NUESTRA MANERA DE PENSAR",
+  principlesTitle: "Cómo pensamos.",
+  principle1Line1: "Menos interfaz.",
+  principle1Line2: "Más experiencia.",
+  principle2Line1: "Cada detalle",
+  principle2Line2: "comunica.",
+  principle3Line1: "La tecnología debe facilitar.",
+  principle3Line2: "Nunca complicar.",
+  principle4Line1: "Tu marca es única.",
+  principle4Line2: "Tu experiencia también.",
+  contactEyebrow: "TU PROYECTO EMPIEZA AQUÍ",
+  contactTitle: "¿Creamos algo que represente tu marca?",
+  contactText: "Proyectos digitales exclusivos, pensados para la forma en que tus clientes descubren, exploran y viven tu empresa.",
+  contactButton: "Solicitar un proyecto",
+  footerTagline: "Tu marca merece ser vivida.",
+  footerDescription: "Experiencias digitales para empresas que quieren ser recordadas.",
+  footerHome: "Inicio",
+  footerProjects: "Proyectos"
+ 
+
+
+
+  
+}
+};
+
+function setLanguage(language) {
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.dataset.i18n;
+    const translation = testTranslations[language]?.[key];
+
+    if (translation) {
+      element.textContent = translation;
+    }
+  });
+
+  languageButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.lang === language);
+  });
+}
+
+languageButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setLanguage(button.dataset.lang);
+  });
+});

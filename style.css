@@ -592,3 +592,43 @@ body.splash-active {
     gap:24px;
   }
 }
+/* Seletor de idioma */
+.language-switcher{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-left:18px;
+  font-size:.82rem;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+
+.language-switcher button{
+  appearance:none;
+  border:0;
+  background:transparent;
+  color:rgba(255,255,255,.58);
+  padding:0;
+  cursor:pointer;
+  font:inherit;
+  transition:color .2s ease;
+}
+
+.language-switcher button:hover{
+  color:#fff;
+}
+
+.language-switcher button.active{
+  color:#48d597;
+}
+
+.language-switcher .language-separator{
+  color:rgba(255,255,255,.34);
+}
+
+@media (max-width:760px){
+  .language-switcher{
+    margin-left:auto;
+    margin-right:12px;
+  }
+}

@@ -34,11 +34,17 @@
     <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="siteNav">Menu</button>
 
     <nav id="siteNav" class="site-nav">
-      <a href="#plataforma">Plataforma</a>
-      <a href="#projeto">Projeto</a>
-      <a href="#principios">Princípios</a>
-      <a href="#contato">Contato</a>
-    </nav>
+  <a href="#plataforma" data-i18n="navPlatform">Plataforma</a>
+  <a href="#projeto" data-i18n="navProject">Projeto</a>
+<a href="#principios" data-i18n="navPrinciples">Princípios</a>
+<a href="#contato" data-i18n="navContact">Contato</a>
+</nav>
+
+<div class="language-switcher" aria-label="Selecionar idioma">
+  <button type="button" class="language-btn active" data-lang="pt-BR">PT</button>
+  <span class="language-separator">|</span>
+  <button type="button" class="language-btn" data-lang="es-ES">ES</button>
+</div>
   </header>
 
   <main>
@@ -49,14 +55,14 @@
       <div class="hero-content reveal">
         <img class="brand-mark logo-img" src="assets/misarte-monograma-oficial.png" alt="MisArte Digital">
 
-        <p class="eyebrow">PLATAFORMA DE EXPERIÊNCIAS DIGITAIS</p>
+        <p <p class="eyebrow" data-i18n="heroEyebrow">PLATAFORMA DE EXPERIÊNCIAS DIGITAIS</p>
         <h1>MisArte Digital</h1>
-        <p class="slogan">Sua marca merece ser vivida.</p>
-        <p class="hero-copy">Criamos experiências digitais que aproximam pessoas, produtos e marcas.</p>
+       <p class="slogan" data-i18n="heroTagline">Sua marca merece ser vivida.</p>
+       <p class="hero-copy" data-i18n="heroDescription">Criamos experiências digitais que aproximam pessoas, produtos e marcas.</p>
 
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#plataforma">Conheça a plataforma</a>
-          <a class="btn btn-secondary" href="./cervejaria-inconfidentes/?origem=misarte">Ver último projeto publicado</a>
+         <a class="btn btn-primary" href="#plataforma" data-i18n="heroPlatformButton">Conheça a plataforma</a>
+          <a clas<a class="btn btn-secondary" href="./cervejaria-inconfidentes/?origem=misarte" data-i18n="heroProjectButton">Ver último projeto publicado</a>
         </div>
       </div>
 
@@ -67,41 +73,41 @@
 
     <section class="section" id="plataforma">
       <div class="section-heading reveal">
-        <p class="eyebrow">POSSIBILIDADES</p>
-        <h2>O que sua marca pode se tornar.</h2>
+        <p class="eyebrow" data-i18n="platformEyebrow">POSSIBILIDADES</p>
+        <h2 data-i18n="platformTitle">O que sua marca pode se tornar.</h2>
       </div>
 
       <div class="feature-grid">
         <article class="feature-card reveal">
           <span class="feature-number">01</span>
-          <h3>Experiências digitais</h3>
-          <p>Muito além de um catálogo. Criamos experiências que despertam curiosidade, facilitam a navegação e valorizam cada detalhe.</p>
+         <h3 data-i18n="featureExperiencesTitle">Experiências digitais</h3>
+         <p data-i18n="featureExperiencesText">Muito além de um catálogo. Criamos experiências que despertam curiosidade, facilitam a navegação e valorizam cada detalhe.</p>
         </article>
 
         <article class="feature-card reveal">
           <span class="feature-number">02</span>
-          <h3>Identidade</h3>
-          <p>Cada projeto possui personalidade própria. Sua empresa nunca será apenas mais uma dentro de um modelo genérico.</p>
+          <h3 data-i18n="featureIdentityTitle">Identidade</h3>
+          <p data-i18n="featureIdentityText">Cada projeto possui personalidade própria. Sua empresa nunca será apenas mais uma dentro de um modelo genérico.</p>
         </article>
 
         <article class="feature-card reveal">
           <span class="feature-number">03</span>
-          <h3>Atualização contínua</h3>
-          <p>Seu conteúdo evolui sem exigir um novo QR Code. O endereço permanece; a experiência fica sempre atualizada.</p>
+          <h3 data-i18n="featureUpdatesTitle">Atualização contínua</h3>
+          <p data-i18n="featureUpdatesText">Seu conteúdo evolui sem exigir um novo QR Code. O endereço permanece; a experiência fica sempre atualizada.</p>
         </article>
 
         <article class="feature-card reveal">
           <span class="feature-number">04</span>
-          <h3>Design estratégico</h3>
-          <p>Cada botão, cor, movimento e espaço tem uma função. Design bonito, mas sempre pensado para gerar resultado.</p>
+          <h3 data-i18n="featureDesignTitle">Design estratégico</h3>
+          <p data-i18n="featureDesignText">Cada botão, cor, movimento e espaço tem uma função. Design bonito, mas sempre pensado para gerar resultado.</p>
         </article>
       </div>
     </section>
 
     <section class="section project-section" id="projeto">
       <div class="section-heading reveal">
-        <p class="eyebrow">PROJETO EM DESTAQUE</p>
-        <h2>Último projeto publicado.</h2>
+       <p class="eyebrow" data-i18n="projectEyebrow">PROJETO EM DESTAQUE</p>
+        <h2 data-i18n="projectTitle">Último projeto publicado.</h2>
       </div>
 
       <div id="projectsDynamic" class="projects-dynamic" aria-live="polite">
@@ -113,15 +119,15 @@
         <div class="project-copy">
           <p class="project-tag">CERVEJARIA · CATÁLOGO INTERATIVO</p>
           <h3>Cervejaria Inconfidentes</h3>
-          <p>Uma experiência digital criada para simplificar a navegação por dezenas de rótulos, preservar a identidade visual e permitir atualizações sem trocar o QR Code.</p>
+          <p data-i18n="projectDescription">Uma experiência digital criada para simplificar a navegação por dezenas de rótulos, preservar a identidade visual e permitir atualizações sem trocar o QR Code.</p>
 
           <div class="project-highlights">
-            <span>Navegação mobile</span>
-            <span>QR Code permanente</span>
-            <span>Atualização contínua</span>
+            <span data-i18n="projectBadgeMobile">Navegação mobile</span>
+           <span data-i18n="projectBadgeQr">QR Code permanente</span>
+           <span data-i18n="featureUpdatesBadge">Atualização contínua</span>
           </div>
 
-          <a class="text-link" href="./cervejaria-inconfidentes/?origem=misarte">Explorar projeto <span>→</span></a>
+          <a class="text-link" href="./cervejaria-inconfidentes/?origem=misarte"><span data-i18n="projectExplore">Explorar projeto</span> <span>→</span></a>
         </div>
       </article>
       </div>
@@ -129,26 +135,26 @@
 
     <section class="section principles-section" id="principios">
       <div class="section-heading reveal">
-        <p class="eyebrow">NOSSA FORMA DE PENSAR</p>
-        <h2>Como pensamos.</h2>
+       <p class="eyebrow" data-i18n="principlesEyebrow">NOSSA FORMA DE PENSAR</p>
+       <h2 data-i18n="principlesTitle">Como pensamos.</h2>
       </div>
 
       <div class="principles">
         <article class="principle reveal">
           <span>01</span>
-          <h3>Menos interface.<br>Mais experiência.</h3>
+         <h3><span data-i18n="principle1Line1">Menos interface.</span><br><span data-i18n="principle1Line2">Mais experiência.</span></h3>
         </article>
         <article class="principle reveal">
           <span>02</span>
-          <h3>Cada detalhe<br>comunica.</h3>
+          <h3><span data-i18n="principle2Line1">Cada detalhe</span><br><span data-i18n="principle2Line2">comunica.</span></h3>
         </article>
         <article class="principle reveal">
           <span>03</span>
-          <h3>Tecnologia deve facilitar.<br>Nunca complicar.</h3>
+          <h3><span data-i18n="principle3Line1">Tecnologia deve facilitar.</span><br><span data-i18n="principle3Line2">Nunca complicar.</span></h3>
         </article>
         <article class="principle reveal">
           <span>04</span>
-          <h3>Sua marca é única.<br>Sua experiência também.</h3>
+          <h3><span data-i18n="principle4Line1">Sua marca é única.</span><br><span data-i18n="principle4Line2">Sua experiência também.</span></h3>
         </article>
       </div>
     </section>
@@ -156,10 +162,10 @@
     <section class="cta-section" id="contato">
       <div class="cta-card reveal">
         <img class="cta-mark logo-img" src="assets/misarte-monograma-oficial.png" alt="">
-        <p class="eyebrow">VAMOS CONVERSAR</p>
-        <h2>Vamos construir algo que represente sua marca?</h2>
-        <p>Projetos digitais exclusivos, pensados para a forma como seus clientes descobrem, exploram e vivem a sua empresa.</p>
-        <a class="btn btn-primary" href="mailto:contato@misarte.link">Solicitar um projeto</a>
+        <p class="eyebrow" data-i18n="contactEyebrow">VAMOS CONVERSAR</p>
+        <h2 data-i18n="contactTitle">Vamos construir algo que represente sua marca?</h2>
+        <p data-i18n="contactText">Projetos digitais exclusivos, pensados para a forma como seus clientes descobrem, exploram e vivem a sua empresa.</p>
+        <a class="btn btn-primary" href="mailto:contato.misarte@outlook.com" data-i18n="contactButton">Solicitar um projeto</a>
       </div>
     </section>
   </main>
@@ -169,17 +175,17 @@
       <img class="mini-mark logo-img" src="assets/misarte-monograma-oficial.png" alt="">
       <div>
         <strong>MisArte Digital</strong>
-        <span>Sua marca merece ser vivida.</span>
+        <span data-i18n="footerTagline">Sua marca merece ser vivida.</span>
       </div>
     </div>
 
     <div class="footer-copy">
-      <p>Experiências digitais para empresas que desejam ser lembradas.</p>
+      <p data-i18n="footerDescription">Experiências digitais para empresas que desejam ser lembradas.</p>
     </div>
     <div class="footer-links">
-      <a href="#inicio">Início</a>
-      <a href="#projeto">Projetos</a>
-      <a href="mailto:contato@misarte.link">E-mail</a>
+     <a href="#inicio" data-i18n="footerHome">Início</a>
+      <a href="#projeto" data-i18n="footerProjects">Projetos</a>
+     <a href="mailto:contato.misarte@outlook.com">E-mail</a>
     </div>
   </footer>
 
