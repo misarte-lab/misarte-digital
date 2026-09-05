@@ -296,6 +296,7 @@ const testTranslations = {
   projectTag: "CERVECERÍA · EXPERIENCIA DIGITAL",
   projectTitle: "Último proyecto publicado.",
   projectDescription: "Proyecto digital desarrollado para una empresa brasileña, creado para simplificar la navegación por decenas de etiquetas, preservar la identidad visual y permitir actualizaciones sin cambiar el código QR.",
+  projectCardDescription: "Proyecto digital desarrollado para una empresa brasileña, preservando la identidad original de la marca y facilitando la navegación por su catálogo en portugués.",
   projectBadgeMobile: "Navegación móvil",
   projectBadgeLink: "Enlace permanente",
   projectBadgeQr: "Código QR permanente",
