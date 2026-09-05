@@ -166,23 +166,25 @@ function renderProjects(clients) {
         </div>
 
         <div class="project-copy">
-          <p class="project-tag">${category} · EXPERIÊNCIA DIGITAL</p>
-          <h3>${name}</h3>
-          <p data-i18n="projectCardDescription">Projeto digital desenvolvido para valorizar a identidade da marca, facilitar a navegação e permitir atualizações contínuas.</p>
+         <p class="project-tag" data-i18n="projectTag">${category} · EXPERIÊNCIA DIGITAL</p>
+<h3>${name}</h3>
+<p data-i18n="projectCardDescription">Projeto digital desenvolvido para valorizar a identidade da marca, facilitar a navegação e permitir atualizações contínuas.</p>
 
-          <div class="project-highlights">
-            <span>Navegação mobile</span>
-            <span>Link permanente</span>
-            <span>Atualização contínua</span>
-          </div>
+<div class="project-highlights">
+  <span data-i18n="projectBadgeMobile">Navegação mobile</span>
+ <span data-i18n="projectBadgeLink">Link permanente</span>
+  <span data-i18n="featureUpdatesBadge">Atualização contínua</span>
+</div>
 
-          <a class="text-link" href="${escapeHtml(catalogUrl)}">
-            Explorar projeto <span>→</span>
-          </a>
+<a class="text-link" href="${escapeHtml(catalogUrl)}">
+  <span data-i18n="projectExplore">Explorar projeto</span> <span>→</span>
+</a>
         </div>
       </article>
     `;
   }).join('');
+  const currentLanguage = localStorage.getItem("misarteLanguage") || "pt-BR";
+setLanguage(currentLanguage);
 }
 
 async function loadProjectsFromSupabase() {
@@ -240,10 +242,12 @@ const testTranslations = {
    featureDesignTitle: "Design estratégico",
    featureDesignText: "Cada botão, cor, movimento e espaço tem uma função. Design bonito, mas sempre pensado para gerar resultado.",
    projectEyebrow: "PROJETO EM DESTAQUE",
+   projectTag: "CERVEJARIA · EXPERIÊNCIA DIGITAL",
    projectTitle: "Último projeto publicado.",
    projectDescription: "Uma experiência digital criada para simplificar a navegação por dezenas de rótulos, preservar a identidade visual e permitir atualizações sem trocar o QR Code.",
    projectCardDescription: "Projeto digital desenvolvido para valorizar a identidade da marca, facilitar a navegação e permitir atualizações contínuas.",
    projectBadgeMobile: "Navegação mobile",
+   projectBadgeLink: "Link permanente",
    projectBadgeQr: "QR Code permanente",
    projectExplore: "Explorar projeto",
    principlesEyebrow: "NOSSA FORMA DE PENSAR",
@@ -289,10 +293,11 @@ const testTranslations = {
   featureDesignTitle: "Diseño estratégico",
   featureDesignText: "Cada botón, color, movimiento y espacio tiene una función. Un diseño atractivo, pero siempre pensado para generar resultados.",
   projectEyebrow: "PROYECTO DESTACADO",
+  projectTag: "CERVECERÍA · EXPERIENCIA DIGITAL",
   projectTitle: "Último proyecto publicado.",
-  projectDescription: "Una experiencia digital creada para simplificar la navegación por decenas de etiquetas, preservar la identidad visual y permitir actualizaciones sin cambiar el código QR.",
-  projectCardDescription: "Proyecto digital desarrollado para realzar la identidad de la marca, facilitar la navegación y permitir actualizaciones continuas.",
+  projectDescription: "Proyecto digital desarrollado para una empresa brasileña, creado para simplificar la navegación por decenas de etiquetas, preservar la identidad visual y permitir actualizaciones sin cambiar el código QR.",
   projectBadgeMobile: "Navegación móvil",
+  projectBadgeLink: "Enlace permanente",
   projectBadgeQr: "Código QR permanente",
   projectExplore: "Explorar proyecto",
   principlesEyebrow: "NUESTRA MANERA DE PENSAR",
@@ -322,6 +327,9 @@ const testTranslations = {
 };
 
 function setLanguage(language) {
+  localStorage.setItem("misarteLanguage", language);
+  document.documentElement.lang = language === "es-ES" ? "es" : "pt-BR";
+
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     const key = element.dataset.i18n;
     const translation = testTranslations[language]?.[key];
@@ -334,7 +342,25 @@ function setLanguage(language) {
   languageButtons.forEach((button) => {
     button.classList.toggle("active", button.dataset.lang === language);
   });
+
+  document.querySelectorAll('a[href*="cervejaria-inconfidentes"]').forEach((link) => {
+    const url = new URL(link.href, window.location.href);
+    url.searchParams.set("origem", "misarte");
+    url.searchParams.set("lang", language);
+    link.href = url.href;
+  });
 }
+
+const urlLanguage = new URLSearchParams(window.location.search).get("lang");
+const savedLanguage = localStorage.getItem("misarteLanguage");
+const initialLanguage =
+  urlLanguage === "es-ES" || urlLanguage === "pt-BR"
+    ? urlLanguage
+    : savedLanguage === "es-ES" || savedLanguage === "pt-BR"
+      ? savedLanguage
+      : "pt-BR";
+
+setLanguage(initialLanguage);
 
 languageButtons.forEach((button) => {
   button.addEventListener("click", () => {
